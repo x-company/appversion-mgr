@@ -9,17 +9,17 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 01:01:35
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-15 01:06:49
+ * @Last Modified At: 2018-12-15 13:48:55
  * @Description: This is description.
  */
 
 export interface IAppVersion {
 
     version: IVersion;
-    status: IStatus;
-    build: IBuild;
-    commit: string;
-    config: IConfig;
+    status?: IStatus;
+    build?: IBuild;
+    commit?: string | null;
+    config?: IConfig;
 
 }
 

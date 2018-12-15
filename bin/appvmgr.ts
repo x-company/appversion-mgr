@@ -8,13 +8,13 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-15 03:17:03
+ * @Last Modified At: 2018-12-15 14:24:25
  * @Description: This is description.
  */
 
 import * as program from 'commander';
 import * as handler from '../lib';
-import * as update from '../lib/update';
+import { UpdateCommand } from '../lib/UpdateCommand';
 
 
 
@@ -32,7 +32,8 @@ program
         const directory = options.directory || __dirname;
         action = action || 'commit';
 
-        update(directory, param);
+        const command = new UpdateCommand(directory);
+        command.update(action);
     });
 
 if (!process.argv.slice(2).length) {

@@ -8,7 +8,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:34:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-15 01:58:47
+ * @Last Modified At: 2018-12-15 14:27:43
  * @Description: This is description.
  */
 
@@ -26,7 +26,7 @@ describe('Testing update', () => {
     it('Testing build', () => {
 
         // act
-        execSync('./dist/bin/appvmgr.js update build');
+        execSync('./bin/appvmgr.js update build');
         const actual = JSON.parse(fs.readFileSync(JSON_FILE, 'utf8'));
 
         // assert
@@ -38,7 +38,7 @@ describe('Testing update', () => {
     it('Testing patch', () => {
 
         // act
-        execSync('./dist/bin/appvmgr.js update patch');
+        execSync('./bin/appvmgr.js update patch');
         const actual = JSON.parse(fs.readFileSync(JSON_FILE, 'utf8'));
 
         // assert
@@ -49,7 +49,7 @@ describe('Testing update', () => {
     it('Testing minor', () => {
 
         // act
-        execSync('./dist/bin/appvmgr.js update minor');
+        execSync('./bin/appvmgr.js update minor');
         const actual = JSON.parse(fs.readFileSync(JSON_FILE, 'utf8'));
 
         // assert
@@ -61,7 +61,7 @@ describe('Testing update', () => {
     it('Testing major', () => {
 
         // act
-        execSync('./dist/bin/appvmgr.js update major');
+        execSync('./bin/appvmgr.js update major');
         const actual = JSON.parse(fs.readFileSync(JSON_FILE, 'utf8'));
 
         // assert
@@ -74,7 +74,7 @@ describe('Testing update', () => {
     it('Testing commit', () => {
 
         // act
-        execSync('./dist/bin/appvmgr.js update commit');
+        execSync('./bin/appvmgr.js update commit');
         const actual = JSON.parse(fs.readFileSync(JSON_FILE, 'utf8'));
 
         // assert

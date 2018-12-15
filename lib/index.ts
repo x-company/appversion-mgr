@@ -8,7 +8,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-14 23:47:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-15 02:29:15
+ * @Last Modified At: 2018-12-15 13:55:30
  * @Description: This is description.
  */
 
@@ -114,7 +114,7 @@ export function composePattern(pattern: string): Promise<string> {
  * . : separator
  * - : separator
  */
-function switchPattern(appVersion: IAppVersion, pattern: string): string | number | Date {
+function switchPattern(appVersion: IAppVersion, pattern: string): string | number | Date | null {
     switch (pattern) {
         case 'M' || 'B':
             return appVersion.version.major;
@@ -123,17 +123,17 @@ function switchPattern(appVersion: IAppVersion, pattern: string): string | numbe
         case 'p' || 'f':
             return appVersion.version.patch;
         case 'S':
-            return appVersion.status.stage;
+            return appVersion.status ? appVersion.status.stage : null;
         case 's':
-            return appVersion.status.number;
+            return appVersion.status ? appVersion.status.number : null;
         case 'n':
-            return appVersion.build.number;
+            return appVersion.build ? appVersion.build.number : null;
         case 't':
-            return appVersion.build.total;
+            return appVersion.build ? appVersion.build.total : null;
         case 'd':
-            return appVersion.build.date;
+            return appVersion.build ? appVersion.build.date : null;
         case 'c':
-            return appVersion.commit;
+            return appVersion.commit ? appVersion.commit : null;
         default:
             return pattern;
     }
