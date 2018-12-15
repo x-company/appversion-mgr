@@ -1,0 +1,51 @@
+{
+    "name": "@x-company/appversion-mgr",
+    "version": "0.1.0",
+    "description": "AppVersion Manager is a CLI tool whose purpose is to provide a unique manager of the version of you application.",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "bin": {
+        "appvmgr": "bin/appvmgr.js"
+    },
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "scripts": {
+        "pretest": "yarn build",
+        "test": "ts-node node_modules/.bin/jasmine",
+        "build": "tsc",
+        "prepublish": "yarn test",
+        "lint": "tslint -c tslint.json 'lib/**/*.ts'"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@git.x-company.de:global/appversion-mgr.git"
+    },
+    "author": "Roland Breitschaft <info@x-company.de> (https://www.x-company.de)",
+    "license": "MIT",
+    "keywords": [
+        "app",
+        "version",
+        "build",
+        "commit",
+        "semantic",
+        "versioning",
+        "semver",
+        "tag",
+        "status"
+    ],
+    "devDependencies": {
+        "@types/chalk": "^2.2.0",
+        "@types/commander": "^2.12.2",
+        "@types/jasmine": "^3.3.2",
+        "@types/node": "^10.12.15",
+        "jasmine": "^3.3.1",
+        "ts-node": "^7.0.1",
+        "tslint": "^5.11.0",
+        "typescript": "^3.2.2"
+    },
+    "dependencies": {
+        "chalk": "^2.4.1",
+        "commander": "^2.19.0"
+    }
+}

@@ -1,0 +1,27 @@
+{
+  "licenser.projectName": "appversion-mgr",
+  "licenser.license": "MIT",
+  "licenser.author": "IT Solutions Roland Breitschaft <info@x-company.de>",
+  "licenser.disableAutoHeaderInsertion": false,
+  "licenser.useSingleLineStyle": false,
+  "jasmineExplorer.nodeArgv": [
+    "-r",
+    "ts-node/register"
+  ],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.js": {
+      "when": "$(basename).ts"
+    },
+    "**/*.js.map": {
+      "when": "$(basename).ts"
+    },
+    "**/*.d.ts": {
+      "when": "$(basename).ts"
+    }
+  }
+}
