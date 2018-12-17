@@ -4,23 +4,23 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Mocha Unit Tests",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "name": "Launch Jasmine Unit Tests",
+            "program": "${workspaceFolder}/node_modules/.bin/jasmine-ts",
             "cwd": "${workspaceFolder}",
             "args": [
-                "--opts",
-                "${workspaceFolder}/test/mocha.opts",
-                "${workspaceFilder}/${relativeFile}"
+                "${workspaceFolder}\\${relativeFile}"
             ],
+            "env": {
+                "NODE_ENV": "development",
+                "NODE_CONFIG_DIR": "${workspaceFolder}"
+            },
             "sourceMaps": true,
             "internalConsoleOptions": "neverOpen",
             "protocol": "inspector",
             "console": "integratedTerminal",
             "windows": {
-                "program": "${workspaceFolder}\\node_modules\\mocha\\bin\\_mocha",
+                "program": "${workspaceFolder}/node_modules/.bin/jasmine-ts",
                 "args": [
-                    "--opts",
-                    "${workspaceFolder}\\test\\mocha.opts",
                     "${workspaceFolder}\\${relativeFile}"
                 ]
             }
@@ -30,27 +30,54 @@
             "request": "launch",
             "name": "Launch the Module",
             "cwd": "${workspaceFolder}",
-            "protocol": "inspector",
-            "sourceMaps": true,
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "preLaunchTask": "Build",
+            "args": [
+                "${workspaceFolder}/${relativeFile}"
+            ],
             "env": {
                 "NODE_ENV": "development",
                 "NODE_CONFIG_DIR": "${workspaceFolder}"
             },
             "runtimeArgs": [
-                "--nolazy",
-                "--require",
+                "-r",
                 "ts-node/register"
             ],
-            "args": [
-                "${workspaceFolder}/${relativeFile}"
-            ],
+            "sourceMaps": true,
+            "internalConsoleOptions": "neverOpen",
+            "protocol": "inspector",
+            "console": "integratedTerminal",
             "windows": {
-                "cwd": "${workspaceFolder}",
                 "args": [
                     "${workspaceFolder}\\${relativeFile}"
+                ]
+            }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch CLI - Init",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "${workspaceFolder}/bin/appvmgr.ts",
+                "add-git-tag",
+                "-d",
+                "${workspaceFolder}/tmp"
+            ],
+            "env": {
+                "NODE_ENV": "development",
+                "NODE_CONFIG_DIR": "${workspaceFolder}"
+            },
+            "runtimeArgs": [
+                "-r",
+                "ts-node/register"
+            ],
+            "sourceMaps": true,
+            "internalConsoleOptions": "neverOpen",
+            "protocol": "inspector",
+            "console": "integratedTerminal",
+            "windows": {
+                "args": [
+                    "${workspaceFolder}\\bin\\appvmgr.ts",
+                    "init"
                 ]
             }
         }

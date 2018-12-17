@@ -1,27 +1,60 @@
 {
-  "licenser.projectName": "appversion-mgr",
-  "licenser.license": "MIT",
-  "licenser.author": "IT Solutions Roland Breitschaft <info@x-company.de>",
-  "licenser.disableAutoHeaderInsertion": false,
-  "licenser.useSingleLineStyle": false,
-  "jasmineExplorer.nodeArgv": [
-    "-r",
-    "ts-node/register"
-  ],
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/*.js": {
-      "when": "$(basename).ts"
+    "licenser.projectName": "appversion-mgr",
+    "licenser.license": "MIT",
+    "licenser.author": "IT Solutions Roland Breitschaft <info@x-company.de>",
+    "licenser.disableAutoHeaderInsertion": false,
+    "licenser.useSingleLineStyle": false,
+    "jasmineExplorer.nodeArgv": [
+        "--require",
+        "ts-node/register",
+        "--require",
+        "tsconfig-paths/register"
+    ],
+    "jasmineExplorer.env": {
+        "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}"
     },
-    "**/*.js.map": {
-      "when": "$(basename).ts"
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/changelogs": true,
+        "**/doc": true,
+        "**/.vscode": true,
+        "**/.gitlab": true
     },
-    "**/*.d.ts": {
-      "when": "$(basename).ts"
-    }
-  }
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.js": {
+            "when": "$(basename).ts"
+        },
+        "**/*.js.map": true,
+        "**/*.d.ts": {
+            "when": "$(basename).ts"
+        }
+    },
+    "files.watcherExclude": {
+        "**/.git/**": true,
+        "**/node_modules/*/**": true,
+        "**/.gitlab/*/**": true,
+        "**/.vscode/*/**": true
+    },
+    "tslint.alwaysShowStatus": true,
+    "tslint.configFile": "./tslint.json",
+    "tslint.jsEnable": false,
+    "tslint.packageManager": "yarn",
+    "tslint.run": "onType",
+    "todo-tree.defaultHighlight": {
+        "foreground": "green",
+        "type": "none"
+    },
+    "todo-tree.customHighlight": {
+        "TODO": {},
+        "FIXME": {}
+    },
+    "todo-tree.excludeGlobs": [
+        "node_modules/**/*"
+    ]
 }
