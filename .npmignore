@@ -1,6 +1,5 @@
 .vscode
-lib
-spec
-*.ts
+node_modules
 yarn.lock
 package-lock.json
+appversion.json
