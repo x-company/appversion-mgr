@@ -1,19 +1,22 @@
 # AppVersion Manager<a name="version"></a><a name="status"></a>
-[![AppVersion-version](https://img.shields.io/badge/AppVersion-1.7.1-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr?#version) [![AppVersion-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr?#status) [![Build Status](https://travis-ci.org/delvedor/appversion.svg?branch=master)](https://github.com/x-company/appversion-mgr) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
-**AppVersion Manager** is a Fork from [dlvedor](https://github.com/delvedor) great [AppVersion](https://github.com/delvedor/appversion) CLI Tool. Thanks to your great Work.
+[![AppVersionManager-version](https://img.shields.io/badge/AppVersion-1.7.1-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr?#version)
+[![AppVersionManager-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr?#status)
+[![Build Status](https://travis-ci.org/delvedor/appversion.svg?branch=master)](https://github.com/x-company/appversion-mgr)
 
-I want to use this Tool to manage my DotNet Core Projects. Everyone knows, that in an Visual Studio Solution exists many Projects with its own Version Management. But AppVersion can only manage one Versions File in the Root of the Project. So i decided to fork this great Tool.
+**AppVersion Manager** is a Fork from [dlvedor](https://github.com/delvedor) great [AppVersion](https://github.com/delvedor/appversion) CLI Tool. Thanks to your great Work. And its completly refactored and rewritten in TypeScript.
+
+I want to use this Tool to manage my DotNet Core Projects. Everyone knows, that in an Visual Studio Solution exists many Projects with its own Version Management. But AppVersion can only manage one Versions File in the Root of the Project. So i decided to fork this great Tool and add the abbility to define an Directory, where the ```appversion.json``` should  created.
 
 What are the major Changes?
-- AppVersionManager creates the appversion File in the location where the Tool is running
-- Exports the Init, addGitTag and generateBadge Methods to use in Gulp and other Build Tools
 
-
+- AppVersionManager creates the appversion File in the location where the Tool is running or where it's defined with the Parameter ```-d --directory```
+- Completly rewritten in TypeScript
+- Completly restructured Source Code
 
 ---
 
-### At this point follows the originial Readme from [AppVersion](https://github.com/delvedor/appversion).
+** At this point follows the originial Readme from [AppVersion](https://github.com/delvedor/appversion).**
 
 **AppVersion Manager** is a CLI tool whose purpose is to provide a **unique manager** of the version of you application.
 It follows the **semver** guidelines, so the version of your code is divided in Major, Minor and Patch, [here](http://semver.org/) you can find the Semantic Versioning specification.
@@ -49,6 +52,7 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
   }
 }
 ```
+
 As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha``` (the first letter can be Uppercase) value and ```number```.
 
 Then, there's the ```config``` filed, divided in ```appversion```, that is used by AppVersion for check if the json is at the latest version, ```markdown``` field where you can put all the markdown files that you want to keep updated (see <a href="#generateBadge">here</a> for more information).
@@ -57,6 +61,7 @@ The last two fields inside ```config``` are, ```json```, that is the list of the
 **Needs Node.js >= 4.0.0**
 
 ## Install
+
 Install the tool globally:
 ```
 npm install appversion -g
@@ -70,7 +75,7 @@ npm install appversion --save
 ## Usage
 ### CLI:
 ```
-$ apv <cmd> <args>
+$ appvmgr <cmd> <args>
 ```
 
 Commands list:
@@ -99,19 +104,19 @@ When using the *update* command, use `major|minor|patch` or `breaking|feature|fi
 
 Some usage examples:
 ```
-$ apv update minor
-$ apv set-version 1.3.2
-$ apv set-status rc.2
+$ appvmgr update minor
+$ appvmgr set-version 1.3.2
+$ appvmgr set-status rc.2
 ```
 If you want to add a *Git tag* to your repo with the version number of your code, you have two options:
 1) Add the `--tag` flag after `update` and `set-version` commands
 ```
-$ apv update minor --tag
-$ apv set-version 1.3.2 --tag
+$ appvmgr update minor --tag
+$ appvmgr set-version 1.3.2 --tag
 ```
 2) Use `add-git-tag`
 ```
-$ apv add-git-tag
+$ appvmgr add-git-tag
 ```
 
 By default, AppVersion updates the *"version"* field in `package.json`; if you want to update the *"version"* field in more json files, just add the file name inside *appversion.json* in the json array field.
@@ -217,7 +222,7 @@ If you are using *npm scripts* you can easily integrate AppVersion in your workf
 ```json
 ...
 "scripts": {
-  "build": "<build command> && apv update build"
+  "build": "<build command> && appvmgr update build"
 },
 ...
 ```
@@ -225,45 +230,22 @@ If you are using Grunt or Gulp for automating your project, you can easily use A
 Just require **appversion/automation** and call the `update|setVersion|setStatus` methods with the correct parameter.
 Below you can find an example:
 ```javascript
-const apv = require('appversion/automation')
+import { UpdateCommand } from 'appversion-mgr;
+
+const command = new UpdateCommand(__dirname);
 ...
-apv.update('minor')
+command.update('minor');
 ...
-apv.setVersion('1.4.2')
+command.setVersion('1.4.2');
 ...
-apv.setStatus('Beta.2')
+command.setStatus('Beta.2');
 ...
 
 ```
-## TODO
-- [x] Update status number
-- [x] Badge generator with the application version for the README.md.
-- [x] Move `json`, `markdown`, `ignore` and `appversion` inside `config` field
-- [x] Implement "New version" message
-- [x] Split the code in multiple files divided by function.
-- [x] Integration with GitHub
-- [x] When init is called, apv must create appversion.json with the same version number of package.json.
-- [x] Integration with Grunt/Gulp
-- [x] Add aliases: patch>fix, minor>feature major>breaking
-- [x] Rewrite appendBadgeToMD with streams
-- [ ] SHA generator
 
-## Build
-```
-$ npm install
-$ chmod u+x apv.js
-$ npm test
-
-$ ./apv.js <cmd> <args>
-```
 
 ## Contributing
 If you feel you can help in any way, be it with examples, extra testing, or new features please open a pull request or open an issue.
-
-The code follows the Standard code style.
-
-[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
-
 
 ______________________________________________________________________________________________________________________
 ## License
