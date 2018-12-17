@@ -9,24 +9,24 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 02:38:51
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-15 14:18:13
- * @Description: This is description.
+ * @Last Modified At: 2018-12-17 18:17:33
+ * @Description: Central Update Class to update the Versions
  */
 
-import chalk from 'chalk';
 import { IAppVersion } from './IAppVersion';
 import { Helper } from './Helper';
 import { BadgeHelper } from './BadgeHelper';
 import { exec } from 'child_process';
 
+
 export class UpdateCommand {
 
-    private _helper: Helper;
-    private _badgeHelper: BadgeHelper;
+    private helper: Helper;
+    private badgeHelper: BadgeHelper;
 
-    constructor(private directory: string) {
-        this._helper = new Helper(directory);
-        this._badgeHelper = new BadgeHelper(directory);
+    constructor(private directory?: string) {
+        this.helper = new Helper(directory);
+        this.badgeHelper = new BadgeHelper(directory);
     }
 
     /**
@@ -39,9 +39,9 @@ export class UpdateCommand {
         if (action === 'feature') { action = 'minor'; }
         if (action === 'fix') { action = 'patch'; }
 
-        if (action === 'major' || action === 'minor' || action === 'patch' || action === 'build' || action == 'commit') {
+        if (action === 'major' || action === 'minor' || action === 'patch' || action === 'build' || action === 'commit') {
 
-            const appVersion = this._helper.readJson();
+            const appVersion = this.helper.readJson();
             if (appVersion) {
 
                 if (action === 'major' || action === 'minor' || action === 'patch') {
@@ -52,9 +52,6 @@ export class UpdateCommand {
                     this.updateCommit(appVersion);
                 }
             }
-
-        } else {
-            console.log(chalk.red(`\n${chalk.bold('AppVersion:')} type ${chalk.bold('\'apv -h\'')} to get more informations!\n`));
         }
     }
 
@@ -92,15 +89,10 @@ export class UpdateCommand {
             appVersion.build.number = 0;
         }
 
-        const version = `${appVersion.version.major}.${appVersion.version.minor}.${appVersion.version.patch}`;
-        const message = `Version updated to ${version}`;
+        this.helper.writeJson(appVersion);
+        this.helper.writeOtherJson(appVersion);
 
-        this._helper.info(message);
-
-        this._helper.writeJson(appVersion, message);
-        this._helper.writeOtherJson(version);
-
-        this._badgeHelper.createBadge('version', true, previousObj);
+        this.badgeHelper.createBadge('version', true, previousObj);
     }
 
     /**
@@ -115,7 +107,7 @@ export class UpdateCommand {
             appVersion.build.total++;
 
             const message = `Build updated to ${appVersion.build.number}/${appVersion.build.total}`;
-            this._helper.writeJson(appVersion, chalk.green(`\n${chalk.bold('AppVersion:')} ${message}\n`));
+            this.helper.writeJson(appVersion, message);
         }
     }
 
@@ -129,12 +121,14 @@ export class UpdateCommand {
                 if (appVersion.commit) {
                     appVersion.commit = null;
                 }
-                this._helper.writeJson(appVersion, chalk.red(`\n${chalk.bold('AppVersion:')} No Git repository found.\n`));
+                this.helper.error('No Git repository found.');
+                this.helper.writeJson(appVersion);
             } else {
                 if (appVersion.commit) {
                     appVersion.commit = stdout.substring(0, 7);
                 }
-                this._helper.writeJson(appVersion, chalk.green(`\n${chalk.bold('AppVersion:')} Commit updated to ${stdout.substring(0, 7)}\n`));
+                this.helper.info(`Commit updated to ${stdout.substring(0, 7)}`);
+                this.helper.writeJson(appVersion);
             }
         });
     }
