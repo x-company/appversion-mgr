@@ -1,3 +1,6 @@
 .vscode
 lib
 spec
+*.ts
+yarn.lock
+package-lock.json
