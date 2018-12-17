@@ -1,0 +1,29 @@
+{
+  "version": {
+    "major": 2,
+    "minor": 4,
+    "patch": 7
+  },
+  "build": {
+    "date": null,
+    "number": 0,
+    "total": 0
+  },
+  "status": {
+    "stage": "Alpha",
+    "number": 2
+  },
+  "commit": null,
+  "config": {
+    "appversion": "1.7.1",
+    "ignore": [
+      "node_modules",
+      "bower_components",
+      ".git"
+    ],
+    "json": [
+      "package.json"
+    ],
+    "markdown": []
+  }
+}
