@@ -35,24 +35,17 @@
         "lint": "yarn lint:code && yarn lint:test || true",
         "lint:code": "tslint -c tslint.json 'lib/**/*.ts' -t verbose",
         "lint:test": "tslint -c tslint.json 'spec/**/*.ts' -t verbose",
-        "prebuild": "yarn lint",
+        "prebuild": "yarn lint:code",
         "build": "tsc -p ./tsconfig.json",
         "watch": "tsc -w -p ./tsconfig.json",
         "pretest": "yarn build",
         "test": "jasmine-ts 'spec/**/*.spec.ts'",
-        "prepublish": "yarn build",
-        "link": "npm link",
-        "unlink": "npm unlink"
+        "prepublish": "yarn build"
     },
     "devDependencies": {
-        "@types/concat-stream": "^1.6.0",
-        "@types/find-root": "^1.1.1",
+
         "@types/jasmine": "^3.3.2",
         "@types/node": "^10.12.15",
-        "@types/replacestream": "^4.0.0",
-        "@types/semver": "^5.5.0",
-        "@types/walk": "^2.3.0",
-        "concat-stream": "^1.6.2",
         "jasmine": "^3.3.1",
         "jasmine-spec-reporter": "^4.2.1",
         "jasmine-ts": "^0.3.0",
@@ -62,6 +55,10 @@
         "typescript": "^3.2.2"
     },
     "dependencies": {
+        "@types/find-root": "^1.1.1",
+        "@types/replacestream": "^4.0.0",
+        "@types/semver": "^5.5.0",
+        "@types/walk": "^2.3.0",
         "chalk": "^2.4.1",
         "commander": "^2.19.0",
         "find-root": "^1.1.0",
