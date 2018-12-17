@@ -8,12 +8,17 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-14 23:47:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 18:16:46
+ * @Last Modified At: 2018-12-17 21:36:55
  * @Description: Helper Functions to retrieve Values
  */
 
-import { IAppVersion } from './IAppVersion';
 import { Helper } from './Helper';
+import { IAppVersion } from './IAppVersion';
+
+// Export all needed Classes
+export { IAppVersion };
+export * from './SetCommand';
+export * from './UpdateCommand';
 
 const PROG_VERSION: string = '0.1.0';
 const SCHEMA_VERSION: string = '1.7.1';
