@@ -1,6 +1,6 @@
 {
     "name": "appversion-mgr",
-    "version": "0.1.0",
+    "version": "0.1.3",
     "description": "AppVersion Manager is a CLI tool whose purpose is to provide a unique manager of the version of you application.",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -40,7 +40,7 @@
         "watch": "tsc -w -p ./tsconfig.json",
         "pretest": "yarn build",
         "test": "jasmine-ts 'spec/**/*.spec.ts'",
-        "prepublish": "yarn test",
+        "prepublish": "yarn build",
         "link": "npm link",
         "unlink": "npm unlink"
     },

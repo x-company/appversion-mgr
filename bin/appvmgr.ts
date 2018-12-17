@@ -10,14 +10,12 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 18:11:35
+ * @Last Modified At: 2018-12-17 21:36:27
  * @Description: This is description.
  */
 
 import { Command } from 'commander';
-import { getVersion } from '../lib/';
-import { UpdateCommand } from '../lib/UpdateCommand';
-import { SetCommand } from '../lib/SetCommand';
+import { getVersion, UpdateCommand, SetCommand } from '../lib';
 import { Helper } from '../lib/Helper';
 import { BadgeHelper } from '../lib/BadgeHelper';
 
