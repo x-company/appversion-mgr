@@ -1,5 +1,5 @@
 node_modules
-.old
+lib
 tmp
 **/*.js
 **/*.js.map
