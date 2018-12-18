@@ -9,15 +9,16 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 13:56:19
+ * @Last Modified At: 2018-12-18 22:57:00
  * @Description: Helper Class to check for Schema Updates
  */
 
-import { IAppVersion } from '../types/IAppVersion';
-import { getProductVersion } from '../info';
 import chalk from 'chalk';
 import semver from 'semver';
+import { IAppVersion } from '../types/IAppVersion';
+import { Info } from '../info';
 import { Helper } from '../helpers/Helper';
+import nfetch from 'node-fetch';
 
 export class Updater {
 
@@ -76,21 +77,22 @@ export class Updater {
      */
     public checkUpdate() {
 
-        fetch('https://registry.npmjs.org/appversion-mgr/latest')
+        const currentVersion = Info.getProductVersion();
+
+        nfetch('https://registry.npmjs.org/appversion-mgr/latest')
             .then((response) => {
                 try {
                     response.json()
                         .then((json) => {
                             const latest = json.version;
-                            const currentVersion = getProductVersion();
                             if (semver.gt(latest, currentVersion)) {
-                                Helper.info(`New apv version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
+                                Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
+                            } else {
+                                Helper.info(`No new appvmgr version available. Everything is up2date!`);
                             }
                         });
-
-
                 } catch (error) {
-                    console.log(error);
+                    Helper.error(error);
                 }
             })
             .catch((error) => {
@@ -99,7 +101,7 @@ export class Updater {
                 }
 
                 if (error) {
-                    console.log(error);
+                    Helper.error(error);
                 }
             });
     }
