@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 22:07:02
+ * @Last Modified At: 2018-12-18 23:42:32
  * @Description: Central Helper Class for all.
  */
 
@@ -21,7 +21,7 @@ import { walk } from 'walk';
 import { exec } from 'child_process';
 import semver from 'semver';
 import findRoot from 'find-root';
-import { getSchemaVersion, getProductVersion } from '../info';
+import { Info } from '../info';
 import { IAppVersion } from '../types/IAppVersion';
 import { IVersion } from '../types/IVersion';
 import { Updater } from '../updater/Updater';
@@ -92,12 +92,13 @@ export class Helper {
         }
 
         try {
-            let appVersion: IAppVersion = require(filePath);
+            const appVersionContent = fs.readFileSync(this.FILEPATH, { encoding: 'utf8'});
+            let appVersion: IAppVersion = JSON.parse(appVersionContent) as IAppVersion;
 
             // checks if the appversion.json is at the latest version
-            if (appVersion.config && appVersion.config.appversion !== getSchemaVersion()) {
+            if (appVersion.config && appVersion.config.appversion !== Info.getSchemaVersion()) {
                 const updater = new Updater();
-                appVersion = updater.updateAppversion(appVersion, getSchemaVersion());
+                appVersion = updater.updateAppversion(appVersion, Info.getSchemaVersion());
                 Helper.info('appversion.json updated to the latest version.');
             }
 
@@ -232,7 +233,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             },
             commit: null,
             config: {
-                appversion: getSchemaVersion(),
+                appversion: Info.getSchemaVersion(),
                 ignore: [
                     'node_modules',
                     'bower_components',
@@ -275,7 +276,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
         // Read the Package Json
         const packageJsonPath = path.resolve('./', 'package.json');
         if (fs.existsSync(packageJsonPath)) {
-            const packageJson: any = this.readJson(packageJsonPath);
+            const packageJson: any = require(packageJsonPath);
             if (packageJson) {
                 if (packageJson.version) {
                     const versionAsString = semver.clean(packageJson.version) || '0.1.0';
