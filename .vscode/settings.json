@@ -11,7 +11,7 @@
         "tsconfig-paths/register"
     ],
     "jasmineExplorer.env": {
-        "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}"
+        "TS_NODE_PROJECT" : "./src/tsconfig.json"
     },
     "search.exclude": {
         "**/node_modules": true,
@@ -27,13 +27,8 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "**/*.js": {
-            "when": "$(basename).ts"
-        },
         "**/*.js.map": true,
-        "**/*.d.ts": {
-            "when": "$(basename).ts"
-        }
+        "**/*.d.ts": true
     },
     "files.watcherExclude": {
         "**/.git/**": true,

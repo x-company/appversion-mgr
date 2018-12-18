@@ -3,12 +3,12 @@
  *
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
- * @Script: UpdateCommand.spec.js
+ * @Script: UpdateCommand.spec.ts
  * @Author: Roland Breitschaft
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:34:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 01:28:48
+ * @Last Modified At: 2018-12-18 02:00:29
  * @Description: This is description.
  */
 
@@ -42,7 +42,7 @@ describe('Testing Update Command', () => {
         cmd = new UpdateCommand(__dirname);
     });
 
-    it('Testing major', () => {
+    it('Testing major', (done) => {
 
         // act
         cmd.update('major');
@@ -60,9 +60,10 @@ describe('Testing Update Command', () => {
                 expect(actual.build.number).toEqual(0);
             }
         }
+        done();
     });
 
-    it('Testing minor', () => {
+    it('Testing minor', (done) => {
         // act
         cmd.update('minor');
         const actual = helper.readJson();
@@ -70,6 +71,9 @@ describe('Testing Update Command', () => {
         // assert
         expect(actual).not.toBeNull();
         if (actual) {
+            console.log('Actual', actual.version.major);
+            console.log('Expected:', expected.version.major);
+
             expect(actual.version.major).toEqual(expected.version.major);
             expect(actual.version.minor).toEqual(expected.version.minor + 1);
             expect(actual.version.patch).toEqual(0);
@@ -79,9 +83,10 @@ describe('Testing Update Command', () => {
                 expect(actual.build.number).toEqual(0);
             }
         }
+        done();
     });
 
-    it('Testing patch', () => {
+    it('Testing patch', (done) => {
 
         // act
         cmd.update('patch');
@@ -99,9 +104,10 @@ describe('Testing Update Command', () => {
                 expect(actual.build.number).toEqual(0);
             }
         }
+        done();
     });
 
-    it('Testing build', () => {
+    it('Testing build', (done) => {
 
         // act
         cmd.update('build');
@@ -116,9 +122,11 @@ describe('Testing Update Command', () => {
                 expect(actual.build.total).toEqual(expected.build.total + 1);
             }
         }
+
+        done();
     });
 
-    it('Testing commit', () => {
+    it('Testing commit', (done) => {
 
         // act
         cmd.update('commit');
@@ -132,5 +140,7 @@ describe('Testing Update Command', () => {
                 expect(actual.commit).toEqual(stdout.substring(0, 7));
             }
         });
+
+        done();
     });
 });
