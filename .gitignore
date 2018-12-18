@@ -4,5 +4,6 @@ tmp
 **/*.js
 **/*.js.map
 **/*.d.ts
+spec/appversion.json
 package-lock.json
 yarn-error.log
