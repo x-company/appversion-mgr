@@ -1,0 +1,31 @@
+{
+  "version": {
+    "major": 0,
+    "minor": 2,
+    "patch": 1
+  },
+  "build": {
+    "date": "2018-12-18T23:28:54.708Z",
+    "number": 5,
+    "total": 7
+  },
+  "status": {
+    "stage": "RC",
+    "number": 1
+  },
+  "commit": "4683e8a",
+  "config": {
+    "appversion": "1.7.1",
+    "ignore": [
+      "node_modules",
+      "bower_components",
+      ".git"
+    ],
+    "json": [
+      "package.json"
+    ],
+    "markdown": [
+      "README.md"
+    ]
+  }
+}

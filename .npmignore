@@ -2,8 +2,8 @@
 .gitignore
 node_modules
 spec
-appversion.json
 package-lock.json
-src/tslint.json
+tslint.json
+tsconfig.json
 src/tsconfig.json
 yarn.lock

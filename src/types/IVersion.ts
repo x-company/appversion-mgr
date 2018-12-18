@@ -10,7 +10,7 @@
  * @Create At: 2018-12-17 23:44:33
  * @Last Modified By: Roland Breitschaft
  * @Last Modified At: 2018-12-17 23:44:54
- * @Description: This is description.
+ * @Description: The Version Type
  */
 
 export interface IVersion {

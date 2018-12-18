@@ -1,67 +1,69 @@
 {
-    "name": "appversion-mgr",
-    "version": "0.1.5",
-    "description": "AppVersion Manager is a CLI tool whose purpose is to provide a unique manager of the version of you application.",
-    "main": "./lib/index.js",
-    "typings": "./lib/index.d.ts",
-    "bin": {
-        "appvmgr": "./bin/appvmgr"
-    },
-    "engines": {
-        "node": ">=8.0.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/x-company/appversion-mgr.git"
-    },
-    "bugs": {
-        "url": "https://github.com/x-company/appversion-mgr/issues"
-    },
-    "homepage": "https://github.com/x-company/appversion-mgr",
-    "author": "Roland Breitschaft <info@x-company.de> (https://www.x-company.de)",
-    "license": "MIT",
-    "keywords": [
-        "app",
-        "version",
-        "build",
-        "commit",
-        "semantic",
-        "versioning",
-        "semver",
-        "tag",
-        "status"
-    ],
-    "scripts": {
-        "lint": "tslint -c ./src/tslint.json './src/**/*.ts'",
-        "prebuild": "yarn lint",
-        "build": "tsc -p ./src/tsconfig.json",
-        "watch": "tsc -w -p ./src/tsconfig.json",
-        "pretest": "yarn build",
-        "test": "jasmine-ts 'spec/**/*.spec.ts'",
-        "prepublish": "yarn build"
-    },
-    "devDependencies": {
-        "@types/jasmine": "^3.3.2",
-        "@types/node": "^10.12.15",
-        "jasmine": "^3.3.1",
-        "jasmine-spec-reporter": "^4.2.1",
-        "jasmine-ts": "^0.3.0",
-        "ts-node": "^7.0.1",
-        "tsconfig-paths": "^3.7.0",
-        "tslint": "^5.11.0",
-        "typescript": "^3.2.2"
-    },
-    "dependencies": {
-        "@types/find-root": "^1.1.1",
-        "@types/replacestream": "^4.0.0",
-        "@types/semver": "^5.5.0",
-        "@types/walk": "^2.3.0",
-        "chalk": "^2.4.1",
-        "commander": "^2.19.0",
-        "find-root": "^1.1.0",
-        "replacestream": "^4.0.3",
-        "self-stream": "^1.1.1",
-        "semver": "^5.6.0",
-        "walk": "^2.3.14"
-    }
+  "name": "appversion-mgr",
+  "version": "0.2.1",
+  "description": "AppVersion Manager is a CLI tool whose purpose is to provide a unique manager of the version of you application.",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "bin": {
+    "appvmgr": "./bin/appvmgr"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/x-company/appversion-mgr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/x-company/appversion-mgr/issues"
+  },
+  "homepage": "https://github.com/x-company/appversion-mgr",
+  "author": "Roland Breitschaft <info@x-company.de> (https://www.x-company.de)",
+  "license": "MIT",
+  "keywords": [
+    "app",
+    "version",
+    "build",
+    "commit",
+    "semantic",
+    "versioning",
+    "semver",
+    "tag",
+    "status"
+  ],
+  "scripts": {
+    "lint": "tslint -c ./tslint.json './src/**/*.ts'",
+    "prebuild": "yarn lint",
+    "build": "tsc -p ./src/tsconfig.json",
+    "postbuild": "appvmgr update build",
+    "watch": "tsc -w -p ./src/tsconfig.json",
+    "pretest": "yarn build",
+    "test": "jasmine-ts 'spec/**/*.spec.ts'",
+    "prepublish": "yarn test && appvmgr update commit"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^3.3.2",
+    "@types/node": "^10.12.15",
+    "@types/node-fetch": "^2.1.4",
+    "jasmine": "^3.3.1",
+    "jasmine-spec-reporter": "^4.2.1",
+    "jasmine-ts": "^0.3.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "@types/find-root": "^1.1.1",
+    "@types/replacestream": "^4.0.0",
+    "@types/semver": "^5.5.0",
+    "@types/walk": "^2.3.0",
+    "chalk": "^2.4.1",
+    "commander": "^2.19.0",
+    "find-root": "^1.1.0",
+    "node-fetch": "^2.3.0",
+    "replacestream": "^4.0.3",
+    "self-stream": "^1.1.1",
+    "semver": "^5.6.0",
+    "walk": "^2.3.14"
+  }
 }

@@ -10,7 +10,7 @@
  * @Create At: 2018-12-17 23:46:06
  * @Last Modified By: Roland Breitschaft
  * @Last Modified At: 2018-12-17 23:46:06
- * @Description: This is description.
+ * @Description: The IStatus Type
  */
 
 export interface IStatus {

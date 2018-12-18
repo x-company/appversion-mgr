@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 02:38:51
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 23:53:22
+ * @Last Modified At: 2018-12-18 21:55:00
  * @Description: Central Update Class to update the Versions
  */
 
@@ -114,20 +114,16 @@ export class UpdateCommand {
     /**
      * Updates the commit code.
      */
-    private updateCommit(appVersion: IAppVersion) {
+    private async updateCommit(appVersion: IAppVersion) {
 
-        exec('git log --oneline', (error, stdout) => {
+        await exec('git log --oneline', (error, stdout) => {
             if (error) {
-                if (appVersion.commit) {
-                    appVersion.commit = null;
-                }
-                this.helper.error('No Git repository found.');
+                appVersion.commit = null;
+                Helper.error('No Git repository found.');
                 this.helper.writeJson(appVersion);
             } else {
-                if (appVersion.commit) {
-                    appVersion.commit = stdout.substring(0, 7);
-                }
-                this.helper.info(`Commit updated to ${stdout.substring(0, 7)}`);
+                appVersion.commit = stdout.substring(0, 7);
+                Helper.info(`Commit updated to ${stdout.substring(0, 7)}`);
                 this.helper.writeJson(appVersion);
             }
         });

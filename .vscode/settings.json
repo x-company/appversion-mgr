@@ -6,9 +6,7 @@
     "licenser.useSingleLineStyle": false,
     "jasmineExplorer.nodeArgv": [
         "--require",
-        "ts-node/register",
-        "--require",
-        "tsconfig-paths/register"
+        "ts-node/register"
     ],
     "jasmineExplorer.env": {
         "TS_NODE_PROJECT" : "./src/tsconfig.json"

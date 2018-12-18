@@ -9,11 +9,9 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 02:21:15
+ * @Last Modified At: 2018-12-18 23:42:32
  * @Description: Central Helper Class for all.
  */
-
-
 
 import chalk from 'chalk';
 import path from 'path';
@@ -23,7 +21,7 @@ import { walk } from 'walk';
 import { exec } from 'child_process';
 import semver from 'semver';
 import findRoot from 'find-root';
-import { getSchemaVersion, getVersion } from '../info';
+import { Info } from '../info';
 import { IAppVersion } from '../types/IAppVersion';
 import { IVersion } from '../types/IVersion';
 import { Updater } from '../updater/Updater';
@@ -34,20 +32,37 @@ const selfstream = require('self-stream');
 
 export class Helper {
 
+    public static error(message: string, header?: string) {
+        this.consoleOutput(message, header, true);
+    }
+
+    public static info(message: string, header?: string) {
+        this.consoleOutput(message, header, false);
+    }
+
+    private static consoleOutput(message: string, header?: string, isError: boolean = false) {
+        if (!header) {
+            header = 'AppVersion Manager:';
+        }
+
+        if (isError) {
+            console.log(chalk.red(`${chalk.bold(header)} ${message}`));
+        } else {
+            console.log(chalk.green(`${chalk.bold(header)} ${message}`));
+        }
+    }
+
     private PATH: string;
     private FILENAME: string = 'appversion.json';
     private FILEPATH: string;
 
     constructor(directory?: string) {
+
         if (!directory) {
-            this.PATH = findRoot(__dirname);
-            if (this.PATH) {
-                this.PATH = path.resolve(this.PATH);
-            }
-        } else {
-            this.PATH = path.resolve(directory);
+            directory = findRoot(__dirname);
         }
 
+        this.PATH = path.resolve(directory);
         if (!this.PATH.endsWith('/')) {
             this.PATH += '/';
         }
@@ -77,13 +92,14 @@ export class Helper {
         }
 
         try {
-            let appVersion: IAppVersion = require(filePath);
+            const appVersionContent = fs.readFileSync(this.FILEPATH, { encoding: 'utf8'});
+            let appVersion: IAppVersion = JSON.parse(appVersionContent) as IAppVersion;
 
             // checks if the appversion.json is at the latest version
-            if (appVersion.config && appVersion.config.appversion !== getSchemaVersion()) {
+            if (appVersion.config && appVersion.config.appversion !== Info.getSchemaVersion()) {
                 const updater = new Updater();
-                appVersion = updater.updateAppversion(appVersion, getSchemaVersion());
-                this.info('appversion.json updated to the latest version.');
+                appVersion = updater.updateAppversion(appVersion, Info.getSchemaVersion());
+                Helper.info('appversion.json updated to the latest version.');
             }
 
             return appVersion;
@@ -91,7 +107,7 @@ export class Helper {
         } catch (error) {
             console.log(error);
             if (error.code === 'MODULE_NOT_FOUND') {
-                this.error(`
+                Helper.error(`
 Could not find appversion.json
 Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVersion.
                 `);
@@ -139,10 +155,10 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             }
 
             if (message) {
-                this.info(message);
+                Helper.info(message);
             } else {
                 const versionAsString = `${appVersion.version.major}.${appVersion.version.minor}.${appVersion.version.patch}`;
-                this.info(`Version updated to ${versionAsString}`);
+                Helper.info(`Version updated to ${versionAsString}`);
             }
 
         } catch (error) {
@@ -217,7 +233,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             },
             commit: null,
             config: {
-                appversion: getSchemaVersion(),
+                appversion: Info.getSchemaVersion(),
                 ignore: [
                     'node_modules',
                     'bower_components',
@@ -243,31 +259,11 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
 
             exec(`git tag ${versionCode(appVersion.version)}`, (error, stdout) => {
                 if (error) {
-                    this.error('Tag not added, no Git repository found.');
+                    Helper.error('Tag not added, no Git repository found.');
                 } else {
-                    this.info(`Added Git tag '${versionCode(appVersion.version)}'`);
+                    Helper.info(`Added Git tag '${versionCode(appVersion.version)}'`);
                 }
             });
-        }
-    }
-
-    public error(message: string, header?: string) {
-        this.consoleOutput(message, header, true);
-    }
-
-    public info(message: string, header?: string) {
-        this.consoleOutput(message, header, false);
-    }
-
-    private consoleOutput(message: string, header?: string, isError: boolean = false) {
-        if (!header) {
-            header = 'AppVersion Manager:';
-        }
-
-        if (isError) {
-            console.log(chalk.red(`${chalk.bold(header)} ${message}`));
-        } else {
-            console.log(chalk.green(`${chalk.bold(header)} ${message}`));
         }
     }
 
@@ -280,7 +276,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
         // Read the Package Json
         const packageJsonPath = path.resolve('./', 'package.json');
         if (fs.existsSync(packageJsonPath)) {
-            const packageJson: any = this.readJson(packageJsonPath);
+            const packageJson: any = require(packageJsonPath);
             if (packageJson) {
                 if (packageJson.version) {
                     const versionAsString = semver.clean(packageJson.version) || '0.1.0';

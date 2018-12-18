@@ -10,7 +10,7 @@
  * @Create At: 2018-12-17 23:46:31
  * @Last Modified By: Roland Breitschaft
  * @Last Modified At: 2018-12-17 23:46:31
- * @Description: This is description.
+ * @Description: The IConfig Type
  */
 
 export interface IConfig {

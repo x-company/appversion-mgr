@@ -8,27 +8,17 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-14 23:47:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 01:10:02
+ * @Last Modified At: 2018-12-18 22:47:53
  * @Description: Helper Functions to retrieve Values
  */
 
-import { Info } from './info';
-
-const info = new Info();
-export function getAppVersion() {
-    return info.getAppVersion();
-}
-export function getAppVersionSync() {
-    return info.getAppVersionSync();
-}
-export function composePattern(pattern: string) {
-    return info.composePattern(pattern);
-}
-export function composePatternSync(pattern: string) {
-    return info.composePatternSync(pattern);
-}
+import { Updater } from './updater/Updater';
 
 // Export all needed Classes
 export * from './types/IAppVersion';
-export * from './commands/SetCommand';
-export * from './commands/UpdateCommand';
+export * from './commands';
+export * from './info';
+
+// Check for Updates
+const updater = new Updater();
+updater.checkUpdate();
