@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 18:16:20
+ * @Last Modified At: 2018-12-18 02:21:15
  * @Description: Central Helper Class for all.
  */
 
@@ -23,9 +23,10 @@ import { walk } from 'walk';
 import { exec } from 'child_process';
 import semver from 'semver';
 import findRoot from 'find-root';
-import { getSchemaVersion } from './';
-import { IAppVersion, IVersion } from './IAppVersion';
-import { Updater } from './Updater';
+import { getSchemaVersion, getVersion } from '../info';
+import { IAppVersion } from '../types/IAppVersion';
+import { IVersion } from '../types/IVersion';
+import { Updater } from '../updater/Updater';
 
 
 // tslint:disable-next-line: no-var-requires
@@ -40,8 +41,11 @@ export class Helper {
     constructor(directory?: string) {
         if (!directory) {
             this.PATH = findRoot(__dirname);
+            if (this.PATH) {
+                this.PATH = path.resolve(this.PATH);
+            }
         } else {
-            this.PATH = directory;
+            this.PATH = path.resolve(directory);
         }
 
         if (!this.PATH.endsWith('/')) {
@@ -85,6 +89,7 @@ export class Helper {
             return appVersion;
 
         } catch (error) {
+            console.log(error);
             if (error.code === 'MODULE_NOT_FOUND') {
                 this.error(`
 Could not find appversion.json
@@ -187,6 +192,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
     }
 
     public createEmptyAppVersion(): IAppVersion {
+
         let defaultVersion: IVersion = {
             major: 0,
             minor: 1,

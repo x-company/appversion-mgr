@@ -9,9 +9,14 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 01:01:35
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 18:16:32
+ * @Last Modified At: 2018-12-17 23:47:12
  * @Description: The AppVersion Type Interface
  */
+
+import { IVersion } from './IVersion';
+import { IStatus } from './IStatus';
+import { IBuild } from './IBuild';
+import { IConfig } from './IConfig';
 
 export interface IAppVersion {
 
@@ -21,28 +26,4 @@ export interface IAppVersion {
     commit?: string | null;
     config?: IConfig;
 
-}
-
-export interface IVersion {
-    major: number;
-    minor: number;
-    patch: number;
-}
-
-interface IStatus {
-    stage: string | null;
-    number: number;
-}
-
-interface IBuild {
-    date: Date | null;
-    number: number;
-    total: number;
-}
-
-interface IConfig {
-    appversion: string;
-    markdown: string[];
-    json: string[];
-    ignore: string[];
 }

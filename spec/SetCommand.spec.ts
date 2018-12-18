@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
-import { Helper } from '../../lib/Helper';
-import { SetCommand } from '../../lib/SetCommand';
+import { Helper } from '../lib/helpers/Helper';
+import { SetCommand } from '../lib/commands/SetCommand';
 
 
 describe('Testing Set Command', () => {

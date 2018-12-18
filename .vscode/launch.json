@@ -57,8 +57,9 @@
             "name": "Launch CLI - Init",
             "cwd": "${workspaceFolder}",
             "args": [
-                "${workspaceFolder}/bin/appvmgr.ts",
-                "add-git-tag",
+                "${workspaceFolder}/bin/appvmgr",
+                "update",
+                "major",
                 "-d",
                 "${workspaceFolder}/tmp"
             ],
@@ -76,7 +77,7 @@
             "console": "integratedTerminal",
             "windows": {
                 "args": [
-                    "${workspaceFolder}\\bin\\appvmgr.ts",
+                    "${workspaceFolder}\\bin\\appvmgr",
                     "init"
                 ]
             }

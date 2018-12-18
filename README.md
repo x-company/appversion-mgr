@@ -1,5 +1,9 @@
 # AppVersion Manager<a name="version"></a><a name="status"></a>
 
+[![AppVersionManager-version](https://img.shields.io/badge/AppVersion-1.7.1-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr?#version)
+[![AppVersionManager-status](https://img.shields.io/badge/Status-RC-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr?#status)
+[![Build Status](https://travis-ci.org/delvedor/appversion.svg?branch=master)](https://github.com/x-company/appversion-mgr)
+
 **AppVersion Manager** is a Fork from [dlvedor](https://github.com/delvedor) great [AppVersion](https://github.com/delvedor/appversion) CLI Tool. Thanks to your great Work. And its completly refactored and rewritten in TypeScript.
 
 I want to use this Tool to manage my DotNet Core Projects. Everyone knows, that in an Visual Studio Solution exists many Projects with its own Version Management. But AppVersion can only manage one Versions File in the Root of the Project. So i decided to fork this great Tool and add the abbility to define an Directory, where the ```appversion.json``` should  created.

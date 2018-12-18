@@ -1,9 +1,8 @@
 node_modules
-.old
+lib
 tmp
 **/*.js
 **/*.js.map
 **/*.d.ts
 package-lock.json
 yarn-error.log
-spec/unit/appversion.json
