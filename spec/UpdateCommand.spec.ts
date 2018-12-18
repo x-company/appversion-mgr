@@ -3,12 +3,12 @@
  *
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
- * @Script: UpdateCommand.spec.ts
+ * @Script: UpdateCommand.spec.js
  * @Author: Roland Breitschaft
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:34:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 12:32:00
+ * @Last Modified At: 2018-12-18 01:28:48
  * @Description: This is description.
  */
 
@@ -16,9 +16,9 @@
 import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { UpdateCommand } from '../../lib/UpdateCommand';
-import { IAppVersion } from '../../lib/IAppVersion';
-import { Helper } from '../../lib/Helper';
+import { UpdateCommand } from '../lib/commands/UpdateCommand';
+import { IAppVersion } from '../lib/types/IAppVersion';
+import { Helper } from '../lib/helpers/Helper';
 
 describe('Testing Update Command', () => {
 
