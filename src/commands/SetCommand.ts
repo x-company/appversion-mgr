@@ -3,7 +3,7 @@
  *
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
- * 
+ *
  * @Script: index.ts
  * @Script: UpdateCommand.ts
  * @Author: Roland Breitschaft
@@ -19,7 +19,6 @@ import chalk from 'chalk';
 import semver from 'semver';
 import { Helper } from '../helpers/Helper';
 import { BadgeHelper } from '../helpers/BadgeHelper';
-import { IAppVersion } from '../types/IAppVersion';
 
 export class SetCommand {
 
