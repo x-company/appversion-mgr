@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-18 01:20:07
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 01:49:20
+ * @Last Modified At: 2018-12-18 21:57:00
  * @Description: It's a Helper Class to work with AppVersion Elements
  */
 
