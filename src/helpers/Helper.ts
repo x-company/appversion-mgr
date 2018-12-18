@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 14:13:46
+ * @Last Modified At: 2018-12-18 15:10:10
  * @Description: Central Helper Class for all.
  */
 
@@ -57,18 +57,17 @@ export class Helper {
     private FILEPATH: string;
 
     constructor(directory?: string) {
+
         if (!directory) {
-            this.PATH = findRoot(__dirname);
-            if (this.PATH) {
-                this.PATH = path.resolve(this.PATH);
-            }
-        } else {
-            this.PATH = path.resolve(directory);
+            directory = findRoot(__dirname);
         }
 
+        this.PATH = path.resolve(directory);
         if (!this.PATH.endsWith('/')) {
             this.PATH += '/';
         }
+
+        console.log('Path:', this.PATH);
 
         this.FILEPATH = path.join(this.PATH, this.FILENAME);
 
