@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 12:49:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 23:52:13
+ * @Last Modified At: 2018-12-19 00:07:18
  * @Description: Helper File to generate Badges
  */
 
@@ -38,7 +38,7 @@ export class BadgeHelper extends Helper {
         return `https://img.shields.io/badge/${part}-brightgreen.svg?style=flat`;
     }
     private mdCode(tag: string, url: string): string {
-        return `[![AppVersion-${tag}](${url})](https://github.com/x-company/appversion-mgr?#${tag})`;
+        return `[![AppVersionManager-${tag}](${url})](https://github.com/x-company/appversion-mgr?#${tag})`;
     }
     private composeReadmeCode(tag: string, part: string): string {
         return this.mdCode(tag, this.shieldUrl(part));
@@ -49,11 +49,11 @@ export class BadgeHelper extends Helper {
 
         if (appVersion) {
             const version = `${appVersion.version.major}.${appVersion.version.minor}.${appVersion.version.patch}`;
-            const readmeCode = this.composeReadmeCode('version', `AppVersion-${version}`);
+            const readmeCode = this.composeReadmeCode('version', `AppVersionManager-${version}`);
             if (updateMD && previousAppVersion) {
                 const pastVersion = `${previousAppVersion.version.major}.${previousAppVersion.version.minor}.${previousAppVersion.version.patch}`;
                 if (appVersion.config) {
-                    const pastReadmeCode = this.composeReadmeCode('version', `AppVersion-${pastVersion}`);
+                    const pastReadmeCode = this.composeReadmeCode('version', `AppVersionManager-${pastVersion}`);
                     appVersion.config.markdown.map((file) => {
                         return this.appendBadgeToMD(file, readmeCode, pastReadmeCode);
                     });
@@ -76,7 +76,7 @@ export class BadgeHelper extends Helper {
             if (updateMD && previousAppVersion) {
                 let pastStatus: string | null = 'unknown';
                 if (previousAppVersion.status) {
-                    pastStatus = previousAppVersion.status.number > 0 ? `${previousAppVersion.status.stage}%20$ ${previousAppVersion.status.number}` : previousAppVersion.status.stage;
+                    pastStatus = previousAppVersion.status.number > 0 ? `${previousAppVersion.status.stage}%20${previousAppVersion.status.number}` : previousAppVersion.status.stage;
                 }
 
                 const pastReadmeCode = this.composeReadmeCode('status', `Status-${pastStatus}`);
