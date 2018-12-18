@@ -9,13 +9,13 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 12:49:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 18:15:47
+ * @Last Modified At: 2018-12-17 23:52:13
  * @Description: Helper File to generate Badges
  */
 
 import chalk from 'chalk';
 import { Helper } from './Helper';
-import { IAppVersion } from './IAppVersion';
+import { IAppVersion } from '../types/IAppVersion';
 
 export class BadgeHelper extends Helper {
 

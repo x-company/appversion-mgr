@@ -9,11 +9,11 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 18:17:57
+ * @Last Modified At: 2018-12-17 23:52:55
  * @Description: Helper Class to check for Schema Updates
  */
 
-import { IAppVersion } from './IAppVersion';
+import { IAppVersion } from '../types/IAppVersion';
 import chalk from 'chalk';
 import semver from 'semver';
 

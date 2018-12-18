@@ -9,13 +9,13 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 02:38:51
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 18:17:33
+ * @Last Modified At: 2018-12-17 23:53:22
  * @Description: Central Update Class to update the Versions
  */
 
-import { IAppVersion } from './IAppVersion';
-import { Helper } from './Helper';
-import { BadgeHelper } from './BadgeHelper';
+import { IAppVersion } from '../types/IAppVersion';
+import { Helper } from '../helpers/Helper';
+import { BadgeHelper } from '../helpers/BadgeHelper';
 import { exec } from 'child_process';
 
 
