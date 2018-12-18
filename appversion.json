@@ -2,18 +2,18 @@
   "version": {
     "major": 0,
     "minor": 2,
-    "patch": 0
+    "patch": 1
   },
   "build": {
-    "date": "2018-12-18T21:15:14.628Z",
-    "number": 6,
-    "total": 10
+    "date": "2018-12-18T23:16:06.244Z",
+    "number": 3,
+    "total": 5
   },
   "status": {
-    "stage": "PreRelease",
+    "stage": "RC",
     "number": 1
   },
-  "commit": "1ecad91",
+  "commit": null,
   "config": {
     "appversion": "1.7.1",
     "ignore": [
@@ -24,6 +24,8 @@
     "json": [
       "package.json"
     ],
-    "markdown": []
+    "markdown": [
+      "README.md"
+    ]
   }
 }

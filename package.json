@@ -1,6 +1,6 @@
 {
   "name": "appversion-mgr",
-  "version": "0.2.0",
+  "version": "0.2.9",
   "description": "AppVersion Manager is a CLI tool whose purpose is to provide a unique manager of the version of you application.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -32,7 +32,7 @@
     "status"
   ],
   "scripts": {
-    "lint": "tslint -c ./src/tslint.json './src/**/*.ts'",
+    "lint": "tslint -c ./tslint.json './src/**/*.ts'",
     "prebuild": "yarn lint",
     "build": "appvmgr update build && tsc -p ./src/tsconfig.json",
     "watch": "tsc -w -p ./src/tsconfig.json",
@@ -43,6 +43,7 @@
   "devDependencies": {
     "@types/jasmine": "^3.3.2",
     "@types/node": "^10.12.15",
+    "@types/node-fetch": "^2.1.4",
     "jasmine": "^3.3.1",
     "jasmine-spec-reporter": "^4.2.1",
     "jasmine-ts": "^0.3.0",
@@ -58,6 +59,7 @@
     "chalk": "^2.4.1",
     "commander": "^2.19.0",
     "find-root": "^1.1.0",
+    "node-fetch": "^2.3.0",
     "replacestream": "^4.0.3",
     "self-stream": "^1.1.1",
     "semver": "^5.6.0",
