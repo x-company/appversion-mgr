@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-18 01:20:07
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 21:57:00
+ * @Last Modified At: 2018-12-18 22:04:19
  * @Description: It's a Helper Class to work with AppVersion Elements
  */
 
@@ -24,7 +24,7 @@ export class Info {
      * @param   {string}        directory	The Directory where should looked for the appversion.json
      * @returns	{IAppVersion}   [The AppVersion Object]
      */
-    public getAppVersionSync(directory: string = __dirname): IAppVersion | null {
+    public getAppVersionSync(directory?: string): IAppVersion | null {
         try {
             const helper = new Helper(directory);
             const appVersion = helper.readJson();
@@ -44,7 +44,7 @@ export class Info {
      * @param   {string}                directory	The Directory where should looked for the appversion.json
      * @returns {Promise<IAppVersion>}  A Promise for an AppVersion Object
      */
-    public getAppVersion(directory: string = __dirname): Promise<IAppVersion> {
+    public getAppVersion(directory?: string): Promise<IAppVersion> {
 
         return new Promise<IAppVersion>((resolve, reject) => {
             const helper = new Helper(directory);
@@ -66,7 +66,7 @@ export class Info {
      * @param   {string}    directory	The Directory where should looked for the appversion.json
      * @returns {string}    An AppVersion string, otherwise null.
      */
-    public composePatternSync(pattern: string, directory: string = __dirname): string {
+    public composePatternSync(pattern: string, directory?: string): string {
 
         const splittedPattern = pattern.split('');
         const appVersion = this.getAppVersionSync(directory);
@@ -89,7 +89,7 @@ export class Info {
      * @param   {string}    directory	The Directory where should looked for the appversion.json
      * @returns	{Promise<String>} A Promise for an AppVersion string
      */
-    public composePattern(pattern: string, directory: string = __dirname): Promise<string> {
+    public composePattern(pattern: string, directory?: string): Promise<string> {
 
         return new Promise<string>((resolve, reject) => {
             const splittedPattern = pattern.split('');

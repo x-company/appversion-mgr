@@ -232,7 +232,7 @@ Below you can find an example:
 ```javascript
 import { UpdateCommand } from 'appversion-mgr;
 
-const command = new UpdateCommand(__dirname);
+const command = new UpdateCommand(<directory>);
 ...
 command.update('minor');
 ...
