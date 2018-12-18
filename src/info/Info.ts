@@ -9,12 +9,12 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-18 01:20:07
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 01:20:40
+ * @Last Modified At: 2018-12-18 01:49:20
  * @Description: This is description.
  */
 
 import { IAppVersion } from '../types';
-import { Helper } from '../helpers';
+import { Helper } from '../helpers/Helper';
 
 export class Info {
 
