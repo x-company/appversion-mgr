@@ -19,6 +19,7 @@ import chalk from 'chalk';
 import semver from 'semver';
 import { Helper } from '../helpers/Helper';
 import { BadgeHelper } from '../helpers/BadgeHelper';
+import { IAppVersion } from '../types';
 
 export class SetCommand {
 
@@ -91,7 +92,7 @@ export class SetCommand {
 
         const match = ['Stable', 'stable', 'RC', 'rc', 'Beta', 'beta', 'Alpha', 'alpha', 'PreRelease', 'prerelease'];
         if (match.indexOf(splittedStatus[0]) === -1) {
-            Helper.error('Insert a valid status.stage string');
+            Helper.error('Insert a valid status.stage string.');
             return null;
         }
 
@@ -105,9 +106,16 @@ export class SetCommand {
                 };
             }
 
-            const previousAppVersion = {
-                version: appVersion.version,
-                status: appVersion.status,
+            const previousAppVersion : IAppVersion = {
+                version: {
+                    major: appVersion.version.major,
+                    minor: appVersion.version.minor,
+                    patch: appVersion.version.patch,
+                },
+                status:{
+                    number: appVersion.status.number,
+                    stage: appVersion.status.stage,
+                },
             };
 
             appVersion.status.stage = splittedStatus[0];
