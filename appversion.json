@@ -5,15 +5,15 @@
     "patch": 0
   },
   "build": {
-    "date": "2018-12-18T14:10:48.993Z",
-    "number": 0,
-    "total": 4
+    "date": "2018-12-18T21:15:14.628Z",
+    "number": 6,
+    "total": 10
   },
   "status": {
     "stage": "PreRelease",
     "number": 1
   },
-  "commit": null,
+  "commit": "1ecad91",
   "config": {
     "appversion": "1.7.1",
     "ignore": [

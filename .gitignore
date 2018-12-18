@@ -8,5 +8,6 @@ spec/major/appversion.json
 spec/minor/appversion.json
 spec/patch/appversion.json
 spec/build/appversion.json
+spec/appversion.json
 package-lock.json
 yarn-error.log
