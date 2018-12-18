@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 15:10:10
+ * @Last Modified At: 2018-12-18 22:07:02
  * @Description: Central Helper Class for all.
  */
 
@@ -66,8 +66,6 @@ export class Helper {
         if (!this.PATH.endsWith('/')) {
             this.PATH += '/';
         }
-
-        console.log('Path:', this.PATH);
 
         this.FILEPATH = path.join(this.PATH, this.FILENAME);
 
