@@ -106,13 +106,13 @@ export class SetCommand {
                 };
             }
 
-            const previousAppVersion : IAppVersion = {
+            const previousAppVersion: IAppVersion = {
                 version: {
                     major: appVersion.version.major,
                     minor: appVersion.version.minor,
                     patch: appVersion.version.patch,
                 },
-                status:{
+                status: {
                     number: appVersion.status.number,
                     stage: appVersion.status.stage,
                 },
