@@ -10,7 +10,7 @@
  * @Create At: 2018-12-18 01:20:53
  * @Last Modified By: Roland Breitschaft
  * @Last Modified At: 2018-12-18 01:20:53
- * @Description: This is description.
+ * @Description: Barrel for the Info Component
  */
 
 export * from './Info';
@@ -24,7 +24,7 @@ const SCHEMA_VERSION: string = '1.7.1';
  *
  * @returns     {string}    A Program Version
  */
-export function getVersion() {
+export function getProductVersion() {
     return PROG_VERSION;
 }
 

@@ -10,7 +10,7 @@
  * @Create At: 2018-12-17 23:45:41
  * @Last Modified By: Roland Breitschaft
  * @Last Modified At: 2018-12-17 23:45:41
- * @Description: This is description.
+ * @Description: The IBuild Type
  */
 
 export interface IBuild {

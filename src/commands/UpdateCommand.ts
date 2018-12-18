@@ -121,13 +121,13 @@ export class UpdateCommand {
                 if (appVersion.commit) {
                     appVersion.commit = null;
                 }
-                this.helper.error('No Git repository found.');
+                Helper.error('No Git repository found.');
                 this.helper.writeJson(appVersion);
             } else {
                 if (appVersion.commit) {
                     appVersion.commit = stdout.substring(0, 7);
                 }
-                this.helper.info(`Commit updated to ${stdout.substring(0, 7)}`);
+                Helper.info(`Commit updated to ${stdout.substring(0, 7)}`);
                 this.helper.writeJson(appVersion);
             }
         });

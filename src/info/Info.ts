@@ -10,7 +10,7 @@
  * @Create At: 2018-12-18 01:20:07
  * @Last Modified By: Roland Breitschaft
  * @Last Modified At: 2018-12-18 01:49:20
- * @Description: This is description.
+ * @Description: It's a Helper Class to work with AppVersion Elements
  */
 
 import { IAppVersion } from '../types';
@@ -63,12 +63,13 @@ export class Info {
      * Returns a string with the version following the pattern you passed as a input.
      * Sync version.
      * @param   {string}    pattern	    The Pattern to format the version
+     * @param   {string}    directory	The Directory where should looked for the appversion.json
      * @returns {string}    An AppVersion string, otherwise null.
      */
-    public composePatternSync(pattern: string): string {
+    public composePatternSync(pattern: string, directory: string = __dirname): string {
 
         const splittedPattern = pattern.split('');
-        const appVersion = this.getAppVersionSync();
+        const appVersion = this.getAppVersionSync(directory);
         let ptt = '';
 
         if (appVersion) {
@@ -85,14 +86,15 @@ export class Info {
      * Returns a string with the version following the pattern you passed as a input.
      * Async version.
      * @param   {string}    pattern	    The Pattern to format the version
+     * @param   {string}    directory	The Directory where should looked for the appversion.json
      * @returns	{Promise<String>} A Promise for an AppVersion string
      */
-    public composePattern(pattern: string): Promise<string> {
+    public composePattern(pattern: string, directory: string = __dirname): Promise<string> {
 
         return new Promise<string>((resolve, reject) => {
             const splittedPattern = pattern.split('');
 
-            this.getAppVersion()
+            this.getAppVersion(directory)
                 .then((appVersion: IAppVersion) => {
                     let ptt = '';
                     splittedPattern.map((ele) => {

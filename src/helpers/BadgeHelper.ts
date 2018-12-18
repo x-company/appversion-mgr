@@ -93,6 +93,6 @@ export class BadgeHelper extends Helper {
     }
 
     private printReadme(code: string, tag: string) {
-        this.info(`${tag} badge generated! ${chalk.cyan(code)}`);
+        Helper.info(`${tag} badge generated! ${chalk.cyan(code)}`);
     }
 }

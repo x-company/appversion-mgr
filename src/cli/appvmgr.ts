@@ -5,25 +5,26 @@
  *
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
+ * 
  * @Script: appvmgr.ts
  * @Author: Roland Breitschaft
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 01:48:57
- * @Description: This is description.
+ * @Last Modified At: 2018-12-18 14:12:31
+ * @Description: The CLI Application
  */
 
 import { Command } from 'commander';
 import { UpdateCommand, SetCommand } from '../commands';
-import { getVersion } from '../info';
+import { getProductVersion } from '../info';
 import { Helper } from '../helpers/Helper';
 import { BadgeHelper } from '../helpers/BadgeHelper';
 
 const program = new Command();
 
 program
-    .version(getVersion(), '-v, --version')
+    .version(getProductVersion(), '-v, --version')
     .description('AppVersion Manager is a CLI tool whose purpose is to provide a unique manager of the version of you application.');
 
 program
