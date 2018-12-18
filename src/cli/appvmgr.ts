@@ -11,20 +11,21 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 15:09:18
+ * @Last Modified At: 2018-12-18 23:25:31
  * @Description: The CLI Application
  */
 
 import { Command } from 'commander';
 import { UpdateCommand, SetCommand } from '../commands';
-import { getProductVersion } from '../info';
+import { Info } from '../info';
 import { Helper } from '../helpers/Helper';
 import { BadgeHelper } from '../helpers/BadgeHelper';
+import { Updater } from '../updater/Updater';
 
 const program = new Command();
 
 program
-    .version(getProductVersion(), '-v, --version')
+    .version(Info.getProductVersion(), '-v, --version')
     .description('AppVersion Manager is a CLI tool whose purpose is to provide a unique manager of the version of you application.');
 
 program
@@ -101,7 +102,14 @@ program
         command.addGitTag();
     });
 
+program
+    .command('check')
+    .description('Check for Program Updates.')
+    .action((options) => {
 
+        const updater = new Updater();
+        updater.checkUpdate();
+    });
 
 if (!process.argv.slice(2).length) {
     program.outputHelp();
