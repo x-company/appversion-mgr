@@ -5,13 +5,13 @@
  *
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
- * 
+ *
  * @Script: appvmgr.ts
  * @Author: Roland Breitschaft
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 14:12:31
+ * @Last Modified At: 2018-12-18 15:09:18
  * @Description: The CLI Application
  */
 
@@ -46,8 +46,8 @@ program
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((action, options) => {
 
-        const directory: string = options.directory || __dirname;
-        action = action || 'commit';
+        const directory: string = options.directory || undefined;
+        action = action || 'build';
 
         const command = new UpdateCommand(directory);
         command.update(action);
@@ -59,7 +59,7 @@ program
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((version, options) => {
 
-        const directory: string = options.directory || __dirname;
+        const directory: string = options.directory || undefined;
 
         const command = new SetCommand(directory);
         command.setVersion(version);
@@ -71,7 +71,7 @@ program
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((status, options) => {
 
-        const directory: string = options.directory || __dirname;
+        const directory: string = options.directory || undefined;
 
         const command = new SetCommand(directory);
         command.setStatus(status);
@@ -83,7 +83,7 @@ program
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((param, options) => {
 
-        const directory: string = options.directory || __dirname;
+        const directory: string = options.directory || undefined;
 
         const command = new BadgeHelper(directory);
         command.createBadge(param);
@@ -95,7 +95,7 @@ program
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((options) => {
 
-        const directory: string = options.directory || __dirname;
+        const directory: string = options.directory || undefined;
 
         const command = new Helper(directory);
         command.addGitTag();
