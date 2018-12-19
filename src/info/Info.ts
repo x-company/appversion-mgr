@@ -13,6 +13,7 @@
  * @Description: It's a Helper Class to work with AppVersion Elements
  */
 
+import path from 'path';
 import { IAppVersion } from '../types';
 import { Helper } from '../helpers/Helper';
 
@@ -26,7 +27,9 @@ export class Info {
     public static getProductVersion() {
         let installPath: string | undefined;
         try {
-            installPath = require.resolve('appversion-mgr');
+            const indexFile = require.resolve('appversion-mgr');
+            const indexFilePath = path.dirname(indexFile);
+            installPath = path.resolve(indexFilePath, '..');
         } catch {
             // Nothing to catch
         }
