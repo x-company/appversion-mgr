@@ -5,15 +5,15 @@
     "patch": 2
   },
   "build": {
-    "date": "2018-12-19T20:54:37.554Z",
-    "number": 1,
-    "total": 16
+    "date": "2018-12-19T20:56:04.143Z",
+    "number": 2,
+    "total": 17
   },
   "status": {
     "stage": "RC",
     "number": 1
   },
-  "commit": "77caf4b",
+  "commit": "1039cd9",
   "config": {
     "ignore": [
       "node_modules",
