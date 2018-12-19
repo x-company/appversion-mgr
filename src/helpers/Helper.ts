@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 20:21:46
+ * @Last Modified At: 2018-12-19 21:42:02
  * @Description: Central Helper Class for all.
  */
 
@@ -131,11 +131,13 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
         const markdownFileTmp = `${markdownFilePath}.tmp`;
         const readStream = fs.createReadStream(markdownFilePath, { encoding: 'utf8' });
         const writeStream = fs.createWriteStream(markdownFileTmp, { encoding: 'utf8' }).on('close', () => {
-            fs.rename(markdownFileTmp, markdownFile, (error) => {
-                if (error) {
-                    Helper.error(error.message);
-                }
-            });
+            if (fs.existsSync(markdownFile) && fs.existsSync(markdownFileTmp)) {
+                fs.rename(markdownFileTmp, markdownFile, (error) => {
+                    if (error) {
+                        Helper.error(error.message);
+                    }
+                });
+            }
         });
 
         readStream
