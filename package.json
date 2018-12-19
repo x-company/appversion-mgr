@@ -39,7 +39,7 @@
     "watch": "tsc -w -p ./src/tsconfig.json",
     "pretest": "yarn build",
     "test": "jasmine-ts 'spec/**/*.spec.ts'",
-    "prepublish": "yarn build && appvmgr update commit --tag"
+    "prepublish": "yarn test && appvmgr update commit --tag"
   },
   "devDependencies": {
     "@types/jasmine": "^3.3.2",
