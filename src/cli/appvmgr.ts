@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 18:47:43
+ * @Last Modified At: 2018-12-19 20:59:41
  * @Description: The CLI Application
  */
 
@@ -45,6 +45,7 @@ program
     .command('update <action>')
     .description('Updates the <action> that can be (major|breaking)|(minor|feature)|(patch|fix)|build|commit')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
+    .option('-t, --tag', 'Adds a tag with the version number to the git repo')
     .action((action, options) => {
 
         const directory: string = options.directory || undefined;
@@ -52,18 +53,29 @@ program
 
         const command = new UpdateCommand(directory);
         command.update(action);
+
+        if(options.tag){
+            const command = new Helper(directory);
+            command.addGitTag();
+        }
     });
 
 program
     .command('set-version <version>')
     .description('Sets a specific version number, the <version> must be x.y.z')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
+    .option('-t, --tag', 'Adds a tag with the version number to the git repo')
     .action((version, options) => {
 
         const directory: string = options.directory || undefined;
 
         const command = new SetCommand(directory);
         command.setVersion(version);
+
+        if(options.tag){
+            const command = new Helper(directory);
+            command.addGitTag();
+        }
     });
 
 program
