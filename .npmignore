@@ -1,6 +1,9 @@
 .vscode
-lib
+.gitignore
+node_modules
 spec
-*.ts
-yarn.lock
 package-lock.json
+tslint.json
+tsconfig.json
+src/tsconfig.json
+yarn.lock

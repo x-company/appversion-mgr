@@ -5,26 +5,27 @@
  *
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
+ *
  * @Script: appvmgr.ts
  * @Author: Roland Breitschaft
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 18:11:35
- * @Description: This is description.
+ * @Last Modified At: 2018-12-18 23:25:31
+ * @Description: The CLI Application
  */
 
 import { Command } from 'commander';
-import { getVersion } from '../lib/';
-import { UpdateCommand } from '../lib/UpdateCommand';
-import { SetCommand } from '../lib/SetCommand';
-import { Helper } from '../lib/Helper';
-import { BadgeHelper } from '../lib/BadgeHelper';
+import { UpdateCommand, SetCommand } from '../commands';
+import { Info } from '../info';
+import { Helper } from '../helpers/Helper';
+import { BadgeHelper } from '../helpers/BadgeHelper';
+import { Updater } from '../updater/Updater';
 
 const program = new Command();
 
 program
-    .version(getVersion(), '-v, --version')
+    .version(Info.getProductVersion(), '-v, --version')
     .description('AppVersion Manager is a CLI tool whose purpose is to provide a unique manager of the version of you application.');
 
 program
@@ -46,8 +47,8 @@ program
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((action, options) => {
 
-        const directory: string = options.directory || __dirname;
-        action = action || 'commit';
+        const directory: string = options.directory || undefined;
+        action = action || 'build';
 
         const command = new UpdateCommand(directory);
         command.update(action);
@@ -59,7 +60,7 @@ program
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((version, options) => {
 
-        const directory: string = options.directory || __dirname;
+        const directory: string = options.directory || undefined;
 
         const command = new SetCommand(directory);
         command.setVersion(version);
@@ -71,7 +72,7 @@ program
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((status, options) => {
 
-        const directory: string = options.directory || __dirname;
+        const directory: string = options.directory || undefined;
 
         const command = new SetCommand(directory);
         command.setStatus(status);
@@ -83,7 +84,7 @@ program
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((param, options) => {
 
-        const directory: string = options.directory || __dirname;
+        const directory: string = options.directory || undefined;
 
         const command = new BadgeHelper(directory);
         command.createBadge(param);
@@ -95,13 +96,20 @@ program
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((options) => {
 
-        const directory: string = options.directory || __dirname;
+        const directory: string = options.directory || undefined;
 
         const command = new Helper(directory);
         command.addGitTag();
     });
 
+program
+    .command('check')
+    .description('Check for Program Updates.')
+    .action((options) => {
 
+        const updater = new Updater();
+        updater.checkUpdate();
+    });
 
 if (!process.argv.slice(2).length) {
     program.outputHelp();

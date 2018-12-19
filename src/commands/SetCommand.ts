@@ -4,21 +4,22 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  *
- * @Script: SetCommand.ts
+ * @Script: index.ts
+ * @Script: UpdateCommand.ts
  * @Author: Roland Breitschaft
  * @Email: roland.breitschaft@x-company.de
- * @Create At: 2018-12-16 12:30:34
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 18:17:22
+ * @Last Modified By: Roland Breitschaft2
+ * @Last Modified At: 2018-12-17 23:43:53
  * @Description: Class to work with set-status and set-version
  */
 
 
 import chalk from 'chalk';
 import semver from 'semver';
-import { Helper } from './Helper';
-import { BadgeHelper } from './BadgeHelper';
-import { IAppVersion } from './IAppVersion';
+import { Helper } from '../helpers/Helper';
+import { BadgeHelper } from '../helpers/BadgeHelper';
+import { IAppVersion } from '../types';
 
 export class SetCommand {
 
@@ -40,7 +41,7 @@ export class SetCommand {
         if (newVersion) {
 
             if (!semver.valid(newVersion)) {
-                this.helper.error(`Insert a valid version number formatted in this way: ${chalk.bold('\'x.y.z\'')} where x|y|z are numbers.`);
+                Helper.error(`Insert a valid version number formatted in this way: ${chalk.bold('\'x.y.z\'')} where x|y|z are numbers.`);
                 return null;
             }
             const splittedVersion = newVersion.split('.');
@@ -85,13 +86,13 @@ export class SetCommand {
 
         const splittedStatus = status.split('.');
         if (splittedStatus[1] && isNaN(parseInt(splittedStatus[1], 10))) {
-            this.helper.error('Insert a valid status.number number');
+            Helper.error('Insert a valid status.number number');
             return null;
         }
 
         const match = ['Stable', 'stable', 'RC', 'rc', 'Beta', 'beta', 'Alpha', 'alpha', 'PreRelease', 'prerelease'];
         if (match.indexOf(splittedStatus[0]) === -1) {
-            this.helper.error('Insert a valid status.stage string');
+            Helper.error('Insert a valid status.stage string.');
             return null;
         }
 
@@ -105,9 +106,16 @@ export class SetCommand {
                 };
             }
 
-            const previousAppVersion = {
-                version: appVersion.version,
-                status: appVersion.status,
+            const previousAppVersion: IAppVersion = {
+                version: {
+                    major: appVersion.version.major,
+                    minor: appVersion.version.minor,
+                    patch: appVersion.version.patch,
+                },
+                status: {
+                    number: appVersion.status.number,
+                    stage: appVersion.status.stage,
+                },
             };
 
             appVersion.status.stage = splittedStatus[0];

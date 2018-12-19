@@ -8,7 +8,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:34:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 12:32:00
+ * @Last Modified At: 2018-12-18 21:54:51
  * @Description: This is description.
  */
 
@@ -16,37 +16,51 @@
 import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { UpdateCommand } from '../../lib/UpdateCommand';
-import { IAppVersion } from '../../lib/IAppVersion';
-import { Helper } from '../../lib/Helper';
+import { UpdateCommand } from '../lib/commands/UpdateCommand';
+import { IAppVersion } from '../lib/types/IAppVersion';
+import { Helper } from '../lib/helpers/Helper';
 
 describe('Testing Update Command', () => {
 
-    let expected: IAppVersion;
-    let helper: Helper;
-    let cmd: UpdateCommand;
+    interface TestResult {
+        actual?: IAppVersion;
+        expected: IAppVersion;
+    }
 
-    const JSON_FILE = path.join(__dirname, 'appversion.json');
+    const updateHelper = (action: string): TestResult => {
 
-
-    beforeEach(() => {
-        // arrange
-        if (fs.existsSync(JSON_FILE)) {
-            fs.unlinkSync(JSON_FILE);
+        const filePath = path.join(__dirname, action);
+        const file = path.join(filePath, 'appversion.json');
+        if (fs.existsSync(file)) {
+            fs.unlinkSync(file);
         }
 
-        helper = new Helper(__dirname);
-        expected = helper.createEmptyAppVersion();
+        const helper = new Helper(filePath);
+        const expected = helper.createEmptyAppVersion();
         helper.writeJson(expected);
 
-        cmd = new UpdateCommand(__dirname);
-    });
+        const cmd = new UpdateCommand(filePath);
+        cmd.update(action);
+
+        const actual = helper.readJson();
+        if (actual) {
+            return {
+                actual,
+                expected,
+            };
+        } else {
+            return {
+                expected,
+            };
+        }
+    };
 
     it('Testing major', () => {
 
         // act
-        cmd.update('major');
-        const actual = helper.readJson();
+        const result = updateHelper('major');
+        const expected = result.expected;
+        const actual = result.actual;
 
         // assert
         expect(actual).not.toBeNull();
@@ -64,12 +78,17 @@ describe('Testing Update Command', () => {
 
     it('Testing minor', () => {
         // act
-        cmd.update('minor');
-        const actual = helper.readJson();
+        const result = updateHelper('minor');
+        const expected = result.expected;
+        const actual = result.actual;
+
 
         // assert
         expect(actual).not.toBeNull();
         if (actual) {
+            console.log('Actual', actual.version.major);
+            console.log('Expected:', expected.version.major);
+
             expect(actual.version.major).toEqual(expected.version.major);
             expect(actual.version.minor).toEqual(expected.version.minor + 1);
             expect(actual.version.patch).toEqual(0);
@@ -82,10 +101,10 @@ describe('Testing Update Command', () => {
     });
 
     it('Testing patch', () => {
-
         // act
-        cmd.update('patch');
-        const actual = helper.readJson();
+        const result = updateHelper('patch');
+        const expected = result.expected;
+        const actual = result.actual;
 
         // assert
         expect(actual).not.toBeNull();
@@ -102,10 +121,10 @@ describe('Testing Update Command', () => {
     });
 
     it('Testing build', () => {
-
         // act
-        cmd.update('build');
-        const actual = helper.readJson();
+        const result = updateHelper('build');
+        const expected = result.expected;
+        const actual = result.actual;
 
         // assert
         expect(actual).not.toBeNull();
@@ -116,21 +135,5 @@ describe('Testing Update Command', () => {
                 expect(actual.build.total).toEqual(expected.build.total + 1);
             }
         }
-    });
-
-    it('Testing commit', () => {
-
-        // act
-        cmd.update('commit');
-        const actual = JSON.parse(fs.readFileSync(JSON_FILE, 'utf8'));
-
-        // assert
-        exec('git log --oneline', (err, stdout) => {
-            if (err) {
-                expect(actual.commit).toBeNull();
-            } else {
-                expect(actual.commit).toEqual(stdout.substring(0, 7));
-            }
-        });
     });
 });

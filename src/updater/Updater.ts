@@ -9,13 +9,16 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 18:17:57
+ * @Last Modified At: 2018-12-18 22:57:00
  * @Description: Helper Class to check for Schema Updates
  */
 
-import { IAppVersion } from './IAppVersion';
 import chalk from 'chalk';
 import semver from 'semver';
+import { IAppVersion } from '../types/IAppVersion';
+import { Info } from '../info';
+import { Helper } from '../helpers/Helper';
+import nfetch from 'node-fetch';
 
 export class Updater {
 
@@ -69,24 +72,27 @@ export class Updater {
 
     /**
      * This function checks for an update of appversion.
+     *
+     * @memberof Updater
      */
-    private checkUpdate(currentVersion: string) {
+    public checkUpdate() {
 
-        // TODO: checkUpdate Function currently not used
-        fetch('https://registry.npmjs.org/appversion-mgr/latest')
+        const currentVersion = Info.getProductVersion();
+
+        nfetch('https://registry.npmjs.org/appversion-mgr/latest')
             .then((response) => {
                 try {
                     response.json()
                         .then((json) => {
                             const latest = json.version;
                             if (semver.gt(latest, currentVersion)) {
-                                console.log(chalk.yellow(`\n${chalk.bold('AppVersion:')} New apv version available, run ${chalk.bold('\'npm install appversion -g\'')} to update!\n`));
+                                Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
+                            } else {
+                                Helper.info(`No new appvmgr version available. Everything is up2date!`);
                             }
                         });
-
-
                 } catch (error) {
-                    console.log(error);
+                    Helper.error(error);
                 }
             })
             .catch((error) => {
@@ -95,7 +101,7 @@ export class Updater {
                 }
 
                 if (error) {
-                    console.log(error);
+                    Helper.error(error);
                 }
             });
     }

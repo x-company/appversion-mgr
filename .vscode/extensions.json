@@ -3,12 +3,22 @@
         "alefragnani.bookmarks",
         "coenraads.bracket-pair-colorizer",
         "xiaokangtu.codeheader",
-        "waderyan.nodejs-extension-pack",
         "gregorbiswanger.package-watcher",
-        "wayou.vscode-todo-highlight",
         "wayou.vscode-todo-highlight",
         "zuoez02.tslint-snippets",
         "eg2.tslint",
-        "gregorbiswanger.json2ts"
+        "gregorbiswanger.json2ts",
+        "joelday.docthis",
+        "gruntfuggly.todo-tree",
+        "hbenl.vscode-jasmine-test-adapter",
+        "emmanuelbeziat.vscode-great-icons",
+        "ymotongpoo.licenser",
+        "eg2.vscode-npm-script",
+        "christian-kohler.npm-intellisense",
+        "christian-kohler.path-intellisense",
+        "andrefischer.rocket-code",
+        "jasonnutter.search-node-modules",
+        "tyriar.shell-launcher"
+        
     ]
 }

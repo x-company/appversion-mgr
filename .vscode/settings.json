@@ -6,12 +6,10 @@
     "licenser.useSingleLineStyle": false,
     "jasmineExplorer.nodeArgv": [
         "--require",
-        "ts-node/register",
-        "--require",
-        "tsconfig-paths/register"
+        "ts-node/register"
     ],
     "jasmineExplorer.env": {
-        "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}"
+        "TS_NODE_PROJECT" : "./src/tsconfig.json"
     },
     "search.exclude": {
         "**/node_modules": true,
@@ -27,13 +25,11 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "**/*.js": {
-            "when": "$(basename).ts"
-        },
         "**/*.js.map": true,
-        "**/*.d.ts": {
-            "when": "$(basename).ts"
-        }
+        "**/*.d.ts": true,
+        "node_modules": true,
+        "**/package-lock.json": true,
+        "**/yarn.lock": true
     },
     "files.watcherExclude": {
         "**/.git/**": true,
@@ -42,7 +38,7 @@
         "**/.vscode/*/**": true
     },
     "tslint.alwaysShowStatus": true,
-    "tslint.configFile": "./tslint.json",
+    "tslint.configFile": "./src/tslint.json",
     "tslint.jsEnable": false,
     "tslint.packageManager": "yarn",
     "tslint.run": "onType",
