@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 23:54:50
+ * @Last Modified At: 2018-12-20 00:20:27
  * @Description: Central Helper Class for all.
  */
 
@@ -190,9 +190,16 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
 
         // ignore every subfolder in the project
         if (appVersion.config) {
+            // Check for Ignore All is setted
             if (appVersion.config.ignore.indexOf('*') > -1) {
                 return;
             }
+
+            // default ignored subfolders
+            appVersion.config.ignore.push('node_modules', 'bower_components', '.git');
+
+            // default json files
+            appVersion.config.json.push('package.json');
 
             const walker = walk(path.resolve(this.PATH), {
                 followLinks: false,
@@ -206,6 +213,9 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
                     try {
                         fileObj = JSON.parse(fs.readFileSync(path.resolve(root, fileStats.name), 'utf8'));
                     } catch (err) {
+                        if(err && err.Message){
+                            Helper.error(err.Message);
+                        }
                         return;
                     }
 
@@ -251,17 +261,9 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
                 name: null,
                 project: null,
                 schema: Info.getSchemaVersion(),
-                ignore: [
-                    'node_modules',
-                    'bower_components',
-                    '.git',
-                ],
-                json: [
-                    'package.json',
-                ],
-                markdown: [
-                    'README.md',
-                ],
+                ignore: [],
+                json: [],
+                markdown: [],
             },
         };
     }
