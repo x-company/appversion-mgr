@@ -5,15 +5,15 @@
     "patch": 0
   },
   "build": {
-    "date": "2018-12-19T00:07:04.234Z",
-    "number": 0,
-    "total": 11
+    "date": "2018-12-19T20:28:54.803Z",
+    "number": 2,
+    "total": 13
   },
   "status": {
     "stage": "RC",
     "number": 1
   },
-  "commit": "ea953a7",
+  "commit": "a939a56",
   "config": {
     "ignore": [
       "node_modules",
@@ -26,8 +26,8 @@
     "markdown": [
       "README.md"
     ],
-    "name": null,
-    "project": null,
+    "name": "AppVersionManager",
+    "project": "appversion-mgr",
     "schema": "1.8.0"
   }
 }
