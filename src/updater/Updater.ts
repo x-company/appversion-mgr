@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 22:57:00
+ * @Last Modified At: 2018-12-19 18:49:20
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -22,12 +22,78 @@ import nfetch from 'node-fetch';
 
 export class Updater {
 
-    public updateAppversion(appVersion: any, currentVersion: string): IAppVersion {
+
+    /**
+     * Checks the Data Schema for the right Version
+     *
+     * @static
+     * @param {*} appVersion	A loaded AppVersion Object
+     * @returns {IAppVersion} The updated AppVersion Object
+     * @memberof Updater
+     */
+    public static checkSchemaUpdate(appVersion: any): IAppVersion {
+        const schemaVersion = Info.getSchemaVersion();
+        if ((appVersion.config.appversion && appVersion.config.appversion !== schemaVersion) || appVersion.config.schema !== schemaVersion) {
+            Helper.info('Schema of appversion.json is outdated. Perform schema update ...');
+            appVersion = Updater.updateSchema(appVersion);
+            Helper.info('Schema of appversion.json updated to the latest version.');
+        }
+        return appVersion;
+    }
+
+    /**
+     * This function checks for an update of AppVersionManager.
+     *
+     * @static
+     * @memberof Updater
+     */
+    public static checkUpdate() {
+
+        const currentVersion = Info.getProductVersion();
+
+        nfetch('https://registry.npmjs.org/appversion-mgr/latest')
+            .then((response) => {
+                try {
+                    response.json()
+                        .then((json) => {
+                            const latest = json.version;
+                            if (semver.gt(latest, currentVersion)) {
+                                Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
+                            }
+                        });
+                } catch (error) {
+                    Helper.error(error);
+                }
+            })
+            .catch((error) => {
+                if (error && error.code === 'ENOTFOUND') {
+                    return;
+                }
+
+                if (error) {
+                    Helper.error(error);
+                }
+            });
+    }
+
+    /**
+     * Updates the Schema of the appversion.json
+     *
+     * @static
+     * @param {*} appVersion	A loaded AppVersion Object
+     * @returns {IAppVersion} The updated AppVersion Object
+     * @memberof Updater
+     */
+    private static updateSchema(appVersion: any): IAppVersion {
+
+        const schemaVersion = Info.getSchemaVersion();
 
         // if the "config" filed is not present in the json we add it
         if (!appVersion.config) {
             appVersion.config = {
-                appversion: currentVersion,
+                name: null,
+                projectName: null,
+                schema: schemaVersion,
                 ignore: [],
                 markdown: [],
                 json: [],
@@ -51,9 +117,9 @@ export class Updater {
         }
 
         // if the "package.json" and "bower.json" are present in the "config.json" array field, we remove them
-        if (appVersion.config.json.indexOf('package.json') > -1) {
-            appVersion.config.json.splice(appVersion.config.json.indexOf('package.json'), 1);
-        }
+        // if (appVersion.config.json.indexOf('package.json') > -1) {
+        //     appVersion.config.json.splice(appVersion.config.json.indexOf('package.json'), 1);
+        // }
 
         if (appVersion.config.json.indexOf('bower.json') > -1) {
             appVersion.config.json.splice(appVersion.config.json.indexOf('bower.json'), 1);
@@ -64,45 +130,20 @@ export class Updater {
             delete appVersion.appversion;
         }
 
+        if (!appVersion.config.name) {
+            appVersion.config.name = null;
+        }
+
+        if (!appVersion.config.project) {
+            appVersion.config.project = null;
+        }
+
         // updates the appversion.json version number
-        appVersion.config.appversion = currentVersion;
+        if (appVersion.config.appversion) {
+            delete appVersion.config.appversion;
+        }
+        appVersion.config.schema = schemaVersion;
 
         return appVersion;
-    }
-
-    /**
-     * This function checks for an update of appversion.
-     *
-     * @memberof Updater
-     */
-    public checkUpdate() {
-
-        const currentVersion = Info.getProductVersion();
-
-        nfetch('https://registry.npmjs.org/appversion-mgr/latest')
-            .then((response) => {
-                try {
-                    response.json()
-                        .then((json) => {
-                            const latest = json.version;
-                            if (semver.gt(latest, currentVersion)) {
-                                Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
-                            } else {
-                                Helper.info(`No new appvmgr version available. Everything is up2date!`);
-                            }
-                        });
-                } catch (error) {
-                    Helper.error(error);
-                }
-            })
-            .catch((error) => {
-                if (error && error.code === 'ENOTFOUND') {
-                    return;
-                }
-
-                if (error) {
-                    Helper.error(error);
-                }
-            });
     }
 }

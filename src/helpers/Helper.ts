@@ -9,26 +9,22 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 23:42:32
+ * @Last Modified At: 2018-12-19 21:54:26
  * @Description: Central Helper Class for all.
  */
 
 import chalk from 'chalk';
 import path from 'path';
-import fs, { write } from 'fs';
-import replacestream from 'replacestream';
-import { walk } from 'walk';
-import { exec } from 'child_process';
+import fs from 'fs';
 import semver from 'semver';
 import findRoot from 'find-root';
+import { walk } from 'walk';
+import { exec } from 'child_process';
 import { Info } from '../info';
 import { IAppVersion } from '../types/IAppVersion';
 import { IVersion } from '../types/IVersion';
 import { Updater } from '../updater/Updater';
 
-
-// tslint:disable-next-line: no-var-requires
-const selfstream = require('self-stream');
 
 export class Helper {
 
@@ -92,15 +88,11 @@ export class Helper {
         }
 
         try {
-            const appVersionContent = fs.readFileSync(this.FILEPATH, { encoding: 'utf8'});
+            const appVersionContent = fs.readFileSync(this.FILEPATH, { encoding: 'utf8' });
             let appVersion: IAppVersion = JSON.parse(appVersionContent) as IAppVersion;
 
             // checks if the appversion.json is at the latest version
-            if (appVersion.config && appVersion.config.appversion !== Info.getSchemaVersion()) {
-                const updater = new Updater();
-                appVersion = updater.updateAppversion(appVersion, Info.getSchemaVersion());
-                Helper.info('appversion.json updated to the latest version.');
-            }
+            appVersion = Updater.checkSchemaUpdate(appVersion);
 
             return appVersion;
 
@@ -109,7 +101,7 @@ export class Helper {
             if (error.code === 'MODULE_NOT_FOUND') {
                 Helper.error(`
 Could not find appversion.json
-Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVersion.
+Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVersionManager.
                 `);
 
                 process.exit(1);
@@ -128,13 +120,36 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
      */
     public appendBadgeToMD(markdownFile: string, newBadge: string, oldBadge: string) {
 
-        const transform = [replacestream(oldBadge, newBadge)];
-
-        selfstream(markdownFile, transform, (error: any) => {
-            if (error) {
-                console.log(error);
+        if (newBadge !== oldBadge) {
+            const markdownFilePath = path.join(this.PATH, markdownFile);
+            if (!fs.existsSync(markdownFilePath)) {
+                const fd = fs.openSync(markdownFilePath, 'wx+');
+                fs.writeFileSync(markdownFilePath, oldBadge, { encoding: 'utf8' });
+                fs.closeSync(fd);
             }
-        });
+
+            const oldContent = fs.readFileSync(markdownFilePath, { encoding: 'utf8' });
+            const newContent = oldContent.replace(oldBadge, newBadge);
+            if (oldContent !== newContent) {
+                fs.writeFileSync(markdownFilePath, newContent, { encoding: 'utf8' });
+
+            }
+            // const markdownFileTmp = `${markdownFilePath}.tmp`;
+            // const readStream = fs.createReadStream(markdownFilePath, { encoding: 'utf8' });
+            // const writeStream = fs.createWriteStream(markdownFileTmp, { encoding: 'utf8' }).on('close', () => {
+            //     if (fs.existsSync(markdownFile) && fs.existsSync(markdownFileTmp)) {
+            //         fs.rename(markdownFileTmp, markdownFile, (error) => {
+            //             if (error) {
+            //                 Helper.error(error.message);
+            //             }
+            //         });
+            //     }
+            // });
+
+            // readStream
+            //     .pipe(replacestream(oldBadge, newBadge, { encoding: 'utf8' }))
+            //     .pipe(writeStream);
+        }
     }
 
     /**
@@ -148,7 +163,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
         try {
             if (!fs.existsSync(this.FILEPATH)) {
                 const fd = fs.openSync(this.FILEPATH, 'wx+');
-                fs.writeFileSync(this.FILEPATH, json);
+                fs.writeFileSync(this.FILEPATH, json, { encoding: 'utf8' });
                 fs.closeSync(fd);
             } else {
                 fs.writeFileSync(this.FILEPATH, json);
@@ -157,7 +172,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             if (message) {
                 Helper.info(message);
             } else {
-                const versionAsString = `${appVersion.version.major}.${appVersion.version.minor}.${appVersion.version.patch}`;
+                const versionAsString = Info.composePatternSync('M.m.p', appVersion);
                 Helper.info(`Version updated to ${versionAsString}`);
             }
 
@@ -195,7 +210,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
                     }
 
                     if (fileObj.version) {
-                        const versionAsString = `${appVersion.version.major}.${appVersion.version.minor}.${appVersion.version.patch}`;
+                        const versionAsString = Info.composePatternSync('M.m.p', appVersion);
                         fileObj.version = versionAsString;
                     }
 
@@ -233,7 +248,9 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             },
             commit: null,
             config: {
-                appversion: Info.getSchemaVersion(),
+                name: null,
+                project: null,
+                schema: Info.getSchemaVersion(),
                 ignore: [
                     'node_modules',
                     'bower_components',
@@ -242,7 +259,9 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
                 json: [
                     'package.json',
                 ],
-                markdown: [],
+                markdown: [
+                    'README.md',
+                ],
             },
         };
     }
@@ -255,13 +274,12 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
 
         if (appVersion) {
 
-            const versionCode = (version: IVersion) => `v${version.major}.${version.minor}.${version.patch}`;
-
-            exec(`git tag ${versionCode(appVersion.version)}`, (error, stdout) => {
+            const versionCode = (version: IAppVersion) => `v${Info.composePatternSync('M.m.p', version)}`;
+            exec(`git tag ${versionCode(appVersion)}`, (error, stdout) => {
                 if (error) {
                     Helper.error('Tag not added, no Git repository found.');
                 } else {
-                    Helper.info(`Added Git tag '${versionCode(appVersion.version)}'`);
+                    Helper.info(`Added Git tag '${versionCode(appVersion)}'`);
                 }
             });
         }

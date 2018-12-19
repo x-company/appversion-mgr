@@ -17,6 +17,7 @@ import { IAppVersion } from '../types/IAppVersion';
 import { Helper } from '../helpers/Helper';
 import { BadgeHelper } from '../helpers/BadgeHelper';
 import { exec } from 'child_process';
+import { Info } from '../info';
 
 
 export class UpdateCommand {
@@ -106,7 +107,7 @@ export class UpdateCommand {
             appVersion.build.number++;
             appVersion.build.total++;
 
-            const message = `Build updated to ${appVersion.build.number}/${appVersion.build.total}`;
+            const message = `Build updated to ${Info.composePatternSync('n/t', appVersion)}`;
             this.helper.writeJson(appVersion, message);
         }
     }

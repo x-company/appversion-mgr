@@ -18,7 +18,8 @@
         "christian-kohler.path-intellisense",
         "andrefischer.rocket-code",
         "jasonnutter.search-node-modules",
-        "tyriar.shell-launcher"
-        
+        "tyriar.shell-launcher",
+        "docsmsft.docs-authoring-pack",
+        "streetsidesoftware.code-spell-checker-german"
     ]
 }

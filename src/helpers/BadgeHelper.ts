@@ -9,13 +9,14 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 12:49:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 00:07:18
+ * @Last Modified At: 2018-12-19 21:24:46
  * @Description: Helper File to generate Badges
  */
 
 import chalk from 'chalk';
 import { Helper } from './Helper';
 import { IAppVersion } from '../types/IAppVersion';
+import { Info } from '../info';
 
 export class BadgeHelper extends Helper {
 
@@ -37,23 +38,28 @@ export class BadgeHelper extends Helper {
     private shieldUrl(part: string): string {
         return `https://img.shields.io/badge/${part}-brightgreen.svg?style=flat`;
     }
-    private mdCode(tag: string, url: string): string {
-        return `[![AppVersionManager-${tag}](${url})](https://github.com/x-company/appversion-mgr?#${tag})`;
+
+    private mdCode(appVersion: IAppVersion, tag: string, url: string): string {
+        const name: string = appVersion.config && appVersion.config.name ? appVersion.config.name : 'AppVersionManager';
+        const projectName = appVersion.config && appVersion.config.project ? appVersion.config.project : 'appversion-mgr';
+
+        return `[![${name}-${tag}](${url})](https://github.com/x-company/${projectName}?#${tag})`;
     }
-    private composeReadmeCode(tag: string, part: string): string {
-        return this.mdCode(tag, this.shieldUrl(part));
+
+    private composeReadmeCode(appVersion: IAppVersion, tag: string, part: string): string {
+        return this.mdCode(appVersion, tag, this.shieldUrl(part));
     }
 
     private versionBadge(updateMD: boolean, previousAppVersion?: IAppVersion) {
         const appVersion = this.readJson();
 
         if (appVersion) {
-            const version = `${appVersion.version.major}.${appVersion.version.minor}.${appVersion.version.patch}`;
-            const readmeCode = this.composeReadmeCode('version', `AppVersionManager-${version}`);
+            const version = Info.composePatternSync('M.m.p', appVersion);
+            const readmeCode = this.composeReadmeCode(appVersion, 'version', `Version-${version}`);
             if (updateMD && previousAppVersion) {
-                const pastVersion = `${previousAppVersion.version.major}.${previousAppVersion.version.minor}.${previousAppVersion.version.patch}`;
+                const pastVersion = Info.composePatternSync('M.m.p', previousAppVersion);
                 if (appVersion.config) {
-                    const pastReadmeCode = this.composeReadmeCode('version', `AppVersionManager-${pastVersion}`);
+                    const pastReadmeCode = this.composeReadmeCode(appVersion, 'version', `Version-${pastVersion}`);
                     appVersion.config.markdown.map((file) => {
                         return this.appendBadgeToMD(file, readmeCode, pastReadmeCode);
                     });
@@ -69,17 +75,17 @@ export class BadgeHelper extends Helper {
         if (appVersion) {
             let status: string | null = 'unknown';
             if (appVersion.status) {
-                status = appVersion.status.number > 0 ? `${appVersion.status.stage}%20${appVersion.status.number}` : appVersion.status.stage;
+                status = appVersion.status.number > 0 ? Info.composePatternSync('S%20s', appVersion) : appVersion.status.stage;
             }
-            const readmeCode = this.composeReadmeCode('status', `Status-${status}`);
+            const readmeCode = this.composeReadmeCode(appVersion, 'status', `Status-${status}`);
 
             if (updateMD && previousAppVersion) {
                 let pastStatus: string | null = 'unknown';
                 if (previousAppVersion.status) {
-                    pastStatus = previousAppVersion.status.number > 0 ? `${previousAppVersion.status.stage}%20${previousAppVersion.status.number}` : previousAppVersion.status.stage;
+                    pastStatus = previousAppVersion.status.number > 0 ? Info.composePatternSync('S%20s', previousAppVersion) : previousAppVersion.status.stage;
                 }
 
-                const pastReadmeCode = this.composeReadmeCode('status', `Status-${pastStatus}`);
+                const pastReadmeCode = this.composeReadmeCode(appVersion, 'status', `Status-${pastStatus}`);
 
                 if (appVersion.config) {
                     appVersion.config.markdown.map((file) => {
