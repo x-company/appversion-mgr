@@ -1,6 +1,6 @@
 {
   "name": "appversion-mgr",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "AppVersion Manager is a CLI tool whose purpose is to provide a unique manager of the version of you application.",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",

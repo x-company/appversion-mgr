@@ -2,12 +2,12 @@
   "version": {
     "major": 0,
     "minor": 3,
-    "patch": 3
+    "patch": 4
   },
   "build": {
-    "date": "2018-12-19T22:47:14.912Z",
-    "number": 1,
-    "total": 19
+    "date": "2018-12-19T22:49:53.230Z",
+    "number": 0,
+    "total": 20
   },
   "status": {
     "stage": "RC",
