@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 18:49:20
+ * @Last Modified At: 2018-12-20 00:20:55
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -117,9 +117,9 @@ export class Updater {
         }
 
         // if the "package.json" and "bower.json" are present in the "config.json" array field, we remove them
-        // if (appVersion.config.json.indexOf('package.json') > -1) {
-        //     appVersion.config.json.splice(appVersion.config.json.indexOf('package.json'), 1);
-        // }
+        if (appVersion.config.json.indexOf('package.json') > -1) {
+            appVersion.config.json.splice(appVersion.config.json.indexOf('package.json'), 1);
+        }
 
         if (appVersion.config.json.indexOf('bower.json') > -1) {
             appVersion.config.json.splice(appVersion.config.json.indexOf('bower.json'), 1);
