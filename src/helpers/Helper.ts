@@ -55,7 +55,7 @@ export class Helper {
     constructor(directory?: string) {
 
         if (!directory) {
-            directory = findRoot(__dirname);
+            directory = findRoot(process.cwd());
         }
 
         this.PATH = path.resolve(directory);
