@@ -1,21 +1,20 @@
 {
   "version": {
     "major": 0,
-    "minor": 2,
-    "patch": 1
+    "minor": 3,
+    "patch": 2
   },
   "build": {
-    "date": "2018-12-18T23:28:54.708Z",
-    "number": 5,
-    "total": 7
+    "date": "2018-12-19T20:56:04.143Z",
+    "number": 2,
+    "total": 17
   },
   "status": {
     "stage": "RC",
     "number": 1
   },
-  "commit": "4683e8a",
+  "commit": "1039cd9",
   "config": {
-    "appversion": "1.7.1",
     "ignore": [
       "node_modules",
       "bower_components",
@@ -26,6 +25,9 @@
     ],
     "markdown": [
       "README.md"
-    ]
+    ],
+    "name": "AppVersionManager",
+    "project": "appversion-mgr",
+    "schema": "1.8.0"
   }
 }

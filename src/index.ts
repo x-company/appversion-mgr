@@ -3,6 +3,7 @@
  *
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
+ *
  * @Script: index.ts
  * @Author: Roland Breitschaft
  * @Email: roland.breitschaft@x-company.de
@@ -15,10 +16,10 @@
 import { Updater } from './updater/Updater';
 
 // Export all needed Classes
-export * from './types/IAppVersion';
-export * from './commands';
-export * from './info';
+export { IAppVersion } from './types';
+export { SetCommand, UpdateCommand } from './commands';
+export { Info } from './info';
+export default './info';
 
 // Check for Updates
-const updater = new Updater();
-updater.checkUpdate();
+Updater.checkUpdate();

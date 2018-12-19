@@ -4,10 +4,11 @@ tmp
 **/*.js
 **/*.js.map
 **/*.d.ts
-spec/major/appversion.json
-spec/minor/appversion.json
-spec/patch/appversion.json
-spec/build/appversion.json
+spec/major/
+spec/minor/
+spec/patch/
+spec/build/
 spec/appversion.json
+spec/README.md
 package-lock.json
 yarn-error.log

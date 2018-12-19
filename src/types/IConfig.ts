@@ -9,12 +9,14 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 23:46:31
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 23:46:31
+ * @Last Modified At: 2018-12-19 18:42:04
  * @Description: The IConfig Type
  */
 
 export interface IConfig {
-    appversion: string;
+    name: string | null;
+    project: string | null;
+    schema: string;
     markdown: string[];
     json: string[];
     ignore: string[];
