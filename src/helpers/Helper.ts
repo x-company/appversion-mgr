@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 21:54:26
+ * @Last Modified At: 2018-12-19 23:54:50
  * @Description: Central Helper Class for all.
  */
 
@@ -277,7 +277,11 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             const versionCode = (version: IAppVersion) => `v${Info.composePatternSync('M.m.p', version)}`;
             exec(`git tag ${versionCode(appVersion)}`, (error, stdout) => {
                 if (error) {
-                    Helper.error('Tag not added, no Git repository found.');
+                    if (error.message) {
+                        Helper.error(error.message);
+                    } else {
+                        Helper.error('An unknown Error occured while Git Tag will added.');
+                    }
                 } else {
                     Helper.info(`Added Git tag '${versionCode(appVersion)}'`);
                 }
