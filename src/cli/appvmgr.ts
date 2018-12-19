@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 23:25:31
+ * @Last Modified At: 2018-12-19 18:47:43
  * @Description: The CLI Application
  */
 
@@ -107,8 +107,7 @@ program
     .description('Check for Program Updates.')
     .action((options) => {
 
-        const updater = new Updater();
-        updater.checkUpdate();
+        Updater.checkUpdate();
     });
 
 if (!process.argv.slice(2).length) {
