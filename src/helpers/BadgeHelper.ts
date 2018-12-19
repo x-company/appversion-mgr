@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 12:49:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 18:55:00
+ * @Last Modified At: 2018-12-19 21:24:46
  * @Description: Helper File to generate Badges
  */
 
@@ -55,11 +55,11 @@ export class BadgeHelper extends Helper {
 
         if (appVersion) {
             const version = Info.composePatternSync('M.m.p', appVersion);
-            const readmeCode = this.composeReadmeCode(appVersion, 'version', `AppVersionManager-${version}`);
+            const readmeCode = this.composeReadmeCode(appVersion, 'version', `Version-${version}`);
             if (updateMD && previousAppVersion) {
                 const pastVersion = Info.composePatternSync('M.m.p', previousAppVersion);
                 if (appVersion.config) {
-                    const pastReadmeCode = this.composeReadmeCode(appVersion, 'version', `AppVersionManager-${pastVersion}`);
+                    const pastReadmeCode = this.composeReadmeCode(appVersion, 'version', `Version-${pastVersion}`);
                     appVersion.config.markdown.map((file) => {
                         return this.appendBadgeToMD(file, readmeCode, pastReadmeCode);
                     });
