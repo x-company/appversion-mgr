@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 20:59:41
+ * @Last Modified At: 2018-12-19 21:28:26
  * @Description: The CLI Application
  */
 
@@ -54,9 +54,9 @@ program
         const command = new UpdateCommand(directory);
         command.update(action);
 
-        if(options.tag){
-            const command = new Helper(directory);
-            command.addGitTag();
+        if (options.tag) {
+            const helper = new Helper(directory);
+            helper.addGitTag();
         }
     });
 
@@ -72,9 +72,9 @@ program
         const command = new SetCommand(directory);
         command.setVersion(version);
 
-        if(options.tag){
-            const command = new Helper(directory);
-            command.addGitTag();
+        if (options.tag) {
+            const helper = new Helper(directory);
+            helper.addGitTag();
         }
     });
 
