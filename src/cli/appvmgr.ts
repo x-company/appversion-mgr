@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 21:28:26
+ * @Last Modified At: 2018-12-20 00:11:57
  * @Description: The CLI Application
  */
 
@@ -80,7 +80,7 @@ program
 
 program
     .command('set-status <status>')
-    .description('Sets a specific status, the <status> stage can be stable|rc|beta|alpha and the number must be a number')
+    .description('Sets a specific status, the <status> stage can be stable|rc|beta|alpha|prerelease and the number must be a number')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((status, options) => {
 
