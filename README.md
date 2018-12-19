@@ -9,7 +9,14 @@ I want to use this Tool to manage my DotNet Core Projects. Everyone knows, that 
 
 What are the major Changes?
 
-- AppVersionManager creates the appversion File in the location where the Tool is running or where it's defined with the Parameter ```-d --directory```
+- ```appversion.json``` will automaticall created where the Tool is currently running. An Init is not neccessary.
+- Additonally you can specifiy the ```-d --directory``` Parameter to manage more than one ```appversion.json``` (Mostly needed by DotNet Solutions).
+- Readme.md will automatically created if it not exists
+- Fix errors while Updating the .md Files. Badges wasn't updated successfully.
+- Extend/Rewrite the API
+- Add ```name``` and ```project``` Property to the ```IConfig```-Type.
+- The ```name``` Property defines a special Badge Name per Project.
+- The ```project``` Property will used to create an clean Source Code Link
 - Completly rewritten in TypeScript
 - Completly restructured Source Code
 
@@ -44,18 +51,20 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
   },
   "commit": null,
   "config": {
-    "appversion": "x.y.z",
+    "schema": "x.y.z",
     "markdown": [],
     "json": [],
-    "ignore": []
+    "ignore": [],
+    "name": null,
+    "project": null
   }
 }
 ```
 
-As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha``` (the first letter can be Uppercase) value and ```number```.
+As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha|prerelease``` (the first letter can be Uppercase) value and ```number```.
 
-Then, there's the ```config``` filed, divided in ```appversion```, that is used by AppVersion for check if the json is at the latest version, ```markdown``` field where you can put all the markdown files that you want to keep updated (see <a href="#generateBadge">here</a> for more information).
-The last two fields inside ```config``` are, ```json```, that is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore.
+Then, there's the ```config``` filed, divided in ```schema```, that is used by AppVersion for check if the json is at the latest version, ```markdown``` field where you can put all the markdown files that you want to keep updated (see <a href="#generateBadge">here</a> for more information).
+The two fields inside ```config``` are, ```json```, that is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore. The ```name``` Field is to create an individual Name for the Badge in the Readme. If it not given, it will used the Folder Name where the ```appversion.json``` lives. The ```project``` field is used to generate an valid Soure-Code Link, e.g. ```https://github.com/<vendor>/<project>.git```
 
 **Needs Node.js >= 4.0.0**
 
@@ -125,32 +134,33 @@ If you want that AppVersion *ignores all the subfolders* in your project, just p
 
 <a name="generateBadge"></a>
 AppVersion can provide you a wonderful shield badge with the version of your application that you can put in you .md file, like what you see at the top of this file.
-Generate the badge is very easy, just type ```apv generate-badge version``` for the version badge and ```apv generate-badge status``` for the status badge and copy the output inside your .md file, then add the name of the md file (with the extension) inside the markdown array field in *appversion.json*, from now AppVersion will keep updated the badges every time you update your application.
+Generate the badge is very easy, just type ```appvmgr generate-badge version``` for the version badge and ```appvmgr generate-badge status``` for the status badge and copy the output inside your .md file, then add the name of the md file (with the extension) inside the markdown array field in *appversion.json*, from now AppVersion will keep updated the badges every time you update your application.
 *Badge examples:*
 ![AppVersion-version](https://img.shields.io/badge/AppVersion-2.4.1-brightgreen.svg?style=flat) ![AppVersion-status](https://img.shields.io/badge/Status-Beta.4-brightgreen.svg?style=flat)
 This feature make use of the amazing service [shields.io](http://shields.io/).
 
 ### In app:
 
-| APIs                                               |       |
-|--------------------------------------------------------|-------|
-| <a href="#getAppVersion">getAppVersion()</a>           | async |
-| <a href="#getAppVersionSync">getAppVersionSync()</a>   | sync  |
-| <a href="#composePattern">composePattern()</a>         | async |
-| <a href="#composePatternSync">composePatternSync()</a> | sync  |
+#### API
+```getAppVersion(directory?: string): Promise<IAppVersion>```
 
-<a name="getAppVersion"></a>
-#### getAppVersion(callback)
-Returns the content of appversion.json as a object.
-This is the asyncronous version, so you must pass a callback to the function.
+```getAppVersionSync(directory?: string): IAppVersion```
 
-<a name="getAppVersionSync"></a>
-#### getAppVersionSync()
-Returns the content of appversion.json as a object.
-This is the syncronous version, so you don't need to pass a callback to the function.
+Returns the content of appversion.json as a ```IAppVersion``` Object. If not directory is given, ```appvmgr``` will search in the root of the Project.
 
-<a name="composePattern"></a>
-#### composePattern(pattern, callback)
+
+```composePattern(pattern:string): Promise<string>```
+
+```composePattern(pattern:string, directory: string): Promise<string>```
+
+```composePattern(pattern:string, appVersion: IAppVersion): Promise<string>```
+
+```composePatternSync(pattern: string): string```
+
+```composePatternSync(pattern: string, directory: string): string```
+
+```composePatternSync(pattern: string, appVersion: IAppVersion): string```
+
 Return a string with the version following the pattern you passed as a input.
 pattern:
 
@@ -165,55 +175,29 @@ pattern:
 | **t**       | build.total      |
 | **d**       | build.date       |
 | **c**       | commit           |
-| **.**       | separator        |
-| **-**       | separator        |
 
 The pattern must be a string, for example a pattern could be `'M.m.p-Ss n-d'`.
-This is the asyncronous version, so you must pass a callback to the function.
-
-<a name="composePatternSync"></a>
-#### composePatternSync(pattern)
-Return a string with the version following the pattern you passed as a input.
-The pattern string follow the same rules as above.
-This is the syncronous version, so you don't need to pass a callback to the function.
 
 Sometimes you want to have the version/build number accessible in your application, for this, you can use the module with a standard import:
 
-```javascript
-// es5:
-var apv = require('appversion')
+```typescript
 
-console.log(apv.getAppVersionSync())
-console.log(apv.getAppVersionSync().version)
+import { getAppVersion, getAppVersionSync, composePattern, composePatternSync } from 'appversion-mgr';
 
-apv.getAppVersion(function (err, data) {
-  if (err) console.log(err)
-  console.log(data)
-})
+console.log(getAppVersionSync());
+console.log(getAppVersionSync().version);
 
-console.log(apv.composePatternSync('M.m.p-Ss n-d'))
+getAppVersion()
+  .then((data) => console.log(data))
+  .catch((err) => console.log(err));
 
-apv.composePattern('M.m.p-Ss n-d', function(ptt) {
-  console.log(ptt)
-})
-
-
-// es6 - es2015:
-import { getAppVersion, getAppVersionSync, composePattern, composePatternSync } from 'appversion'
-
-console.log(getAppVersionSync())
-console.log(getAppVersionSync().version)
-
-getAppVersion((err, data) => {
-  if (err) console.log(err)
-  console.log(data)
-})
 
 console.log(composePatternSync('M.m.p-Ss n-d'))
 
-composePattern('M.m.p-Ss n-d', (ptt) => {
-  console.log(ptt)
-})
+composePattern('M.m.p-Ss n-d')
+  .then((data) => console.log(data))
+  .catch((err) => console.log(err));
+
 ```
 <a name="automation"></a>
 ## Automation
@@ -226,7 +210,7 @@ If you are using *npm scripts* you can easily integrate AppVersion in your workf
 ...
 ```
 If you are using Grunt or Gulp for automating your project, you can easily use AppVersion inside you grunt/gulp file.
-Just require **appversion/automation** and call the `update|setVersion|setStatus` methods with the correct parameter.
+Just require **appversion-mgr** and call the `update|setVersion|setStatus` methods with the correct parameter.
 Below you can find an example:
 ```javascript
 import { UpdateCommand } from 'appversion-mgr;
