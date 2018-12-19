@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 21:42:02
+ * @Last Modified At: 2018-12-19 21:43:37
  * @Description: Central Helper Class for all.
  */
 
@@ -121,28 +121,30 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
      */
     public appendBadgeToMD(markdownFile: string, newBadge: string, oldBadge: string) {
 
-        const markdownFilePath = path.join(this.PATH, markdownFile);
-        if (!fs.existsSync(markdownFilePath)) {
-            const fd = fs.openSync(markdownFilePath, 'wx+');
-            fs.writeFileSync(markdownFilePath, oldBadge, { encoding: 'utf8' });
-            fs.closeSync(fd);
-        }
-
-        const markdownFileTmp = `${markdownFilePath}.tmp`;
-        const readStream = fs.createReadStream(markdownFilePath, { encoding: 'utf8' });
-        const writeStream = fs.createWriteStream(markdownFileTmp, { encoding: 'utf8' }).on('close', () => {
-            if (fs.existsSync(markdownFile) && fs.existsSync(markdownFileTmp)) {
-                fs.rename(markdownFileTmp, markdownFile, (error) => {
-                    if (error) {
-                        Helper.error(error.message);
-                    }
-                });
+        if (newBadge !== oldBadge) {
+            const markdownFilePath = path.join(this.PATH, markdownFile);
+            if (!fs.existsSync(markdownFilePath)) {
+                const fd = fs.openSync(markdownFilePath, 'wx+');
+                fs.writeFileSync(markdownFilePath, oldBadge, { encoding: 'utf8' });
+                fs.closeSync(fd);
             }
-        });
 
-        readStream
-            .pipe(replacestream(oldBadge, newBadge, { encoding: 'utf8' }))
-            .pipe(writeStream);
+            const markdownFileTmp = `${markdownFilePath}.tmp`;
+            const readStream = fs.createReadStream(markdownFilePath, { encoding: 'utf8' });
+            const writeStream = fs.createWriteStream(markdownFileTmp, { encoding: 'utf8' }).on('close', () => {
+                if (fs.existsSync(markdownFile) && fs.existsSync(markdownFileTmp)) {
+                    fs.rename(markdownFileTmp, markdownFile, (error) => {
+                        if (error) {
+                            Helper.error(error.message);
+                        }
+                    });
+                }
+            });
+
+            readStream
+                .pipe(replacestream(oldBadge, newBadge, { encoding: 'utf8' }))
+                .pipe(writeStream);
+        }
     }
 
     /**
