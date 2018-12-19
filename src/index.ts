@@ -15,9 +15,9 @@
 import { Updater } from './updater/Updater';
 
 // Export all needed Classes
-export * from './types/IAppVersion';
-export * from './commands';
-export * from './info';
+export { IAppVersion } from './types';
+export { SetCommand, UpdateCommand } from './commands';
+export { Info } from './info';
 
 // Check for Updates
 const updater = new Updater();
