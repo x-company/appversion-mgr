@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-14 23:47:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 00:10:53
+ * @Last Modified At: 2018-12-20 00:24:40
  * @Description: Helper Functions to retrieve Values
  */
 
