@@ -1,12 +1,12 @@
 {
   "version": {
     "major": 0,
-    "minor": 2,
-    "patch": 3
+    "minor": 3,
+    "patch": 0
   },
   "build": {
     "date": "2018-12-19T00:07:04.234Z",
-    "number": 1,
+    "number": 0,
     "total": 11
   },
   "status": {
@@ -15,7 +15,6 @@
   },
   "commit": "ea953a7",
   "config": {
-    "appversion": "1.7.1",
     "ignore": [
       "node_modules",
       "bower_components",
@@ -26,6 +25,9 @@
     ],
     "markdown": [
       "README.md"
-    ]
+    ],
+    "name": null,
+    "project": null,
+    "schema": "1.8.0"
   }
 }
