@@ -5,15 +5,15 @@
     "patch": 3
   },
   "build": {
-    "date": "2018-12-19T00:00:32.427Z",
-    "number": 0,
-    "total": 10
+    "date": "2018-12-19T00:07:04.234Z",
+    "number": 1,
+    "total": 11
   },
   "status": {
     "stage": "RC",
     "number": 1
   },
-  "commit": "71f1076",
+  "commit": "ea953a7",
   "config": {
     "appversion": "1.7.1",
     "ignore": [
