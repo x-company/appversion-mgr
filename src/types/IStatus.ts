@@ -1,3 +1,4 @@
+
 /**
  * Copyright (c) 2018 IT Solutions Roland Breitschaft <info@x-company.de>
  *
@@ -9,11 +10,12 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 23:46:06
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 23:46:06
+ * @Last Modified At: 2018-12-20 00:52:33
  * @Description: The IStatus Type
  */
 
 export interface IStatus {
     stage: string | null;
     number: number;
+    badge?: string;
 }
