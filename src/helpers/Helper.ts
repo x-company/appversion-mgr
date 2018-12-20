@@ -249,6 +249,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
                 ignore: [],
                 json: [],
                 markdown: [],
+                gittag: 'vM.m.p',
             },
         };
     }
@@ -260,9 +261,12 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
         const appVersion = this.readJson();
 
         if (appVersion) {
-
-            const versionCode = (version: IAppVersion) => `v${Info.composePatternSync('M.m.p', version)}`;
-            exec(`git tag ${versionCode(appVersion)}`, (error, stdout) => {
+            let pattern = 'vM.m.p';
+            if (appVersion.config && appVersion.config.gittag) {
+                pattern = appVersion.config.gittag;
+            }
+            const gittag = Info.composePatternSync(pattern, appVersion);
+            exec(`git tag ${gittag}`, (error, stdout) => {
                 if (error) {
                     if (error.message) {
                         Helper.error(error.message);
@@ -270,7 +274,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
                         Helper.error('An unknown Error occured while Git Tag will added.');
                     }
                 } else {
-                    Helper.info(`Added Git tag '${versionCode(appVersion)}'`);
+                    Helper.info(`Added Git tag '${gittag}'`);
                 }
             });
         }
