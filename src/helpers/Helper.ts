@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 14:06:12
+ * @Last Modified At: 2018-12-20 14:12:37
  * @Description: Central Helper Class for all.
  */
 
@@ -129,6 +129,8 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             }
 
             const oldContent = fs.readFileSync(markdownFilePath, { encoding: 'utf8' });
+            console.log('oldbadge:', oldBadge);
+            console.log('newBadge:', newBadge);
             const newContent = oldContent.replace(oldBadge, newBadge);
             if (oldContent !== newContent) {
                 fs.writeFileSync(markdownFilePath, newContent, { encoding: 'utf8' });

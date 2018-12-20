@@ -68,6 +68,7 @@ export class UpdateCommand {
                 major: appVersion.version.major,
                 minor: appVersion.version.minor,
                 patch: appVersion.version.patch,
+                badge: appVersion.version.badge,
             },
         };
 
@@ -93,7 +94,7 @@ export class UpdateCommand {
         this.helper.writeJson(appVersion);
         this.helper.writeOtherJson(appVersion);
 
-        this.generator.createBadge('version', previousObj);
+        this.generator.generateVersionBadge(appVersion, previousObj);
     }
 
     /**

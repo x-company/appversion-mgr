@@ -4,12 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  *
- * @Script: BadgeHelper.ts
+ * @Script: BadgeGenerator.ts
  * @Author: Roland Breitschaft
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 12:49:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 21:24:46
+ * @Last Modified At: 2018-12-20 16:28:16
  * @Description: Helper File to generate Badges
  */
 
@@ -27,14 +27,51 @@ export class BadgeGenerator {
     }
 
     /**
-     * Generates the badge with the current version.
-     * @param {String}  tag         [Toggle version/status generation.]
-     * @param {Boolean} updateMD    [If this parameter is undefined means that the function was called by the user, so it outputs the badge code.]
-     * @param {Object}  previousAppVersion	[version/status object]
+     * Generates the Version badge with the current version.
+     *
+     * @param {IAppVersion} appVersion
+     * @param {IAppVersion} [prevAppVersion]
+     * @memberof BadgeGenerator
      */
-    public createBadge(tag: string, previousAppVersion?: IAppVersion) {
+    public generateVersionBadge(appVersion: IAppVersion, prevAppVersion?: IAppVersion) {
 
-        tag === 'status' ? this.statusBadge(previousAppVersion) : this.versionBadge(previousAppVersion);
+        const template = appVersion.version.badge;
+        const readmeCode = this.composeReadmeCode(appVersion, template);
+        if (prevAppVersion && appVersion.config) {
+            const pastReadmeCode = this.composeReadmeCode(prevAppVersion, template);
+            appVersion.config.markdown.map((file) => {
+                return this.helper.appendBadgeToMD(file, readmeCode, pastReadmeCode);
+            });
+        } else {
+            this.printReadme(readmeCode, 'Version');
+        }
+    }
+
+    /**
+     *
+     *
+     * @param {IAppVersion} appVersion
+     * @param {IAppVersion} [prevAppVersion]
+     * @memberof BadgeGenerator
+     */
+    public generateStatusBadge(appVersion: IAppVersion, prevAppVersion?: IAppVersion) {
+
+        if (appVersion.status) {
+            const template = appVersion.status.badge;
+            const readmeCode = this.composeReadmeCode(appVersion, template);
+
+            if (prevAppVersion && prevAppVersion.status) {
+                const pastReadmeCode = this.composeReadmeCode(prevAppVersion, template);
+
+                if (appVersion.config) {
+                    appVersion.config.markdown.map((file) => {
+                        return this.helper.appendBadgeToMD(file, readmeCode, pastReadmeCode);
+                    });
+                }
+            } else {
+                this.printReadme(readmeCode, 'status');
+            }
+        }
     }
 
     private composeReadmeCode(appVersion: IAppVersion, badge: string | undefined): string {
@@ -58,43 +95,6 @@ export class BadgeGenerator {
             return badge;
         }
         return '';
-    }
-
-    private versionBadge(previousAppVersion?: IAppVersion) {
-        const appVersion = this.helper.readJson();
-
-        if (appVersion) {
-            const readmeCode = this.composeReadmeCode(appVersion, appVersion.version.badge);
-
-            if (previousAppVersion && appVersion.config) {
-                const pastReadmeCode = this.composeReadmeCode(previousAppVersion, previousAppVersion.version.badge);
-                appVersion.config.markdown.map((file) => {
-                    return this.helper.appendBadgeToMD(file, readmeCode, pastReadmeCode);
-                });
-            } else {
-                this.printReadme(readmeCode, 'Version');
-            }
-        }
-    }
-
-    private statusBadge(previousAppVersion?: IAppVersion) {
-        const appVersion = this.helper.readJson();
-
-        if (appVersion && appVersion.status) {
-            const readmeCode = this.composeReadmeCode(appVersion, appVersion.status.badge);
-
-            if (previousAppVersion && previousAppVersion.status) {
-                const pastReadmeCode = this.composeReadmeCode(previousAppVersion, previousAppVersion.status.badge);
-
-                if (appVersion.config) {
-                    appVersion.config.markdown.map((file) => {
-                        return this.helper.appendBadgeToMD(file, readmeCode, pastReadmeCode);
-                    });
-                }
-            } else {
-                this.printReadme(readmeCode, 'status');
-            }
-        }
     }
 
     private printReadme(code: string, tag: string) {
