@@ -9,13 +9,13 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 02:38:51
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 21:55:00
+ * @Last Modified At: 2018-12-20 13:57:53
  * @Description: Central Update Class to update the Versions
  */
 
 import { IAppVersion } from '../types/IAppVersion';
 import { Helper } from '../helpers/Helper';
-import { BadgeHelper } from '../helpers/BadgeHelper';
+import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { exec } from 'child_process';
 import { Info } from '../info';
 
@@ -23,11 +23,11 @@ import { Info } from '../info';
 export class UpdateCommand {
 
     private helper: Helper;
-    private badgeHelper: BadgeHelper;
+    private generator: BadgeGenerator;
 
     constructor(private directory?: string) {
         this.helper = new Helper(directory);
-        this.badgeHelper = new BadgeHelper(directory);
+        this.generator = new BadgeGenerator(directory);
     }
 
     /**
@@ -68,6 +68,7 @@ export class UpdateCommand {
                 major: appVersion.version.major,
                 minor: appVersion.version.minor,
                 patch: appVersion.version.patch,
+                badge: appVersion.version.badge,
             },
         };
 
@@ -93,7 +94,7 @@ export class UpdateCommand {
         this.helper.writeJson(appVersion);
         this.helper.writeOtherJson(appVersion);
 
-        this.badgeHelper.createBadge('version', true, previousObj);
+        this.generator.generateVersionBadge(appVersion, previousObj);
     }
 
     /**

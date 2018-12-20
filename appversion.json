@@ -1,33 +1,27 @@
 {
   "version": {
     "major": 0,
-    "minor": 3,
-    "patch": 2
+    "minor": 4,
+    "patch": 0,
+    "badge": "[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/${M.m.p})"
   },
   "build": {
-    "date": "2018-12-19T20:56:04.143Z",
+    "date": "2018-12-20T16:10:43.330Z",
     "number": 2,
-    "total": 17
+    "total": 26
   },
   "status": {
     "stage": "RC",
-    "number": 1
+    "number": 1,
+    "badge": "[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)"
   },
-  "commit": "1039cd9",
+  "commit": "95b1e21",
   "config": {
-    "ignore": [
-      "node_modules",
-      "bower_components",
-      ".git"
-    ],
-    "json": [
-      "package.json"
-    ],
+    "ignore": [],
+    "json": [],
     "markdown": [
       "README.md"
     ],
-    "name": "AppVersionManager",
-    "project": "appversion-mgr",
-    "schema": "1.8.0"
+    "schema": "1.9.0"
   }
 }

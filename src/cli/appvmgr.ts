@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 21:28:26
+ * @Last Modified At: 2018-12-20 16:51:07
  * @Description: The CLI Application
  */
 
@@ -19,7 +19,7 @@ import { Command } from 'commander';
 import { UpdateCommand, SetCommand } from '../commands';
 import { Info } from '../info';
 import { Helper } from '../helpers/Helper';
-import { BadgeHelper } from '../helpers/BadgeHelper';
+import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { Updater } from '../updater/Updater';
 
 const program = new Command();
@@ -80,7 +80,7 @@ program
 
 program
     .command('set-status <status>')
-    .description('Sets a specific status, the <status> stage can be stable|rc|beta|alpha and the number must be a number')
+    .description('Sets a specific status, the <status> stage can be stable|rc|beta|alpha|prerelease and the number must be a number')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .action((status, options) => {
 
@@ -98,8 +98,22 @@ program
 
         const directory: string = options.directory || undefined;
 
-        const command = new BadgeHelper(directory);
-        command.createBadge(param);
+        const generator = new BadgeGenerator(directory);
+        if (param === 'status' || param === 'version') {
+            const appVersion = Info.getAppVersionSync(directory);
+            if (appVersion) {
+                if (param === 'status') {
+                    generator.generateStatusBadge(appVersion);
+                } else if (param === 'version') {
+                    generator.generateVersionBadge(appVersion);
+                }
+                Helper.info('Copy generated Badges to your Markdown Files, defined in your appversion.json.');
+            } else {
+                Helper.error('Current appversion.json could not readed.');
+            }
+        } else {
+            Helper.error('Please type "status" or "version".');
+        }
     });
 
 program

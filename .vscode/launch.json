@@ -4,7 +4,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Jasmine Unit Tests",
+            "name": "Launch Unit Tests",
             "program": "${workspaceFolder}/node_modules/.bin/jasmine-ts",
             "cwd": "${workspaceFolder}",
             "args": [
@@ -28,38 +28,12 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch the Module",
-            "cwd": "${workspaceFolder}",
-            "args": [
-                "${workspaceFolder}/${relativeFile}"
-            ],
-            "env": {
-                "NODE_ENV": "development",
-                "NODE_CONFIG_DIR": "${workspaceFolder}"
-            },
-            "runtimeArgs": [
-                "-r",
-                "ts-node/register"
-            ],
-            "sourceMaps": true,
-            "internalConsoleOptions": "neverOpen",
-            "protocol": "inspector",
-            "console": "integratedTerminal",
-            "windows": {
-                "args": [
-                    "${workspaceFolder}\\${relativeFile}"
-                ]
-            }
-        },
-        {
-            "type": "node",
-            "request": "launch",
             "name": "Launch CLI",
             "cwd": "${workspaceFolder}",
             "args": [
                 "${workspaceFolder}/bin/appvmgr",
-                "set-status",
-                "RC.4",
+                "update",
+                "patch",
                 "-d",
                 "${workspaceFolder}"
             ],

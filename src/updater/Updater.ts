@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 18:49:20
+ * @Last Modified At: 2018-12-20 14:06:46
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -31,12 +31,12 @@ export class Updater {
      * @returns {IAppVersion} The updated AppVersion Object
      * @memberof Updater
      */
-    public static checkSchemaUpdate(appVersion: any): IAppVersion {
+    public static checkSchemaUpdate(appVersion: any, helper: Helper): IAppVersion {
         const schemaVersion = Info.getSchemaVersion();
         if ((appVersion.config.appversion && appVersion.config.appversion !== schemaVersion) || appVersion.config.schema !== schemaVersion) {
             Helper.info('Schema of appversion.json is outdated. Perform schema update ...');
             appVersion = Updater.updateSchema(appVersion);
-            Helper.info('Schema of appversion.json updated to the latest version.');
+            helper.writeJson(appVersion, 'Schema of appversion.json updated to the latest version.');
         }
         return appVersion;
     }
@@ -91,13 +91,19 @@ export class Updater {
         // if the "config" filed is not present in the json we add it
         if (!appVersion.config) {
             appVersion.config = {
-                name: null,
-                projectName: null,
                 schema: schemaVersion,
                 ignore: [],
                 markdown: [],
                 json: [],
             };
+        }
+
+        if (!appVersion.version.badge) {
+            appVersion.version.badge = '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)';
+        }
+
+        if (!appVersion.status.badge) {
+            appVersion.status.badge = '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)';
         }
 
         // if the "ignore" filed is present in the json we move it to config
@@ -117,25 +123,25 @@ export class Updater {
         }
 
         // if the "package.json" and "bower.json" are present in the "config.json" array field, we remove them
-        // if (appVersion.config.json.indexOf('package.json') > -1) {
-        //     appVersion.config.json.splice(appVersion.config.json.indexOf('package.json'), 1);
-        // }
+        if (appVersion.config.json.indexOf('package.json') > -1) {
+            appVersion.config.json.splice(appVersion.config.json.indexOf('package.json'), 1);
+        }
 
         if (appVersion.config.json.indexOf('bower.json') > -1) {
             appVersion.config.json.splice(appVersion.config.json.indexOf('bower.json'), 1);
         }
 
+        if (appVersion.config.name) {
+            delete appVersion.config.name;
+        }
+
+        if (appVersion.config.project) {
+            delete appVersion.config.project;
+        }
+
         // Remove the appversion field
         if (appVersion.appversion) {
             delete appVersion.appversion;
-        }
-
-        if (!appVersion.config.name) {
-            appVersion.config.name = null;
-        }
-
-        if (!appVersion.config.project) {
-            appVersion.config.project = null;
         }
 
         // updates the appversion.json version number

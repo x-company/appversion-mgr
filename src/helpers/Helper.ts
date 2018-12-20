@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-19 21:54:26
+ * @Last Modified At: 2018-12-20 16:57:28
  * @Description: Central Helper Class for all.
  */
 
@@ -55,7 +55,7 @@ export class Helper {
     constructor(directory?: string) {
 
         if (!directory) {
-            directory = findRoot(__dirname);
+            directory = findRoot(process.cwd());
         }
 
         this.PATH = path.resolve(directory);
@@ -92,7 +92,7 @@ export class Helper {
             let appVersion: IAppVersion = JSON.parse(appVersionContent) as IAppVersion;
 
             // checks if the appversion.json is at the latest version
-            appVersion = Updater.checkSchemaUpdate(appVersion);
+            appVersion = Updater.checkSchemaUpdate(appVersion, this);
 
             return appVersion;
 
@@ -134,21 +134,6 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
                 fs.writeFileSync(markdownFilePath, newContent, { encoding: 'utf8' });
 
             }
-            // const markdownFileTmp = `${markdownFilePath}.tmp`;
-            // const readStream = fs.createReadStream(markdownFilePath, { encoding: 'utf8' });
-            // const writeStream = fs.createWriteStream(markdownFileTmp, { encoding: 'utf8' }).on('close', () => {
-            //     if (fs.existsSync(markdownFile) && fs.existsSync(markdownFileTmp)) {
-            //         fs.rename(markdownFileTmp, markdownFile, (error) => {
-            //             if (error) {
-            //                 Helper.error(error.message);
-            //             }
-            //         });
-            //     }
-            // });
-
-            // readStream
-            //     .pipe(replacestream(oldBadge, newBadge, { encoding: 'utf8' }))
-            //     .pipe(writeStream);
         }
     }
 
@@ -190,9 +175,16 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
 
         // ignore every subfolder in the project
         if (appVersion.config) {
+            // Check for Ignore All is setted
             if (appVersion.config.ignore.indexOf('*') > -1) {
                 return;
             }
+
+            // default ignored subfolders
+            appVersion.config.ignore.push('node_modules', 'bower_components', '.git');
+
+            // default json files
+            appVersion.config.json.push('package.json');
 
             const walker = walk(path.resolve(this.PATH), {
                 followLinks: false,
@@ -206,6 +198,9 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
                     try {
                         fileObj = JSON.parse(fs.readFileSync(path.resolve(root, fileStats.name), 'utf8'));
                     } catch (err) {
+                        if (err && err.Message) {
+                            Helper.error(err.Message);
+                        }
                         return;
                     }
 
@@ -228,6 +223,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             major: 0,
             minor: 1,
             patch: 0,
+            badge: '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)',
         };
 
         const packageJsonVerison = this.getPackageJsonVersion();
@@ -245,23 +241,14 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             status: {
                 stage: null,
                 number: 0,
+                badge: '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)',
             },
             commit: null,
             config: {
-                name: null,
-                project: null,
                 schema: Info.getSchemaVersion(),
-                ignore: [
-                    'node_modules',
-                    'bower_components',
-                    '.git',
-                ],
-                json: [
-                    'package.json',
-                ],
-                markdown: [
-                    'README.md',
-                ],
+                ignore: [],
+                json: [],
+                markdown: [],
             },
         };
     }
@@ -277,7 +264,11 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             const versionCode = (version: IAppVersion) => `v${Info.composePatternSync('M.m.p', version)}`;
             exec(`git tag ${versionCode(appVersion)}`, (error, stdout) => {
                 if (error) {
-                    Helper.error('Tag not added, no Git repository found.');
+                    if (error.message) {
+                        Helper.error(error.message);
+                    } else {
+                        Helper.error('An unknown Error occured while Git Tag will added.');
+                    }
                 } else {
                     Helper.info(`Added Git tag '${versionCode(appVersion)}'`);
                 }
