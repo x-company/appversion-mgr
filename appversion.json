@@ -5,9 +5,9 @@
     "patch": 4
   },
   "build": {
-    "date": "2018-12-19T22:59:28.246Z",
-    "number": 1,
-    "total": 21
+    "date": "2018-12-20T12:47:32.294Z",
+    "number": 2,
+    "total": 22
   },
   "status": {
     "stage": "RC",
@@ -15,14 +15,8 @@
   },
   "commit": "83bc505",
   "config": {
-    "ignore": [
-      "node_modules",
-      "bower_components",
-      ".git"
-    ],
-    "json": [
-      "package.json"
-    ],
+    "ignore": [],
+    "json": [],
     "markdown": [
       "README.md"
     ],
