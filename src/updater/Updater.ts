@@ -154,7 +154,7 @@ export class Updater {
     }
 
     private static isEmptyString(value: string): boolean {
-        if(value){
+        if (value) {
             return typeof value === 'string' && !value.trim() || typeof value === 'undefined' || value === null;
         }
         return true;
