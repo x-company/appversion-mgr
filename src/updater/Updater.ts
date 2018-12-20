@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 14:06:46
+ * @Last Modified At: 2018-12-20 22:35:01
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -33,6 +33,8 @@ export class Updater {
      */
     public static checkSchemaUpdate(appVersion: any, helper: Helper): IAppVersion {
         const schemaVersion = Info.getSchemaVersion();
+
+        Helper.verbose('Check Data Schema:', schemaVersion);
         if ((appVersion.config.appversion && appVersion.config.appversion !== schemaVersion) || appVersion.config.schema !== schemaVersion) {
             Helper.info('Schema of appversion.json is outdated. Perform schema update ...');
             appVersion = Updater.updateSchema(appVersion);
@@ -48,6 +50,8 @@ export class Updater {
      * @memberof Updater
      */
     public static checkUpdate() {
+
+        Helper.verbose('Check for Programm Updates');
 
         const currentVersion = Info.getProductVersion();
 
