@@ -1,21 +1,21 @@
 {
   "version": {
     "major": 0,
-    "minor": 3,
-    "patch": 4,
+    "minor": 4,
+    "patch": 0,
     "badge": "[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/${M.m.p})"
   },
   "build": {
-    "date": "2018-12-20T15:57:45.704Z",
-    "number": 1,
-    "total": 24
+    "date": "2018-12-20T16:10:43.330Z",
+    "number": 2,
+    "total": 26
   },
   "status": {
     "stage": "RC",
     "number": 1,
     "badge": "[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)"
   },
-  "commit": "83bc505",
+  "commit": "95b1e21",
   "config": {
     "ignore": [],
     "json": [],
