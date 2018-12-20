@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 00:20:27
+ * @Last Modified At: 2018-12-20 00:51:38
  * @Description: Central Helper Class for all.
  */
 
@@ -213,7 +213,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
                     try {
                         fileObj = JSON.parse(fs.readFileSync(path.resolve(root, fileStats.name), 'utf8'));
                     } catch (err) {
-                        if(err && err.Message){
+                        if (err && err.Message) {
                             Helper.error(err.Message);
                         }
                         return;
@@ -238,6 +238,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             major: 0,
             minor: 1,
             patch: 0,
+            badge: '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)',
         };
 
         const packageJsonVerison = this.getPackageJsonVersion();
@@ -255,11 +256,10 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             status: {
                 stage: null,
                 number: 0,
+                badge: '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)',
             },
             commit: null,
             config: {
-                name: null,
-                project: null,
                 schema: Info.getSchemaVersion(),
                 ignore: [],
                 json: [],
