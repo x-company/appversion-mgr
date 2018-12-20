@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 00:51:38
+ * @Last Modified At: 2018-12-20 14:06:12
  * @Description: Central Helper Class for all.
  */
 
@@ -92,7 +92,7 @@ export class Helper {
             let appVersion: IAppVersion = JSON.parse(appVersionContent) as IAppVersion;
 
             // checks if the appversion.json is at the latest version
-            appVersion = Updater.checkSchemaUpdate(appVersion);
+            appVersion = Updater.checkSchemaUpdate(appVersion, this);
 
             return appVersion;
 
