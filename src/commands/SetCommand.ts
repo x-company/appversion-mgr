@@ -79,20 +79,16 @@ export class SetCommand {
     }
 
     /**
-     * Sets a specific status.
-     * @param {String} newStatus [status string "stable|rc|beta|alpha"]
+     * Sets a specific status.     *
+     *
+     * @param {String} newStatus A string which represented the current Status
+     * @memberof SetCommand
      */
     public setStatus(status: string) {
 
         const splittedStatus = status.split('.');
         if (splittedStatus[1] && isNaN(parseInt(splittedStatus[1], 10))) {
             Helper.error('Insert a valid status.number number');
-            return null;
-        }
-
-        const match = ['Stable', 'stable', 'RC', 'rc', 'Beta', 'beta', 'Alpha', 'alpha', 'PreRelease', 'prerelease'];
-        if (match.indexOf(splittedStatus[0]) === -1) {
-            Helper.error('Insert a valid status.stage string.');
             return null;
         }
 
