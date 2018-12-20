@@ -2,16 +2,18 @@
   "version": {
     "major": 0,
     "minor": 3,
-    "patch": 4
+    "patch": 4,
+    "badge": "[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/${M.m.p})"
   },
   "build": {
-    "date": "2018-12-20T12:47:32.294Z",
-    "number": 2,
-    "total": 22
+    "date": "2018-12-20T15:57:45.704Z",
+    "number": 1,
+    "total": 24
   },
   "status": {
     "stage": "RC",
-    "number": 1
+    "number": 1,
+    "badge": "[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)"
   },
   "commit": "83bc505",
   "config": {
@@ -20,8 +22,6 @@
     "markdown": [
       "README.md"
     ],
-    "name": "AppVersionManager",
-    "project": "appversion-mgr",
-    "schema": "1.8.0"
+    "schema": "1.9.0"
   }
 }
