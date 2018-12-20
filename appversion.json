@@ -6,16 +6,16 @@
     "badge": "[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/${M.m.p})"
   },
   "build": {
-    "date": "2018-12-20T16:10:43.330Z",
-    "number": 2,
-    "total": 26
+    "date": "2018-12-20T16:21:14.147Z",
+    "number": 3,
+    "total": 27
   },
   "status": {
     "stage": "RC",
     "number": 1,
     "badge": "[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)"
   },
-  "commit": "95b1e21",
+  "commit": "c76f179",
   "config": {
     "ignore": [],
     "json": [],
