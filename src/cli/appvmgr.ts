@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 16:33:12
+ * @Last Modified At: 2018-12-20 16:51:07
  * @Description: The CLI Application
  */
 
@@ -107,6 +107,7 @@ program
                 } else if (param === 'version') {
                     generator.generateVersionBadge(appVersion);
                 }
+                Helper.info('Copy generated Badges to your Markdown Files, defined in your appversion.json.');
             } else {
                 Helper.error('Current appversion.json could not readed.');
             }
