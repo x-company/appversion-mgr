@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-18 01:20:07
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 00:24:59
+ * @Last Modified At: 2018-12-20 00:44:33
  * @Description: It's a Helper Class to work with AppVersion Elements
  */
 
@@ -210,7 +210,7 @@ export class Info {
     }
 
     private static PROG_VERSION: string = '0.1.0';
-    private static SCHEMA_VERSION: string = '1.8.0';
+    private static SCHEMA_VERSION: string = '1.9.0';
 
     /**
      * Returns the correspondent obj parameter, if not, it returns the given pattern.
