@@ -18,4 +18,5 @@ export interface IConfig {
     markdown: string[];
     json: string[];
     ignore: string[];
+    gittag?: string;
 }
