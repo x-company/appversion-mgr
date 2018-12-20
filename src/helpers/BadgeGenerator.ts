@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 12:49:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 22:56:53
+ * @Last Modified At: 2018-12-20 23:07:02
  * @Description: Helper File to generate Badges
  */
 
@@ -39,6 +39,8 @@ export class BadgeGenerator {
      */
     public generateVersionBadge(appVersion: IAppVersion, prevAppVersion?: IAppVersion) {
 
+        Helper.verbose('Generate Version Badge');
+
         const template = appVersion.version.badge;
         const readmeCode = this.composeReadmeCode(appVersion, template);
         if (prevAppVersion && appVersion.config) {
@@ -59,6 +61,8 @@ export class BadgeGenerator {
      * @memberof BadgeGenerator
      */
     public generateStatusBadge(appVersion: IAppVersion, prevAppVersion?: IAppVersion) {
+
+        Helper.verbose('Generate Status Badge');
 
         if (appVersion.status) {
             const template = appVersion.status.badge;
@@ -86,6 +90,8 @@ export class BadgeGenerator {
      */
     private appendBadgeToMD(markdownFile: string, newBadge: string, oldBadge: string) {
 
+        Helper.verbose('Append Badge to Markdown');
+
         if (newBadge !== oldBadge) {
             const markdownFilePath = path.join(this.helper.PATH, markdownFile);
             if (!fs.existsSync(markdownFilePath)) {
@@ -100,6 +106,8 @@ export class BadgeGenerator {
                 fs.writeFileSync(markdownFilePath, newContent, { encoding: 'utf8' });
 
             }
+        }else{
+            Helper.verbose('Old and New Badge are equal. Nothing to do.');
         }
     }
 

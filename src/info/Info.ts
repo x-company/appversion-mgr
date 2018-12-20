@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-18 01:20:07
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 00:44:33
+ * @Last Modified At: 2018-12-20 23:10:25
  * @Description: It's a Helper Class to work with AppVersion Elements
  */
 
@@ -27,6 +27,9 @@ export class Info {
      * @memberof Info
      */
     public static getProductVersion() {
+
+        Helper.verbose('Get Product Version');
+
         let installPath: string | undefined;
         try {
             const indexFile = require.resolve('appversion-mgr');
@@ -53,6 +56,9 @@ export class Info {
      * @memberof Info
      */
     public static getSchemaVersion(): string {
+
+        Helper.verbose('Get Data Schema Version');
+
         return Info.SCHEMA_VERSION;
     }
 
@@ -66,6 +72,9 @@ export class Info {
      * @memberof Info
      */
     public static getAppVersionSync(directory?: string): IAppVersion | null {
+
+        Helper.verbose('Get AppVersion Sync');
+
         try {
             const helper = new Helper(directory);
             const appVersion = helper.readJson();
@@ -88,6 +97,8 @@ export class Info {
      * @memberof Info
      */
     public static getAppVersion(directory?: string): Promise<IAppVersion> {
+
+        Helper.verbose('Get AppVersion ASync');
 
         return new Promise<IAppVersion>((resolve, reject) => {
             const helper = new Helper(directory);
@@ -126,6 +137,8 @@ export class Info {
      */
     public static composePatternSync(pattern: string, appVersion: IAppVersion): string;
     public static composePatternSync(pattern: string, appVersionOrDirectory?: string | IAppVersion): string {
+
+        Helper.verbose('Compose Pattern Sync');
 
         let appVersion: IAppVersion;
         if (!appVersionOrDirectory) {
@@ -174,6 +187,8 @@ export class Info {
      */
     public static composePattern(pattern: string, appVersion: IAppVersion): Promise<string>;
     public static composePattern(pattern: string, appVersionOrDirectory?: IAppVersion | string): Promise<string> {
+
+        Helper.verbose('Compose Pattern ASync');
 
         return new Promise<string>((resolve, reject) => {
             let appVersion: IAppVersion;

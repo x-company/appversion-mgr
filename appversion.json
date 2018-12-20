@@ -2,24 +2,27 @@
   "version": {
     "major": 0,
     "minor": 5,
-    "patch": 0
+    "patch": 0,
+    "badge": "[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/${M.m.p})"
   },
   "build": {
-    "date": "2018-12-20T21:48:08.358Z",
-    "number": 6,
-    "total": 6
+    "date": "2018-12-20T22:10:48.426Z",
+    "number": 4,
+    "total": 34
   },
   "status": {
-    "stage": null,
-    "number": 0,
-    "badge": "[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)"
+    "stage": "preview",
+    "number": 1,
+    "badge": "[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)"
   },
   "commit": null,
   "config": {
     "schema": "1.10.0",
     "ignore": [],
     "json": [],
-    "markdown": [],
+    "markdown": [
+      "README.md"
+    ],
     "gittag": "vM.m.p"
   }
 }
