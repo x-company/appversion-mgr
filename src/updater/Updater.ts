@@ -131,12 +131,18 @@ export class Updater {
             appVersion.config.json.splice(appVersion.config.json.indexOf('bower.json'), 1);
         }
 
+        // Remove name Field
         if (appVersion.config.name) {
             delete appVersion.config.name;
         }
 
+        // Remove project Field
         if (appVersion.config.project) {
             delete appVersion.config.project;
+        }
+
+        if (Updater.isEmptyString(appVersion.config.gittag)) {
+            appVersion.config.gittag = 'vM.m.p';
         }
 
         // Remove the appversion field
