@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 02:38:51
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 22:52:44
+ * @Last Modified At: 2018-12-21 00:22:44
  * @Description: Central Update Class to update the Versions
  */
 
@@ -66,12 +66,7 @@ export class UpdateCommand {
     private updateVersion(appVersion: IAppVersion, action: string) {
 
         const previousObj: IAppVersion = {
-            version: {
-                major: appVersion.version.major,
-                minor: appVersion.version.minor,
-                patch: appVersion.version.patch,
-                badge: appVersion.version.badge,
-            },
+            version: appVersion.version,
         };
 
         if (action === 'major') {
@@ -105,6 +100,12 @@ export class UpdateCommand {
     private updateBuild(appVersion: IAppVersion) {
 
         if (appVersion.build) {
+
+            const previousObj: IAppVersion = {
+                version: appVersion.version,
+                build: appVersion.build,
+            };
+
             // The date is a string representing the Date object
             appVersion.build.date = new Date();
             appVersion.build.number++;
@@ -112,6 +113,8 @@ export class UpdateCommand {
 
             const message = `Build updated to ${Info.composePatternSync('n/t', appVersion)}`;
             this.helper.writeJson(appVersion, message);
+
+            this.generator.generateBuildBadge(appVersion, previousObj);
         }
     }
 
@@ -121,14 +124,18 @@ export class UpdateCommand {
     private async updateCommit(appVersion: IAppVersion) {
 
         await exec('git log --oneline', (error, stdout) => {
-            if (error) {
-                appVersion.commit = null;
-                Helper.error('No Git repository found.');
+            if (appVersion.git) {
+                if (error) {
+                    appVersion.git.commit = null;
+                    Helper.error('No Git repository found.');
+                } else {
+                    appVersion.git.commit = stdout.substring(0, 7);
+                    Helper.info(`Commit updated to ${stdout.substring(0, 7)}`);
+                }
+
                 this.helper.writeJson(appVersion);
             } else {
-                appVersion.commit = stdout.substring(0, 7);
-                Helper.info(`Commit updated to ${stdout.substring(0, 7)}`);
-                this.helper.writeJson(appVersion);
+                Helper.error('No git Configuration found in appversion.json');
             }
         });
     }

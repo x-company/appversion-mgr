@@ -38,9 +38,11 @@ export class GitCommand {
         const appVersion = this.helper.readJson();
 
         if (appVersion) {
-            let pattern = 'vM.m.p';
-            if (appVersion.config && appVersion.config.gittag) {
-                pattern = appVersion.config.gittag;
+            const schema = Info.getDataSchemaAsObject();
+
+            let pattern = schema.git ? schema.git.tag : '';
+            if (appVersion.git) {
+                pattern = appVersion.git.tag;
             }
             const gittag = Info.composePatternSync(pattern, appVersion);
             exec(`git tag ${gittag}`, (error, stdout) => {

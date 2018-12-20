@@ -9,12 +9,12 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-18 01:20:07
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 23:10:25
+ * @Last Modified At: 2018-12-21 00:39:05
  * @Description: It's a Helper Class to work with AppVersion Elements
  */
 
 import path from 'path';
-import { IAppVersion } from '../types';
+import { IAppVersion, IVersion } from '../types';
 import { Helper } from '../helpers/Helper';
 
 export class Info {
@@ -224,8 +224,48 @@ export class Info {
         });
     }
 
+    /**
+     * Creates an emtpy AppVersion Object
+     *
+     * @static
+     * @returns {IAppVersion}
+     * @memberof CreateCommand
+     */
+    public static getDataSchemaAsObject(): IAppVersion {
+
+        return {
+            version: {
+                major: 0,
+                minor: 1,
+                patch: 0,
+                badge: '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)',
+            },
+            build: {
+                date: null,
+                number: 0,
+                total: 0,
+                badge: '[![AppVersionManager-build](https://img.shields.io/badge/Builds-${t}-brightgreen.svg?style=flat)](#define-a-url)',
+            },
+            status: {
+                stage: null,
+                number: 0,
+                badge: '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)',
+            },
+            git: {
+                commit: null,
+                tag: 'vM.m.p',
+            },
+            config: {
+                schema: Info.getSchemaVersion(),
+                ignore: [],
+                json: [],
+                markdown: [],
+            },
+        };
+    }
+
     private static PROG_VERSION: string = '0.1.0';
-    private static SCHEMA_VERSION: string = '1.10.0';
+    private static SCHEMA_VERSION: string = '1.11.0';
 
     /**
      * Returns the correspondent obj parameter, if not, it returns the given pattern.
@@ -256,17 +296,17 @@ export class Info {
             case 'p' || 'f':
                 return appVersion.version.patch;
             case 'S':
-                return appVersion.status ? appVersion.status.stage : null;
+                return appVersion.status ? appVersion.status.stage : '';
             case 's':
-                return appVersion.status ? appVersion.status.number : null;
+                return appVersion.status ? appVersion.status.number : '';
             case 'n':
-                return appVersion.build ? appVersion.build.number : null;
+                return appVersion.build ? appVersion.build.number : '';
             case 't':
-                return appVersion.build ? appVersion.build.total : null;
+                return appVersion.build ? appVersion.build.total : '';
             case 'd':
-                return appVersion.build ? appVersion.build.date : null;
+                return appVersion.build ? appVersion.build.date : '';
             case 'c':
-                return appVersion.commit ? appVersion.commit : null;
+                return appVersion.git ? appVersion.git.commit : '';
             default:
                 return pattern;
         }

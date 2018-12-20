@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 12:49:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 23:07:02
+ * @Last Modified At: 2018-12-21 00:17:44
  * @Description: Helper File to generate Badges
  */
 
@@ -41,20 +41,13 @@ export class BadgeGenerator {
 
         Helper.verbose('Generate Version Badge');
 
-        const template = appVersion.version.badge;
-        const readmeCode = this.composeReadmeCode(appVersion, template);
-        if (prevAppVersion && appVersion.config) {
-            const pastReadmeCode = this.composeReadmeCode(prevAppVersion, template);
-            appVersion.config.markdown.map((file) => {
-                return this.appendBadgeToMD(file, readmeCode, pastReadmeCode);
-            });
-        } else {
-            this.printReadme(readmeCode, 'Version');
+        if (appVersion.version && appVersion.version.badge) {
+            this.generateBadge('Version', appVersion.version.badge, appVersion, prevAppVersion);
         }
     }
 
     /**
-     *
+     * Generates the Status badge with the current status.
      *
      * @param {IAppVersion} appVersion
      * @param {IAppVersion} [prevAppVersion]
@@ -64,21 +57,41 @@ export class BadgeGenerator {
 
         Helper.verbose('Generate Status Badge');
 
-        if (appVersion.status) {
-            const template = appVersion.status.badge;
-            const readmeCode = this.composeReadmeCode(appVersion, template);
+        if (appVersion.status && appVersion.status.badge) {
+            this.generateBadge('Status', appVersion.status.badge, appVersion, prevAppVersion);
+        }
+    }
 
-            if (prevAppVersion && prevAppVersion.status) {
-                const pastReadmeCode = this.composeReadmeCode(prevAppVersion, template);
+    /**
+     * Generates the Build badge with the current build status.
+     *
+     * @param {IAppVersion} appVersion
+     * @param {IAppVersion} [prevAppVersion]
+     * @memberof BadgeGenerator
+     */
+    public generateBuildBadge(appVersion: IAppVersion, prevAppVersion?: IAppVersion) {
 
-                if (appVersion.config) {
-                    appVersion.config.markdown.map((file) => {
-                        return this.appendBadgeToMD(file, readmeCode, pastReadmeCode);
-                    });
-                }
-            } else {
-                this.printReadme(readmeCode, 'status');
+        Helper.verbose('Generate Build Badge');
+
+        if (appVersion.build && appVersion.build.badge) {
+            this.generateBadge('Build', appVersion.build.badge, appVersion, prevAppVersion);
+        }
+    }
+
+    private generateBadge(tag: string, template: string, appVersion: IAppVersion, prevAppVersion?: IAppVersion) {
+
+        const readmeCode = this.composeReadmeCode(appVersion, template);
+
+        if (prevAppVersion) {
+            const pastReadmeCode = this.composeReadmeCode(prevAppVersion, template);
+
+            if (appVersion.config) {
+                appVersion.config.markdown.map((file) => {
+                    return this.appendBadgeToMD(file, readmeCode, pastReadmeCode);
+                });
             }
+        } else {
+            this.printReadme(readmeCode, tag);
         }
     }
 
@@ -106,7 +119,7 @@ export class BadgeGenerator {
                 fs.writeFileSync(markdownFilePath, newContent, { encoding: 'utf8' });
 
             }
-        }else{
+        } else {
             Helper.verbose('Old and New Badge are equal. Nothing to do.');
         }
     }

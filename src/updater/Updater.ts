@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 22:55:25
+ * @Last Modified At: 2018-12-21 00:46:10
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -94,23 +94,44 @@ export class Updater {
     private static updateSchema(appVersion: any): IAppVersion {
 
         const schemaVersion = Info.getSchemaVersion();
+        const schema = Info.getDataSchemaAsObject();
 
-        // if the "config" filed is not present in the json we add it
+        // Add Objects if missing
+        if (!appVersion.build) {
+            appVersion.build = schema.build;
+        }
+
         if (!appVersion.config) {
-            appVersion.config = {
-                schema: schemaVersion,
-                ignore: [],
-                markdown: [],
-                json: [],
-            };
+            appVersion.config = schema.config;
         }
 
+        if (!appVersion.git) {
+            appVersion.git = schema.git;
+        }
+
+        if (!appVersion.status) {
+            appVersion.status = schema.status;
+        }
+
+        if (!appVersion.version) {
+            appVersion.version = schema.version;
+        }
+
+        // Add Templates if missing
         if (Updater.isEmptyString(appVersion.version.badge)) {
-            appVersion.version.badge = '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)';
+            appVersion.version.badge = schema.version.badge;
         }
 
-        if (Updater.isEmptyString(appVersion.status.badge)) {
-            appVersion.status.badge = '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)';
+        if (Updater.isEmptyString(appVersion.status.badge) && schema.status) {
+            appVersion.status.badge = schema.status.badge;
+        }
+
+        if (Updater.isEmptyString(appVersion.build.badge) && schema.build) {
+            appVersion.build.badge = schema.build.badge;
+        }
+
+        if (Updater.isEmptyString(appVersion.git.tag) && schema.git) {
+            appVersion.git.tag = schema.git.tag;
         }
 
         // if the "ignore" filed is present in the json we move it to config
@@ -127,6 +148,18 @@ export class Updater {
         if (appVersion.json) {
             appVersion.config.json = appVersion.json;
             delete appVersion.json;
+        }
+
+        // if the "gittag" filed is present in the json we move it to git
+        if (appVersion.config.gittag) {
+            appVersion.git.tag = appVersion.config.gittag;
+            delete appVersion.config.gittag;
+        }
+
+        // if the "commit" filed is present in the json we move it to git
+        if (appVersion.commit) {
+            appVersion.git.commit = appVersion.commit;
+            delete appVersion.commit;
         }
 
         // if the "package.json" and "bower.json" are present in the "config.json" array field, we remove them
@@ -146,10 +179,6 @@ export class Updater {
         // Remove project Field
         if (appVersion.config.project) {
             delete appVersion.config.project;
-        }
-
-        if (Updater.isEmptyString(appVersion.config.gittag)) {
-            appVersion.config.gittag = 'vM.m.p';
         }
 
         // Remove the appversion field

@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 22:30:18
+ * @Last Modified At: 2018-12-21 00:32:40
  * @Description: The CLI Application
  */
 
@@ -134,7 +134,7 @@ program
 
 program
     .command('generate-badge <param>')
-    .description('Generates the .md code of a shield badge with the version of your application, <param> can be version|status')
+    .description('Generates the .md code of a shield badge with the version of your application, <param> can be version|status|build')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .option('-v, --verbose', 'Shows Verbose Messages')
     .action((param, options) => {
@@ -146,13 +146,15 @@ program
         const directory: string = options.directory || undefined;
 
         const generator = new BadgeGenerator(directory);
-        if (param === 'status' || param === 'version') {
+        if (param === 'status' || param === 'version' || param === 'build') {
             const appVersion = Info.getAppVersionSync(directory);
             if (appVersion) {
                 if (param === 'status') {
                     generator.generateStatusBadge(appVersion);
                 } else if (param === 'version') {
                     generator.generateVersionBadge(appVersion);
+                } else if (param === 'build') {
+                    generator.generateBuildBadge(appVersion);
                 }
                 Helper.info('Copy generated Badges to your Markdown Files, defined in your appversion.json.');
             } else {

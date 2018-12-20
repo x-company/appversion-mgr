@@ -20,6 +20,7 @@ import semver from 'semver';
 import { Helper } from '../helpers/Helper';
 import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { IAppVersion } from '../types';
+import { Info } from '../info';
 
 export class SetCommand {
 
@@ -50,30 +51,27 @@ export class SetCommand {
 
             const appVersion = this.helper.readJson();
             if (appVersion) {
+                const schema = Info.getDataSchemaAsObject();
+
                 appVersion.version.major = Number(splittedVersion[0]);
                 appVersion.version.minor = Number(splittedVersion[1]);
                 appVersion.version.patch = Number(splittedVersion[2]);
 
                 // The build number is reset whenever we update the version number
                 if (!appVersion.build) {
-                    appVersion.build = {
-                        date: null,
-                        total: 0,
-                        number: 0,
-                    };
+                    appVersion.build = schema.build;
                 }
-                appVersion.build.number = 0;
+
+                if (appVersion.build) {
+                    appVersion.build.number = 0;
+                }
+
+                const previousAppVersion = {
+                    version: appVersion.version,
+                };
 
                 this.helper.writeJson(appVersion);
                 this.helper.writeOtherJson(appVersion);
-
-                const previousAppVersion = {
-                    version: {
-                        major: appVersion.version.major,
-                        minor: appVersion.version.minor,
-                        patch: appVersion.version.patch,
-                    },
-                };
 
                 this.generator.generateVersionBadge(appVersion, previousAppVersion);
             }
@@ -97,28 +95,21 @@ export class SetCommand {
         const appVersion = this.helper.readJson();
         if (appVersion) {
 
+            const schema = Info.getDataSchemaAsObject();
             if (!appVersion.status) {
-                appVersion.status = {
-                    number: 0,
-                    stage: null,
-                };
+                appVersion.status = schema.status;
             }
 
             const previousAppVersion: IAppVersion = {
-                version: {
-                    major: appVersion.version.major,
-                    minor: appVersion.version.minor,
-                    patch: appVersion.version.patch,
-                },
-                status: {
-                    number: appVersion.status.number,
-                    stage: appVersion.status.stage,
-                },
+                version: appVersion.version,
+                status: appVersion.status,
             };
 
-            appVersion.status.stage = splittedStatus[0];
-            // if there's not the status number, it's setted to zero
-            appVersion.status.number = Number(splittedStatus[1]) || 0;
+            if (appVersion.status) {
+                appVersion.status.stage = splittedStatus[0];
+                // if there's not the status number, it's setted to zero
+                appVersion.status.number = Number(splittedStatus[1]) || 0;
+            }
 
             this.helper.writeJson(appVersion, `Status updated to ${splittedStatus[0]}.${splittedStatus[1] || 0}`);
             this.generator.generateStatusBadge(appVersion, previousAppVersion);

@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-20 20:36:23
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 22:53:27
+ * @Last Modified At: 2018-12-20 23:59:46
  * @Description: This is description.
  */
 
@@ -40,7 +40,15 @@ export class CreateCommand {
      */
     public initAppVersion() {
         if (!fs.existsSync(this.helper.FILEPATH)) {
-            const emptyAppVersion = this.createEmptyAppVersion();
+            const emptyAppVersion = Info.getDataSchemaAsObject();
+
+            const packageJsonVerison = this.getPackageJsonVersion();
+            if (packageJsonVerison) {
+                emptyAppVersion.version.major = packageJsonVerison.major;
+                emptyAppVersion.version.minor = packageJsonVerison.minor;
+                emptyAppVersion.version.patch = packageJsonVerison.patch;
+            }
+
             this.helper.writeJson(emptyAppVersion);
             Helper.info('appverison.json was created with default Values.');
         } else {
@@ -57,50 +65,6 @@ export class CreateCommand {
         this.helper.deleteJson();
         Helper.info('appversion.json was resetted to his default Values.');
         this.initAppVersion();
-    }
-
-    /**
-     * Creates an emtpy AppVersion Object
-     *
-     * @static
-     * @returns {IAppVersion}
-     * @memberof CreateCommand
-     */
-    private createEmptyAppVersion(): IAppVersion {
-
-        let defaultVersion: IVersion = {
-            major: 0,
-            minor: 1,
-            patch: 0,
-            badge: '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)',
-        };
-
-        const packageJsonVerison = this.getPackageJsonVersion();
-        if (packageJsonVerison) {
-            defaultVersion = packageJsonVerison;
-        }
-
-        return {
-            version: defaultVersion,
-            build: {
-                date: null,
-                number: 0,
-                total: 0,
-            },
-            status: {
-                stage: null,
-                number: 0,
-                badge: '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)',
-            },
-            commit: null,
-            config: {
-                schema: Info.getSchemaVersion(),
-                ignore: [],
-                json: [],
-                markdown: [],
-                gittag: 'vM.m.p',
-            },
-        };
     }
 
     /**
