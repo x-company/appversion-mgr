@@ -1,7 +1,7 @@
 # AppVersion Manager<a name="version"></a><a name="status"></a>
 
-[![AppVersionManager-version](https://img.shields.io/badge/Version-0.3.4-brightgreen.svg?style=flat)](#empty)
-[![AppVersionManager-status](https://img.shields.io/badge/Status-RC%201-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr?#status)
+[![AppVersionManager-version](https://img.shields.io/badge/Version-0.3.4-brightgreen.svg?style=flat)](#define-a-url)
+[![AppVersionManager-status](https://img.shields.io/badge/Status-RC%201-brightgreen.svg?style=flat)](#define-a-url)
 
 **AppVersion Manager** is a Fork from [dlvedor](https://github.com/delvedor) great [AppVersion](https://github.com/delvedor/appversion) CLI Tool. Thanks to your great Work. And its completly refactored and rewritten in TypeScript.
 
