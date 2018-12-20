@@ -23,8 +23,6 @@ What are the major Changes?
 
 ---
 
-** At this point follows the originial Readme from [AppVersion](https://github.com/delvedor/appversion).**
-
 **AppVersion Manager** is a CLI tool whose purpose is to provide a **unique manager** of the version of you application.
 It follows the **semver** guidelines, so the version of your code is divided in Major, Minor and Patch, [here](http://semver.org/) you can find the Semantic Versioning specification.
 In addition AppVersion keeps track of the **build** with the last build date, the build of the current version and the total number of build; it also keeps track of the **status** (stable, rc, ...) and the **commit code**.
@@ -58,16 +56,17 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
     "markdown": [],
     "json": [],
     "ignore": [],
-    "name": null,
-    "project": null
+    "gittag": null
   }
 }
 ```
 
-As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha|xxx``` or what you want value and ```number```.
+As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha|xxx``` or what you want value and a ```number```.
 
-Then, there's the ```config``` filed, divided in ```schema```, that is used by AppVersion for check if the json is at the latest version, ```markdown``` field where you can put all the markdown files that you want to keep updated (see <a href="#generateBadge">here</a> for more information).
-The two fields inside ```config``` are, ```json```, that is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore. The ```badge``` Field is used to define a Template for the Badge Generation. The Template can have Placeholders like ```${M.m.p}``` (see Patterns below). This Placeholders will replaced with ```Major.Minor.Pat```
+Then, there's the ```config``` filed, divided in ```schema```, that is used by AppVersion for check if the json is at the latest version, ```markdown``` field where you can put all the markdown files that you want to keep updated.
+The two fields inside ```config``` are, ```json```, that is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore. The ```gittag``` field is uses to define your own pattern for an Git Tag. The Default is ```M.m.p```. Details for the Pattern you find by the ```composePattern``` Method.
+
+The ```badge``` Field on the ```version``` or ```status``` Object is used to define a Template for the Badge Generation. The Template can have Placeholders like ```${M.m.p}``` (see Patterns below). This Placeholders will replaced with ```Major.Minor.Pat```.
 
 **Needs Node.js >= 4.0.0**
 
