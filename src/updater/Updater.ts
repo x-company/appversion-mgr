@@ -98,11 +98,11 @@ export class Updater {
             };
         }
 
-        if (!appVersion.version.badge) {
+        if (Updater.isEmptyString(appVersion.version.badge)) {
             appVersion.version.badge = '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)';
         }
 
-        if (!appVersion.status.badge) {
+        if (Updater.isEmptyString(appVersion.status.badge)) {
             appVersion.status.badge = '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)';
         }
 
@@ -151,5 +151,12 @@ export class Updater {
         appVersion.config.schema = schemaVersion;
 
         return appVersion;
+    }
+
+    private static isEmptyString(value: string): boolean {
+        if(value){
+            return typeof value === 'string' && !value.trim() || typeof value === 'undefined' || value === null;
+        }
+        return true;
     }
 }
