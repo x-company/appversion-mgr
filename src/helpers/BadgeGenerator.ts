@@ -18,10 +18,12 @@ import { Helper } from './Helper';
 import { IAppVersion } from '../types/IAppVersion';
 import { Info } from '../info';
 
-export class BadgeHelper extends Helper {
+export class BadgeGenerator {
+
+    private helper: Helper;
 
     constructor(directory?: string) {
-        super(directory);
+        this.helper = new Helper(directory);
     }
 
     /**
@@ -59,7 +61,7 @@ export class BadgeHelper extends Helper {
     }
 
     private versionBadge(previousAppVersion?: IAppVersion) {
-        const appVersion = this.readJson();
+        const appVersion = this.helper.readJson();
 
         if (appVersion) {
             const readmeCode = this.composeReadmeCode(appVersion, appVersion.version.badge);
@@ -67,7 +69,7 @@ export class BadgeHelper extends Helper {
             if (previousAppVersion && appVersion.config) {
                 const pastReadmeCode = this.composeReadmeCode(previousAppVersion, previousAppVersion.version.badge);
                 appVersion.config.markdown.map((file) => {
-                    return this.appendBadgeToMD(file, readmeCode, pastReadmeCode);
+                    return this.helper.appendBadgeToMD(file, readmeCode, pastReadmeCode);
                 });
             } else {
                 this.printReadme(readmeCode, 'Version');
@@ -76,7 +78,7 @@ export class BadgeHelper extends Helper {
     }
 
     private statusBadge(previousAppVersion?: IAppVersion) {
-        const appVersion = this.readJson();
+        const appVersion = this.helper.readJson();
 
         if (appVersion && appVersion.status) {
             const readmeCode = this.composeReadmeCode(appVersion, appVersion.status.badge);
@@ -86,7 +88,7 @@ export class BadgeHelper extends Helper {
 
                 if (appVersion.config) {
                     appVersion.config.markdown.map((file) => {
-                        return this.appendBadgeToMD(file, readmeCode, pastReadmeCode);
+                        return this.helper.appendBadgeToMD(file, readmeCode, pastReadmeCode);
                     });
                 }
             } else {
