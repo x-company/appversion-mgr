@@ -73,7 +73,7 @@ export class SetCommand {
                     },
                 };
 
-                this.badgeHelper.createBadge('version', true, previousAppVersion);
+                this.badgeHelper.createBadge('version', previousAppVersion);
             }
         }
     }
@@ -123,7 +123,7 @@ export class SetCommand {
             appVersion.status.number = Number(splittedStatus[1]) || 0;
 
             this.helper.writeJson(appVersion, `Status updated to ${splittedStatus[0]}.${splittedStatus[1] || 0}`);
-            this.badgeHelper.createBadge('status', true, previousAppVersion);
+            this.badgeHelper.createBadge('status', previousAppVersion);
         }
     }
 

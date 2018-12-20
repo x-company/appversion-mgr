@@ -93,7 +93,7 @@ export class UpdateCommand {
         this.helper.writeJson(appVersion);
         this.helper.writeOtherJson(appVersion);
 
-        this.badgeHelper.createBadge('version', true, previousObj);
+        this.badgeHelper.createBadge('version', previousObj);
     }
 
     /**
