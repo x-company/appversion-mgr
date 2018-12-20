@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 16:51:07
+ * @Last Modified At: 2018-12-20 17:48:25
  * @Description: The CLI Application
  */
 
@@ -21,6 +21,8 @@ import { Info } from '../info';
 import { Helper } from '../helpers/Helper';
 import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { Updater } from '../updater/Updater';
+
+Updater.checkUpdate();
 
 const program = new Command();
 
@@ -126,14 +128,6 @@ program
 
         const command = new Helper(directory);
         command.addGitTag();
-    });
-
-program
-    .command('check')
-    .description('Check for Program Updates.')
-    .action((options) => {
-
-        Updater.checkUpdate();
     });
 
 if (!process.argv.slice(2).length) {
