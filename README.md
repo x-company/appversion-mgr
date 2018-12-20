@@ -1,7 +1,9 @@
-# AppVersion Manager<a name="version"></a><a name="status"></a>
+# AppVersion Manager
 
-[![AppVersionManager-version](https://img.shields.io/badge/Version-0.3.4-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr?#version)
-[![AppVersionManager-status](https://img.shields.io/badge/Status-RC%201-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr?#status)
+<a name="status"></a>
+
+[![AppVersionManager-version](https://img.shields.io/badge/Version-0.4.2-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/0.4.2)
+[![AppVersionManager-status](https://img.shields.io/badge/Status-RC%201-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)
 
 **AppVersion Manager** is a Fork from [dlvedor](https://github.com/delvedor) great [AppVersion](https://github.com/delvedor/appversion) CLI Tool. Thanks to your great Work. And its completly refactored and rewritten in TypeScript.
 
@@ -14,9 +16,7 @@ What are the major Changes?
 - Readme.md will automatically created if it not exists
 - Fix errors while Updating the .md Files. Badges wasn't updated successfully.
 - Extend/Rewrite the API
-- Add ```name``` and ```project``` Property to the ```IConfig```-Type.
-- The ```name``` Property defines a special Badge Name per Project.
-- The ```project``` Property will used to create an clean Source Code Link
+- Badge Template can defined with replacing of Patterns.
 - Completly rewritten in TypeScript
 - Completly restructured Source Code
 
@@ -38,11 +38,13 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
   "version": {
     "major": 0,
     "minor": 0,
-    "patch": 0
+    "patch": 0,
+    "badge": null
   },
   "status": {
     "stage": null,
-    "number": 0
+    "number": 0,
+    "badge": null
   },
   "build": {
     "date": null,
@@ -64,7 +66,7 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
 As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha|prerelease``` (the first letter can be Uppercase) value and ```number```.
 
 Then, there's the ```config``` filed, divided in ```schema```, that is used by AppVersion for check if the json is at the latest version, ```markdown``` field where you can put all the markdown files that you want to keep updated (see <a href="#generateBadge">here</a> for more information).
-The two fields inside ```config``` are, ```json```, that is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore. The ```name``` Field is to create an individual Name for the Badge in the Readme. If it not given, it will used the Folder Name where the ```appversion.json``` lives. The ```project``` field is used to generate an valid Soure-Code Link, e.g. ```https://github.com/<vendor>/<project>.git```
+The two fields inside ```config``` are, ```json```, that is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore. The ```badge``` Field is used to define a Template for the Badge Generation. The Template can have Placeholders like ```${M.m.p}``` (see Patterns below). This Placeholders will replaced with ```Major.Minor.Pat```
 
 **Needs Node.js >= 4.0.0**
 
@@ -182,19 +184,19 @@ Sometimes you want to have the version/build number accessible in your applicati
 
 ```typescript
 
-import { getAppVersion, getAppVersionSync, composePattern, composePatternSync } from 'appversion-mgr';
+import { Info } from 'appversion-mgr';
 
-console.log(getAppVersionSync());
-console.log(getAppVersionSync().version);
+console.log(Info.getAppVersionSync());
+console.log(Info.getAppVersionSync().version);
 
-getAppVersion()
+Info.getAppVersion()
   .then((data) => console.log(data))
   .catch((err) => console.log(err));
 
 
-console.log(composePatternSync('M.m.p-Ss n-d'))
+console.log(Info.composePatternSync('M.m.p-Ss n-d'))
 
-composePattern('M.m.p-Ss n-d')
+Info.composePattern('M.m.p-Ss n-d')
   .then((data) => console.log(data))
   .catch((err) => console.log(err));
 

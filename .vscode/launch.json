@@ -32,7 +32,8 @@
             "cwd": "${workspaceFolder}",
             "args": [
                 "${workspaceFolder}/bin/appvmgr",
-                "add-git-tag",
+                "update",
+                "patch",
                 "-d",
                 "${workspaceFolder}"
             ],

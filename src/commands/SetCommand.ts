@@ -18,17 +18,17 @@
 import chalk from 'chalk';
 import semver from 'semver';
 import { Helper } from '../helpers/Helper';
-import { BadgeHelper } from '../helpers/BadgeHelper';
+import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { IAppVersion } from '../types';
 
 export class SetCommand {
 
     private helper: Helper;
-    private badgeHelper: BadgeHelper;
+    private generator: BadgeGenerator;
 
     constructor(directory?: string) {
         this.helper = new Helper(directory);
-        this.badgeHelper = new BadgeHelper(directory);
+        this.generator = new BadgeGenerator(directory);
     }
 
     /**
@@ -73,7 +73,7 @@ export class SetCommand {
                     },
                 };
 
-                this.badgeHelper.createBadge('version', true, previousAppVersion);
+                this.generator.generateVersionBadge(appVersion, previousAppVersion);
             }
         }
     }
@@ -123,7 +123,7 @@ export class SetCommand {
             appVersion.status.number = Number(splittedStatus[1]) || 0;
 
             this.helper.writeJson(appVersion, `Status updated to ${splittedStatus[0]}.${splittedStatus[1] || 0}`);
-            this.badgeHelper.createBadge('status', true, previousAppVersion);
+            this.generator.generateStatusBadge(appVersion, previousAppVersion);
         }
     }
 

@@ -38,7 +38,7 @@
         "**/.vscode/*/**": true
     },
     "tslint.alwaysShowStatus": true,
-    "tslint.configFile": "./src/tslint.json",
+    "tslint.configFile": "./tslint.json",
     "tslint.jsEnable": false,
     "tslint.packageManager": "yarn",
     "tslint.run": "onType",

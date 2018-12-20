@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 00:11:57
+ * @Last Modified At: 2018-12-20 17:48:25
  * @Description: The CLI Application
  */
 
@@ -19,8 +19,10 @@ import { Command } from 'commander';
 import { UpdateCommand, SetCommand } from '../commands';
 import { Info } from '../info';
 import { Helper } from '../helpers/Helper';
-import { BadgeHelper } from '../helpers/BadgeHelper';
+import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { Updater } from '../updater/Updater';
+
+Updater.checkUpdate();
 
 const program = new Command();
 
@@ -98,8 +100,22 @@ program
 
         const directory: string = options.directory || undefined;
 
-        const command = new BadgeHelper(directory);
-        command.createBadge(param);
+        const generator = new BadgeGenerator(directory);
+        if (param === 'status' || param === 'version') {
+            const appVersion = Info.getAppVersionSync(directory);
+            if (appVersion) {
+                if (param === 'status') {
+                    generator.generateStatusBadge(appVersion);
+                } else if (param === 'version') {
+                    generator.generateVersionBadge(appVersion);
+                }
+                Helper.info('Copy generated Badges to your Markdown Files, defined in your appversion.json.');
+            } else {
+                Helper.error('Current appversion.json could not readed.');
+            }
+        } else {
+            Helper.error('Please type "status" or "version".');
+        }
     });
 
 program
@@ -112,14 +128,6 @@ program
 
         const command = new Helper(directory);
         command.addGitTag();
-    });
-
-program
-    .command('check')
-    .description('Check for Program Updates.')
-    .action((options) => {
-
-        Updater.checkUpdate();
     });
 
 if (!process.argv.slice(2).length) {
