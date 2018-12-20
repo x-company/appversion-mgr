@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 22:38:47
+ * @Last Modified At: 2018-12-20 22:57:02
  * @Description: Central Helper Class for all.
  */
 
@@ -55,7 +55,7 @@ export class Helper {
     public static verbose(message: string, args?: any) {
         if (Helper.verboseEnabled) {
             if (args) {
-                Helper.info('VERBOSE: ' + message + args);
+                Helper.info('VERBOSE: ' + message + ' ' + args);
             } else {
                 Helper.info('VERBOSE: ' + message);
             }
@@ -93,6 +93,8 @@ export class Helper {
     private FILENAME: string = 'appversion.json';
 
     constructor(directory?: string, shouldCreateIfNotExists: boolean = true) {
+
+        Helper.verbose('Init Helper');
 
         if (!directory) {
             directory = findRoot(process.cwd());

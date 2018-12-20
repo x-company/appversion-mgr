@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 02:38:51
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 13:57:53
+ * @Last Modified At: 2018-12-20 22:52:44
  * @Description: Central Update Class to update the Versions
  */
 
@@ -26,6 +26,8 @@ export class UpdateCommand {
     private generator: BadgeGenerator;
 
     constructor(private directory?: string) {
+        Helper.verbose('Init UpdateCommand');
+
         this.helper = new Helper(directory);
         this.generator = new BadgeGenerator(directory);
     }

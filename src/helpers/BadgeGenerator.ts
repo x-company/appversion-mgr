@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 12:49:45
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 21:14:42
+ * @Last Modified At: 2018-12-20 22:56:53
  * @Description: Helper File to generate Badges
  */
 
@@ -25,6 +25,8 @@ export class BadgeGenerator {
     private helper: Helper;
 
     constructor(directory?: string) {
+        Helper.verbose('Init BadgeGenerator');
+
         this.helper = new Helper(directory);
     }
 

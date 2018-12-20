@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 22:35:01
+ * @Last Modified At: 2018-12-20 22:55:25
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -21,7 +21,6 @@ import { Helper } from '../helpers/Helper';
 import nfetch from 'node-fetch';
 
 export class Updater {
-
 
     /**
      * Checks the Data Schema for the right Version
@@ -39,6 +38,8 @@ export class Updater {
             Helper.info('Schema of appversion.json is outdated. Perform schema update ...');
             appVersion = Updater.updateSchema(appVersion);
             helper.writeJson(appVersion, 'Schema of appversion.json updated to the latest version.');
+        } else {
+            Helper.verbose('No Update for DataSchema needed.');
         }
         return appVersion;
     }
@@ -63,6 +64,8 @@ export class Updater {
                             const latest = json.version;
                             if (semver.gt(latest, currentVersion)) {
                                 Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
+                            } else {
+                                Helper.verbose('No new appvmgr version available.');
                             }
                         });
                 } catch (error) {

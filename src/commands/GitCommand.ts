@@ -24,6 +24,8 @@ export class GitCommand {
     private helper: Helper;
 
     constructor(directory?: string) {
+        Helper.verbose('Init GitCommand');
+
         this.helper = new Helper(directory);
     }
 

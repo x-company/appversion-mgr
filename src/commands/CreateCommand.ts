@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-20 20:36:23
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 22:31:23
+ * @Last Modified At: 2018-12-20 22:53:27
  * @Description: This is description.
  */
 
@@ -28,6 +28,8 @@ export class CreateCommand {
     private helper: Helper;
 
     constructor(directory?: string) {
+        Helper.verbose('Init CreateCommand');
+
         this.helper = new Helper(directory, false);
     }
 

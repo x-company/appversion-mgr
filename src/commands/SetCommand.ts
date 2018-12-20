@@ -27,6 +27,8 @@ export class SetCommand {
     private generator: BadgeGenerator;
 
     constructor(directory?: string) {
+        Helper.verbose('Init SetCommand');
+
         this.helper = new Helper(directory);
         this.generator = new BadgeGenerator(directory);
     }
