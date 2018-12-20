@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 00:20:55
+ * @Last Modified At: 2018-12-20 00:53:16
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -91,13 +91,19 @@ export class Updater {
         // if the "config" filed is not present in the json we add it
         if (!appVersion.config) {
             appVersion.config = {
-                name: null,
-                projectName: null,
                 schema: schemaVersion,
                 ignore: [],
                 markdown: [],
                 json: [],
             };
+        }
+
+        if (!appVersion.version.badge) {
+            appVersion.version.badge = '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)';
+        }
+
+        if (!appVersion.status.badge) {
+            appVersion.status.badge = '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)';
         }
 
         // if the "ignore" filed is present in the json we move it to config
@@ -125,17 +131,17 @@ export class Updater {
             appVersion.config.json.splice(appVersion.config.json.indexOf('bower.json'), 1);
         }
 
+        if (appVersion.config.name) {
+            delete appVersion.config.name;
+        }
+
+        if (appVersion.config.project) {
+            delete appVersion.config.project;
+        }
+
         // Remove the appversion field
         if (appVersion.appversion) {
             delete appVersion.appversion;
-        }
-
-        if (!appVersion.config.name) {
-            appVersion.config.name = null;
-        }
-
-        if (!appVersion.config.project) {
-            appVersion.config.project = null;
         }
 
         // updates the appversion.json version number
