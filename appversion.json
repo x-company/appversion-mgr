@@ -2,12 +2,12 @@
   "version": {
     "major": 0,
     "minor": 4,
-    "patch": 0,
+    "patch": 1,
     "badge": "[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/${M.m.p})"
   },
   "build": {
     "date": "2018-12-20T16:21:14.147Z",
-    "number": 3,
+    "number": 0,
     "total": 27
   },
   "status": {
