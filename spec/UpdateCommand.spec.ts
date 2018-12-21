@@ -8,7 +8,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:34:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-18 21:54:51
+ * @Last Modified At: 2018-12-21 01:23:52
  * @Description: This is description.
  */
 
@@ -19,6 +19,7 @@ import path from 'path';
 import { UpdateCommand } from '../lib/commands/UpdateCommand';
 import { IAppVersion } from '../lib/types/IAppVersion';
 import { Helper } from '../lib/helpers/Helper';
+import { Info } from '../lib/info/Info';
 
 describe('Testing Update Command', () => {
 
@@ -36,7 +37,7 @@ describe('Testing Update Command', () => {
         }
 
         const helper = new Helper(filePath);
-        const expected = helper.createEmptyAppVersion();
+        const expected = Info.getDataSchemaAsObject();
         helper.writeJson(expected);
 
         const cmd = new UpdateCommand(filePath);

@@ -11,34 +11,61 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 16:51:07
+ * @Last Modified At: 2018-12-21 00:32:40
  * @Description: The CLI Application
  */
 
 import { Command } from 'commander';
-import { UpdateCommand, SetCommand } from '../commands';
+import { UpdateCommand, SetCommand, CreateCommand, GitCommand } from '../commands';
 import { Info } from '../info';
 import { Helper } from '../helpers/Helper';
 import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { Updater } from '../updater/Updater';
 
+Updater.checkUpdate();
+
 const program = new Command();
 
 program
-    .version(Info.getProductVersion(), '-v, --version')
+    .version(Info.getProductVersion())
     .description('AppVersion Manager is a CLI tool whose purpose is to provide a unique manager of the version of you application.');
 
 program
     .command('init')
     .description('Generates the appversion.json file.')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
+    .option('-f, --force', 'Overwrites an existing appversion.json')
+    .option('-v, --verbose', 'Shows Verbose Messages')
     .action((options) => {
+
+        if (options.verbose) {
+            Helper.verboseEnabled = true;
+        }
+        const directory = options.directory || undefined;
+
+        const cmd = new CreateCommand(directory);
+        if (options.force) {
+            cmd.resetAppVersion();
+        } else {
+            cmd.initAppVersion();
+        }
+    });
+
+program
+    .command('reset')
+    .description('Resets the appversion.json file to his default Values.')
+    .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
+    .option('-v, --verbose', 'Shows Verbose Messages')
+    .action((options) => {
+
+        if (options.verbose) {
+            Helper.verboseEnabled = true;
+        }
 
         const directory = options.directory || undefined;
 
-        const helper = new Helper(directory);
-        const emptyAppVersion = helper.createEmptyAppVersion();
-        helper.writeJson(emptyAppVersion);
+        const cmd = new CreateCommand(directory);
+        cmd.resetAppVersion();
     });
 
 program
@@ -46,7 +73,12 @@ program
     .description('Updates the <action> that can be (major|breaking)|(minor|feature)|(patch|fix)|build|commit')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .option('-t, --tag', 'Adds a tag with the version number to the git repo')
+    .option('-v, --verbose', 'Shows Verbose Messages')
     .action((action, options) => {
+
+        if (options.verbose) {
+            Helper.verboseEnabled = true;
+        }
 
         const directory: string = options.directory || undefined;
         action = action || 'build';
@@ -55,8 +87,8 @@ program
         command.update(action);
 
         if (options.tag) {
-            const helper = new Helper(directory);
-            helper.addGitTag();
+            const git = new GitCommand(directory);
+            git.addGitTag();
         }
     });
 
@@ -65,7 +97,12 @@ program
     .description('Sets a specific version number, the <version> must be x.y.z')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .option('-t, --tag', 'Adds a tag with the version number to the git repo')
+    .option('-v, --verbose', 'Shows Verbose Messages')
     .action((version, options) => {
+
+        if (options.verbose) {
+            Helper.verboseEnabled = true;
+        }
 
         const directory: string = options.directory || undefined;
 
@@ -73,8 +110,8 @@ program
         command.setVersion(version);
 
         if (options.tag) {
-            const helper = new Helper(directory);
-            helper.addGitTag();
+            const git = new GitCommand(directory);
+            git.addGitTag();
         }
     });
 
@@ -82,7 +119,12 @@ program
     .command('set-status <status>')
     .description('Sets a specific status, the <status> stage can be stable|rc|beta|alpha|prerelease and the number must be a number')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
+    .option('-v, --verbose', 'Shows Verbose Messages')
     .action((status, options) => {
+
+        if (options.verbose) {
+            Helper.verboseEnabled = true;
+        }
 
         const directory: string = options.directory || undefined;
 
@@ -92,20 +134,27 @@ program
 
 program
     .command('generate-badge <param>')
-    .description('Generates the .md code of a shield badge with the version of your application, <param> can be version|status')
+    .description('Generates the .md code of a shield badge with the version of your application, <param> can be version|status|build')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
+    .option('-v, --verbose', 'Shows Verbose Messages')
     .action((param, options) => {
+
+        if (options.verbose) {
+            Helper.verboseEnabled = true;
+        }
 
         const directory: string = options.directory || undefined;
 
         const generator = new BadgeGenerator(directory);
-        if (param === 'status' || param === 'version') {
+        if (param === 'status' || param === 'version' || param === 'build') {
             const appVersion = Info.getAppVersionSync(directory);
             if (appVersion) {
                 if (param === 'status') {
                     generator.generateStatusBadge(appVersion);
                 } else if (param === 'version') {
                     generator.generateVersionBadge(appVersion);
+                } else if (param === 'build') {
+                    generator.generateBuildBadge(appVersion);
                 }
                 Helper.info('Copy generated Badges to your Markdown Files, defined in your appversion.json.');
             } else {
@@ -120,20 +169,17 @@ program
     .command('add-git-tag')
     .description('Adds a tag with the version number to the git repo.')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
+    .option('-v, --verbose', 'Shows Verbose Messages')
     .action((options) => {
+
+        if (options.verbose) {
+            Helper.verboseEnabled = true;
+        }
 
         const directory: string = options.directory || undefined;
 
-        const command = new Helper(directory);
+        const command = new GitCommand(directory);
         command.addGitTag();
-    });
-
-program
-    .command('check')
-    .description('Check for Program Updates.')
-    .action((options) => {
-
-        Updater.checkUpdate();
     });
 
 if (!process.argv.slice(2).length) {

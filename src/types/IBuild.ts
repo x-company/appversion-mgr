@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 23:45:41
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-17 23:45:41
+ * @Last Modified At: 2018-12-20 23:44:59
  * @Description: The IBuild Type
  */
 
@@ -17,4 +17,5 @@ export interface IBuild {
     date: Date | null;
     number: number;
     total: number;
+    badge?: string;
 }

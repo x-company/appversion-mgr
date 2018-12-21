@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 14:06:46
+ * @Last Modified At: 2018-12-21 01:41:04
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -22,7 +22,6 @@ import nfetch from 'node-fetch';
 
 export class Updater {
 
-
     /**
      * Checks the Data Schema for the right Version
      *
@@ -33,10 +32,14 @@ export class Updater {
      */
     public static checkSchemaUpdate(appVersion: any, helper: Helper): IAppVersion {
         const schemaVersion = Info.getSchemaVersion();
+
+        Helper.verbose('Check Data Schema:', schemaVersion);
         if ((appVersion.config.appversion && appVersion.config.appversion !== schemaVersion) || appVersion.config.schema !== schemaVersion) {
             Helper.info('Schema of appversion.json is outdated. Perform schema update ...');
             appVersion = Updater.updateSchema(appVersion);
             helper.writeJson(appVersion, 'Schema of appversion.json updated to the latest version.');
+        } else {
+            Helper.verbose('No Update for DataSchema needed.');
         }
         return appVersion;
     }
@@ -49,6 +52,8 @@ export class Updater {
      */
     public static checkUpdate() {
 
+        Helper.verbose('Check for Programm Updates');
+
         const currentVersion = Info.getProductVersion();
 
         nfetch('https://registry.npmjs.org/appversion-mgr/latest')
@@ -59,6 +64,8 @@ export class Updater {
                             const latest = json.version;
                             if (semver.gt(latest, currentVersion)) {
                                 Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
+                            } else {
+                                Helper.verbose('No new appvmgr version available.');
                             }
                         });
                 } catch (error) {
@@ -87,23 +94,49 @@ export class Updater {
     private static updateSchema(appVersion: any): IAppVersion {
 
         const schemaVersion = Info.getSchemaVersion();
+        const schema = Info.getDataSchemaAsObject();
 
-        // if the "config" filed is not present in the json we add it
+        // Add Objects if missing
+        if (!appVersion.build) {
+            appVersion.build = schema.build;
+            Object.assign(appVersion.build, schema.build);
+        }
+
         if (!appVersion.config) {
-            appVersion.config = {
-                schema: schemaVersion,
-                ignore: [],
-                markdown: [],
-                json: [],
-            };
+            appVersion.config = schema.config;
+            Object.assign(appVersion.config, schema.config);
         }
 
-        if (!appVersion.version.badge) {
-            appVersion.version.badge = '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)';
+        if (!appVersion.git) {
+            appVersion.git = schema.git;
+            Object.assign(appVersion.git, schema.git);
         }
 
-        if (!appVersion.status.badge) {
-            appVersion.status.badge = '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)';
+        if (!appVersion.status) {
+            appVersion.status = schema.status;
+            Object.assign(appVersion.status, schema.status);
+        }
+
+        if (!appVersion.version) {
+            appVersion.version = schema.version;
+            Object.assign(appVersion.version, schema.version);
+        }
+
+        // Add Templates if missing
+        if (Updater.isEmptyString(appVersion.version.badge)) {
+            appVersion.version.badge = schema.version.badge;
+        }
+
+        if (Updater.isEmptyString(appVersion.status.badge) && schema.status) {
+            appVersion.status.badge = schema.status.badge;
+        }
+
+        if (Updater.isEmptyString(appVersion.build.badge) && schema.build) {
+            appVersion.build.badge = schema.build.badge;
+        }
+
+        if (Updater.isEmptyString(appVersion.git.tag) && schema.git) {
+            appVersion.git.tag = schema.git.tag;
         }
 
         // if the "ignore" filed is present in the json we move it to config
@@ -122,6 +155,18 @@ export class Updater {
             delete appVersion.json;
         }
 
+        // if the "gittag" filed is present in the json we move it to git
+        if (appVersion.config.gittag) {
+            appVersion.git.tag = appVersion.config.gittag;
+            delete appVersion.config.gittag;
+        }
+
+        // if the "commit" filed is present in the json we move it to git
+        if (appVersion.commit) {
+            appVersion.git.commit = appVersion.commit;
+            delete appVersion.commit;
+        }
+
         // if the "package.json" and "bower.json" are present in the "config.json" array field, we remove them
         if (appVersion.config.json.indexOf('package.json') > -1) {
             appVersion.config.json.splice(appVersion.config.json.indexOf('package.json'), 1);
@@ -131,10 +176,12 @@ export class Updater {
             appVersion.config.json.splice(appVersion.config.json.indexOf('bower.json'), 1);
         }
 
+        // Remove name Field
         if (appVersion.config.name) {
             delete appVersion.config.name;
         }
 
+        // Remove project Field
         if (appVersion.config.project) {
             delete appVersion.config.project;
         }
@@ -144,6 +191,12 @@ export class Updater {
             delete appVersion.appversion;
         }
 
+        // Remove the commit field
+        if (appVersion.commit || appVersion.commit === null) {
+            appVersion.commit = '';
+            delete appVersion.commit;
+        }
+
         // updates the appversion.json version number
         if (appVersion.config.appversion) {
             delete appVersion.config.appversion;
@@ -151,5 +204,12 @@ export class Updater {
         appVersion.config.schema = schemaVersion;
 
         return appVersion;
+    }
+
+    private static isEmptyString(value: string): boolean {
+        if (value) {
+            return typeof value === 'string' && !value.trim() || typeof value === 'undefined' || value === null;
+        }
+        return true;
     }
 }

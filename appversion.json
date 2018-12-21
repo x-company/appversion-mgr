@@ -1,27 +1,31 @@
 {
   "version": {
     "major": 0,
-    "minor": 4,
-    "patch": 0,
+    "minor": 6,
+    "patch": 1,
     "badge": "[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/${M.m.p})"
   },
   "build": {
-    "date": "2018-12-20T16:10:43.330Z",
-    "number": 2,
-    "total": 26
+    "date": "2018-12-21T00:44:10.644Z",
+    "number": 1,
+    "total": 50,
+    "badge": "[![AppVersionManager-build](https://img.shields.io/badge/Builds-${t}-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)"
   },
   "status": {
-    "stage": "RC",
+    "stage": "preview",
     "number": 1,
     "badge": "[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)"
   },
-  "commit": "95b1e21",
   "config": {
+    "schema": "1.11.0",
     "ignore": [],
     "json": [],
     "markdown": [
       "README.md"
-    ],
-    "schema": "1.9.0"
+    ]
+  },
+  "git": {
+    "commit": "d3ad373",
+    "tag": "vM.m.p"
   }
 }

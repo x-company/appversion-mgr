@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { Helper } from '../lib/helpers/Helper';
 import { SetCommand } from '../lib/commands/SetCommand';
+import { Info } from '../lib/info/Info';
 
 
 describe('Testing Set Command', () => {
@@ -19,7 +20,7 @@ describe('Testing Set Command', () => {
         }
 
         helper = new Helper(__dirname);
-        const expected = helper.createEmptyAppVersion();
+        const expected = Info.getDataSchemaAsObject();
         helper.writeJson(expected);
 
         cmd = new SetCommand(__dirname);
