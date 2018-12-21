@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-21 03:01:10
+ * @Last Modified At: 2018-12-21 03:07:22
  * @Description: The CLI Application
  */
 
@@ -108,7 +108,8 @@ program
         const pattern: string = options.pattern || 'M.m.p';
 
         const version = Info.composePatternSync(pattern, directory);
-        Helper.info('Version ' + version);
+        Helper.info('Use Pattern ' + pattern + ' to format the Version.');
+        Helper.info('Current Version is ' + version);
     });
 
 program
