@@ -2,7 +2,7 @@
 
 <a name="status"></a>
 
-[![AppVersionManager-version](https://img.shields.io/badge/Version-0.6.1-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/0.6.1)
+[![AppVersionManager-version](https://img.shields.io/badge/Version-0.6.2-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/0.6.2)
 [![AppVersionManager-status](https://img.shields.io/badge/Status-preview%201-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)
 [![AppVersionManager-build](https://img.shields.io/badge/Builds-50-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)
 
