@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 22:57:02
+ * @Last Modified At: 2018-12-21 01:30:31
  * @Description: Central Helper Class for all.
  */
 
@@ -116,7 +116,7 @@ export class Helper {
 
         if (shouldCreateIfNotExists && !fs.existsSync(this.FILEPATH)) {
 
-            const cmd = new CreateCommand(this.FILEPATH);
+            const cmd = new CreateCommand(this.PATH);
             cmd.initAppVersion();
         }
     }
