@@ -4,7 +4,7 @@
 
 [![AppVersionManager-version](https://img.shields.io/badge/Version-0.6.0-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/0.6.0)
 [![AppVersionManager-status](https://img.shields.io/badge/Status-preview%201-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)
-[![AppVersionManager-build](https://img.shields.io/badge/Builds-48-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)
+[![AppVersionManager-build](https://img.shields.io/badge/Builds-49-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)
 
 **AppVersion Manager** is a Fork from [dlvedor](https://github.com/delvedor) great [AppVersion](https://github.com/delvedor/appversion) CLI Tool. Thanks to your great Work. And its completly refactored and rewritten in TypeScript.
 

@@ -6,9 +6,9 @@
     "badge": "[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/${M.m.p})"
   },
   "build": {
-    "date": "2018-12-21T00:31:13.170Z",
-    "number": 5,
-    "total": 48,
+    "date": "2018-12-21T00:32:15.821Z",
+    "number": 6,
+    "total": 49,
     "badge": "[![AppVersionManager-build](https://img.shields.io/badge/Builds-${t}-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)"
   },
   "status": {
@@ -25,7 +25,7 @@
     ]
   },
   "git": {
-    "commit": "77511cc",
+    "commit": "a78cb87",
     "tag": "vM.m.p"
   }
 }
