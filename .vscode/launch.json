@@ -33,7 +33,7 @@
             "args": [
                 "${workspaceFolder}/bin/appvmgr",
                 "update",
-                "patch",
+                "build",
                 "-d",
                 "${workspaceFolder}"
             ],
