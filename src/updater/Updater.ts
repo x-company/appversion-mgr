@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-21 01:17:27
+ * @Last Modified At: 2018-12-21 01:41:04
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -98,22 +98,27 @@ export class Updater {
 
         // Add Objects if missing
         if (!appVersion.build) {
+            appVersion.build = schema.build;
             Object.assign(appVersion.build, schema.build);
         }
 
         if (!appVersion.config) {
+            appVersion.config = schema.config;
             Object.assign(appVersion.config, schema.config);
         }
 
         if (!appVersion.git) {
+            appVersion.git = schema.git;
             Object.assign(appVersion.git, schema.git);
         }
 
         if (!appVersion.status) {
+            appVersion.status = schema.status;
             Object.assign(appVersion.status, schema.status);
         }
 
         if (!appVersion.version) {
+            appVersion.version = schema.version;
             Object.assign(appVersion.version, schema.version);
         }
 
