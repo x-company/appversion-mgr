@@ -2,8 +2,9 @@
 
 <a name="status"></a>
 
-[![AppVersionManager-version](https://img.shields.io/badge/Version-0.5.0-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/0.5.0)
+[![AppVersionManager-version](https://img.shields.io/badge/Version-0.6.0-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/0.6.0)
 [![AppVersionManager-status](https://img.shields.io/badge/Status-preview%201-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)
+[![AppVersionManager-build](https://img.shields.io/badge/Builds-40-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)
 
 **AppVersion Manager** is a Fork from [dlvedor](https://github.com/delvedor) great [AppVersion](https://github.com/delvedor/appversion) CLI Tool. Thanks to your great Work. And its completly refactored and rewritten in TypeScript.
 
@@ -48,15 +49,18 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
   "build": {
     "date": null,
     "number": 0,
-    "total": 0
+    "total": 0,
+    "badge": null
   },
-  "commit": null,
+  "git":{
+    "commit": null,
+    "tag": "vM.m.p"
+  },
   "config": {
     "schema": "x.y.z",
     "markdown": [],
     "json": [],
-    "ignore": [],
-    "gittag": null
+    "ignore": []
   }
 }
 ```
@@ -64,9 +68,9 @@ The tool creates a json file named ```appversion.json``` in the root of your pro
 As you can see, the version is divided in ```major```, ```minor``` and ```patch```, the build is divided in ```date```, ```number``` and ```total```, in addition, there's the status, who is divided in ```stage``` field, who can assume ```stable|rc|beta|alpha|xxx``` or what you want value and a ```number```.
 
 Then, there's the ```config``` filed, divided in ```schema```, that is used by AppVersion for check if the json is at the latest version, ```markdown``` field where you can put all the markdown files that you want to keep updated.
-The two fields inside ```config``` are, ```json```, that is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore. The ```gittag``` field is uses to define your own pattern for an Git Tag. The Default is ```M.m.p```. Details for the Pattern you find by the ```composePattern``` Method.
+The two fields inside ```config``` are, ```json```, that is the list of the *json files* who appversion must update when you change the version number, and ```ignore```, that is the list of the *folders* that AppVersion must ignore. The ```git``` section with its fields ```commit```  and ```tag``` is uses to define your own pattern for an Git Tag. The Default is ```M.m.p```. Details for the Pattern you find by the ```composePattern``` Method.
 
-The ```badge``` Field on the ```version``` or ```status``` Object is used to define a Template for the Badge Generation. The Template can have Placeholders like ```${M.m.p}``` (see Patterns below). This Placeholders will replaced with ```Major.Minor.Pat```.
+The ```badge``` Field on the ```version```, ```build``` or ```status``` Object is used to define a Template for the Badge Generation. The Template can have Placeholders like ```${M.m.p}``` (see Patterns below). This Placeholders will replaced with ```Major.Minor.Pat```.
 
 **Needs Node.js >= 4.0.0**
 
