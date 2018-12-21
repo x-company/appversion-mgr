@@ -9,31 +9,57 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 16:57:28
+ * @Last Modified At: 2018-12-21 01:30:31
  * @Description: Central Helper Class for all.
  */
 
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import semver from 'semver';
 import findRoot from 'find-root';
 import { walk } from 'walk';
-import { exec } from 'child_process';
 import { Info } from '../info';
 import { IAppVersion } from '../types/IAppVersion';
-import { IVersion } from '../types/IVersion';
 import { Updater } from '../updater/Updater';
+import { CreateCommand } from '../commands';
 
 
 export class Helper {
 
+    public static verboseEnabled: boolean = false;
+
+    /**
+     * Writes an Error Message
+     *
+     * @static
+     * @param {string} message      The Message
+     * @param {string} [header]     An optional Header
+     * @memberof Helper
+     */
     public static error(message: string, header?: string) {
         this.consoleOutput(message, header, true);
     }
 
+    /**
+     * Writes an Info Message to the Console
+     *
+     * @static
+     * @param {string} message      The Message
+     * @param {string} [header]     An optional Header
+     * @memberof Helper
+     */
     public static info(message: string, header?: string) {
         this.consoleOutput(message, header, false);
+    }
+
+    public static verbose(message: string, args?: any) {
+        if (Helper.verboseEnabled) {
+            if (args) {
+                Helper.info('VERBOSE: ' + message + ' ' + args);
+            } else {
+                Helper.info('VERBOSE: ' + message);
+            }
+        }
     }
 
     private static consoleOutput(message: string, header?: string, isError: boolean = false) {
@@ -48,14 +74,31 @@ export class Helper {
         }
     }
 
-    private PATH: string;
-    private FILENAME: string = 'appversion.json';
-    private FILEPATH: string;
+    /**
+     * The complete FilePath for the appversion.json
+     *
+     * @type {string}
+     * @memberof Helper
+     */
+    public FILEPATH: string;
 
-    constructor(directory?: string) {
+    /**
+     * The Path where the appversion.json lives
+     *
+     * @type {string}
+     * @memberof Helper
+     */
+    public PATH: string;
+
+    private FILENAME: string = 'appversion.json';
+
+    constructor(directory?: string, shouldCreateIfNotExists: boolean = true) {
+
+        Helper.verbose('Init Helper');
 
         if (!directory) {
             directory = findRoot(process.cwd());
+            Helper.verbose('ROOT:', process.cwd());
         }
 
         this.PATH = path.resolve(directory);
@@ -64,20 +107,23 @@ export class Helper {
         }
 
         this.FILEPATH = path.join(this.PATH, this.FILENAME);
-
         if (!fs.existsSync(this.PATH)) {
             fs.mkdirSync(this.PATH);
         }
 
-        if (!fs.existsSync(this.FILEPATH)) {
-            // Write temporary the Config
-            const emptyAppVersion = this.createEmptyAppVersion();
-            this.writeJson(emptyAppVersion, 'Create an empty Application Version Object');
+        Helper.verbose('PATH:', this.PATH);
+        Helper.verbose('FILEPATH:', this.FILEPATH);
+
+        if (shouldCreateIfNotExists && !fs.existsSync(this.FILEPATH)) {
+
+            const cmd = new CreateCommand(this.PATH);
+            cmd.initAppVersion();
         }
     }
 
     /**
      * Returns the appversion json content.
+     *
      * @param  {String} filename [name of the json]
      * @return {Object}          [content of the json]
      */
@@ -88,6 +134,8 @@ export class Helper {
         }
 
         try {
+            Helper.verbose('Read the appversion.json');
+
             const appVersionContent = fs.readFileSync(this.FILEPATH, { encoding: 'utf8' });
             let appVersion: IAppVersion = JSON.parse(appVersionContent) as IAppVersion;
 
@@ -113,31 +161,6 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
     }
 
     /**
-     * Search and updates the badge in a .md file.
-     * @param  {String} markdownFile [The name of the .md file]
-     * @param  {String} newBadge     [new badge to append]
-     * @param  {String} oldBadge     [old badge to change]
-     */
-    public appendBadgeToMD(markdownFile: string, newBadge: string, oldBadge: string) {
-
-        if (newBadge !== oldBadge) {
-            const markdownFilePath = path.join(this.PATH, markdownFile);
-            if (!fs.existsSync(markdownFilePath)) {
-                const fd = fs.openSync(markdownFilePath, 'wx+');
-                fs.writeFileSync(markdownFilePath, oldBadge, { encoding: 'utf8' });
-                fs.closeSync(fd);
-            }
-
-            const oldContent = fs.readFileSync(markdownFilePath, { encoding: 'utf8' });
-            const newContent = oldContent.replace(oldBadge, newBadge);
-            if (oldContent !== newContent) {
-                fs.writeFileSync(markdownFilePath, newContent, { encoding: 'utf8' });
-
-            }
-        }
-    }
-
-    /**
      * Wrote into the json the object passed as argument
      * @param  {Object} obj [Full object]
      * @param  {String} message [Optional message]
@@ -147,6 +170,8 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
         const json = `${JSON.stringify(appVersion, null, 2)}\n`;
         try {
             if (!fs.existsSync(this.FILEPATH)) {
+                Helper.verbose('appversion.json not exists. It will created.');
+
                 const fd = fs.openSync(this.FILEPATH, 'wx+');
                 fs.writeFileSync(this.FILEPATH, json, { encoding: 'utf8' });
                 fs.closeSync(fd);
@@ -163,6 +188,24 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
 
         } catch (error) {
             throw new Error(error);
+        }
+    }
+
+    /**
+     * Deletes the given File
+     *
+     * @param  {String} filename [name of the json]
+     * @memberof Helper
+     */
+    public deleteJson(filePath?: string) {
+
+        if (!filePath) {
+            filePath = this.FILEPATH;
+        }
+
+        if (fs.existsSync(filePath)) {
+            Helper.verbose('Delete existing appversion.json');
+            fs.unlinkSync(filePath);
         }
     }
 
@@ -209,98 +252,14 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
                         fileObj.version = versionAsString;
                     }
 
+                    const otherFilePath = path.resolve(root, fileStats.name);
+                    Helper.verbose('Update other Files', otherFilePath);
+
                     const json = `${JSON.stringify(fileObj, null, 2)}\n`;
-                    fs.writeFileSync(path.resolve(root, fileStats.name), json);
+                    fs.writeFileSync(otherFilePath, json);
                 }
                 next();
             });
         }
-    }
-
-    public createEmptyAppVersion(): IAppVersion {
-
-        let defaultVersion: IVersion = {
-            major: 0,
-            minor: 1,
-            patch: 0,
-            badge: '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)',
-        };
-
-        const packageJsonVerison = this.getPackageJsonVersion();
-        if (packageJsonVerison) {
-            defaultVersion = packageJsonVerison;
-        }
-
-        return {
-            version: defaultVersion,
-            build: {
-                date: null,
-                number: 0,
-                total: 0,
-            },
-            status: {
-                stage: null,
-                number: 0,
-                badge: '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)',
-            },
-            commit: null,
-            config: {
-                schema: Info.getSchemaVersion(),
-                ignore: [],
-                json: [],
-                markdown: [],
-            },
-        };
-    }
-
-    /**
-     * Adds a tag with the version number to the git repo.
-     */
-    public addGitTag() {
-        const appVersion = this.readJson();
-
-        if (appVersion) {
-
-            const versionCode = (version: IAppVersion) => `v${Info.composePatternSync('M.m.p', version)}`;
-            exec(`git tag ${versionCode(appVersion)}`, (error, stdout) => {
-                if (error) {
-                    if (error.message) {
-                        Helper.error(error.message);
-                    } else {
-                        Helper.error('An unknown Error occured while Git Tag will added.');
-                    }
-                } else {
-                    Helper.info(`Added Git tag '${versionCode(appVersion)}'`);
-                }
-            });
-        }
-    }
-
-    /**
-     * Read the version field from a json file (package.json) and return an object divided in major|minor|patch
-     * @param  {Object} obj [json file]
-     * @return {Object}     [object divided in major|minor|patch]
-     */
-    private getPackageJsonVersion(): IVersion | null {
-        // Read the Package Json
-        const packageJsonPath = path.resolve('./', 'package.json');
-        if (fs.existsSync(packageJsonPath)) {
-            const packageJson: any = require(packageJsonPath);
-            if (packageJson) {
-                if (packageJson.version) {
-                    const versionAsString = semver.clean(packageJson.version) || '0.1.0';
-                    if (!semver.valid(versionAsString)) {
-                        return null;
-                    }
-                    const versionArray = versionAsString.split('.');
-                    return {
-                        major: Number(versionArray[0]),
-                        minor: Number(versionArray[1]),
-                        patch: Number(versionArray[2]),
-                    };
-                }
-            }
-        }
-        return null;
     }
 }
