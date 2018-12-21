@@ -177,12 +177,12 @@ export class Updater {
         }
 
         // Remove name Field
-        if (appVersion.config.name) {
+        if (appVersion.config.name || appVersion.config.name === null) {
             delete appVersion.config.name;
         }
 
         // Remove project Field
-        if (appVersion.config.project) {
+        if (appVersion.config.project || appVersion.config.project === null) {
             delete appVersion.config.project;
         }
 
