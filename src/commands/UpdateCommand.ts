@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 02:38:51
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-21 00:22:44
+ * @Last Modified At: 2018-12-21 01:12:07
  * @Description: Central Update Class to update the Versions
  */
 
@@ -65,9 +65,8 @@ export class UpdateCommand {
      */
     private updateVersion(appVersion: IAppVersion, action: string) {
 
-        const previousObj: IAppVersion = {
-            version: appVersion.version,
-        };
+        const previousObj: IAppVersion = Info.getDataSchemaAsObject();
+        Object.assign(previousObj.version, appVersion.version);
 
         if (action === 'major') {
             appVersion.version.major++;
@@ -101,10 +100,9 @@ export class UpdateCommand {
 
         if (appVersion.build) {
 
-            const previousObj: IAppVersion = {
-                version: appVersion.version,
-                build: appVersion.build,
-            };
+            const previousObj: IAppVersion = Info.getDataSchemaAsObject();
+            Object.assign(previousObj.version, appVersion.version);
+            Object.assign(previousObj.build, appVersion.build);
 
             // The date is a string representing the Date object
             appVersion.build.date = new Date();

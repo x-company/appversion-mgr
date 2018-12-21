@@ -51,7 +51,7 @@ export class SetCommand {
 
             const appVersion = this.helper.readJson();
             if (appVersion) {
-                const schema = Info.getDataSchemaAsObject();
+                const prevAppVersion = Info.getDataSchemaAsObject();
 
                 appVersion.version.major = Number(splittedVersion[0]);
                 appVersion.version.minor = Number(splittedVersion[1]);
@@ -59,21 +59,20 @@ export class SetCommand {
 
                 // The build number is reset whenever we update the version number
                 if (!appVersion.build) {
-                    appVersion.build = schema.build;
+                    Object.assign(appVersion.build, prevAppVersion.build);
                 }
 
                 if (appVersion.build) {
                     appVersion.build.number = 0;
                 }
 
-                const previousAppVersion = {
-                    version: appVersion.version,
-                };
+                Object.assign(prevAppVersion.version, appVersion.version);
+                Object.assign(prevAppVersion.build, appVersion.build);
 
                 this.helper.writeJson(appVersion);
                 this.helper.writeOtherJson(appVersion);
 
-                this.generator.generateVersionBadge(appVersion, previousAppVersion);
+                this.generator.generateVersionBadge(appVersion, prevAppVersion);
             }
         }
     }
@@ -95,15 +94,13 @@ export class SetCommand {
         const appVersion = this.helper.readJson();
         if (appVersion) {
 
-            const schema = Info.getDataSchemaAsObject();
+            const prevAppVersion = Info.getDataSchemaAsObject();
             if (!appVersion.status) {
-                appVersion.status = schema.status;
+                Object.assign(appVersion.status, prevAppVersion.status);
             }
 
-            const previousAppVersion: IAppVersion = {
-                version: appVersion.version,
-                status: appVersion.status,
-            };
+            Object.assign(prevAppVersion.version, appVersion.version);
+            Object.assign(prevAppVersion.status, appVersion.status);
 
             if (appVersion.status) {
                 appVersion.status.stage = splittedStatus[0];
@@ -112,7 +109,7 @@ export class SetCommand {
             }
 
             this.helper.writeJson(appVersion, `Status updated to ${splittedStatus[0]}.${splittedStatus[1] || 0}`);
-            this.generator.generateStatusBadge(appVersion, previousAppVersion);
+            this.generator.generateStatusBadge(appVersion, prevAppVersion);
         }
     }
 
