@@ -15,6 +15,7 @@
 
 import chalk from 'chalk';
 import semver from 'semver';
+import dns from 'dns';
 import { IAppVersion } from '../types/IAppVersion';
 import { Info } from '../info';
 import { Helper } from '../helpers/Helper';
@@ -54,33 +55,49 @@ export class Updater {
 
         Helper.verbose('Check for Programm Updates');
 
-        const currentVersion = Info.getProductVersion();
-
-        nfetch('https://registry.npmjs.org/appversion-mgr/latest')
-            .then((response) => {
-                try {
-                    response.json()
-                        .then((json) => {
-                            const latest = json.version;
-                            if (semver.gt(latest, currentVersion)) {
-                                Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
-                            } else {
-                                Helper.verbose('No new appvmgr version available.');
-                            }
-                        });
-                } catch (error) {
-                    Helper.error(error);
-                }
-            })
-            .catch((error) => {
+        const checkInternet = (callback: (result: boolean) => void) => {
+            dns.lookupService('google.com', 53, (error, hostname, service) => {
                 if (error && error.code === 'ENOTFOUND') {
-                    return;
-                }
-
-                if (error) {
-                    Helper.error(error);
+                    callback(false);
+                } else {
+                    callback(true);
                 }
             });
+        };
+
+        checkInternet((isConnected) => {
+
+            if (isConnected) {
+                const currentVersion = Info.getProductVersion();
+                nfetch('https://registry.npmjs.org/appversion-mgr/latest')
+                    .then((response) => {
+                        try {
+                            response.json()
+                                .then((json) => {
+                                    const latest = json.version;
+                                    if (semver.gt(latest, currentVersion)) {
+                                        Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
+                                    } else {
+                                        Helper.verbose('No new appvmgr version available.');
+                                    }
+                                });
+                        } catch (error) {
+                            Helper.error(error);
+                        }
+                    })
+                    .catch((error) => {
+                        if (error && error.code === 'ENOTFOUND') {
+                            return;
+                        }
+
+                        if (error) {
+                            Helper.error(error);
+                        }
+                    });
+            } else {
+                Helper.verbose('No Internet Connection available.');
+            }
+        });
     }
 
     /**
