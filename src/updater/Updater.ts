@@ -9,12 +9,13 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-21 01:41:04
+ * @Last Modified At: 2019-01-07 00:53:29
  * @Description: Helper Class to check for Schema Updates
  */
 
 import chalk from 'chalk';
 import semver from 'semver';
+import dns from 'dns';
 import { IAppVersion } from '../types/IAppVersion';
 import { Info } from '../info';
 import { Helper } from '../helpers/Helper';
@@ -54,33 +55,49 @@ export class Updater {
 
         Helper.verbose('Check for Programm Updates');
 
-        const currentVersion = Info.getProductVersion();
-
-        nfetch('https://registry.npmjs.org/appversion-mgr/latest')
-            .then((response) => {
-                try {
-                    response.json()
-                        .then((json) => {
-                            const latest = json.version;
-                            if (semver.gt(latest, currentVersion)) {
-                                Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
-                            } else {
-                                Helper.verbose('No new appvmgr version available.');
-                            }
-                        });
-                } catch (error) {
-                    Helper.error(error);
-                }
-            })
-            .catch((error) => {
+        const checkInternet = (callback: (result: boolean) => void) => {
+            dns.lookup('www.google.com', (error, hostname, service) => {
                 if (error && error.code === 'ENOTFOUND') {
-                    return;
-                }
-
-                if (error) {
-                    Helper.error(error);
+                    Helper.error('No Internet Connection available. Update Checks not possible.');
+                    callback(false);
+                } else {
+                    Helper.verbose('We have an Internet Connection. Perform an Update Check.');
+                    callback(true);
                 }
             });
+        };
+
+        checkInternet((isConnected) => {
+
+            if (isConnected) {
+                const currentVersion = Info.getProductVersion();
+                nfetch('https://registry.npmjs.org/appversion-mgr/latest')
+                    .then((response) => {
+                        try {
+                            response.json()
+                                .then((json) => {
+                                    const latest = json.version;
+                                    if (semver.gt(latest, currentVersion)) {
+                                        Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
+                                    } else {
+                                        Helper.verbose('No new appvmgr version available.');
+                                    }
+                                });
+                        } catch (error) {
+                            Helper.error(error);
+                        }
+                    })
+                    .catch((error) => {
+                        if (error && error.code === 'ENOTFOUND') {
+                            return;
+                        }
+
+                        if (error) {
+                            Helper.error(error);
+                        }
+                    });
+            }
+        });
     }
 
     /**
@@ -177,12 +194,12 @@ export class Updater {
         }
 
         // Remove name Field
-        if (appVersion.config.name) {
+        if (appVersion.config.name || appVersion.config.name === null) {
             delete appVersion.config.name;
         }
 
         // Remove project Field
-        if (appVersion.config.project) {
+        if (appVersion.config.project || appVersion.config.project === null) {
             delete appVersion.config.project;
         }
 

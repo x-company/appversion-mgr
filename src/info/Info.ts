@@ -265,7 +265,7 @@ export class Info {
     }
 
     private static PROG_VERSION: string = '0.1.0';
-    private static SCHEMA_VERSION: string = '1.11.0';
+    private static SCHEMA_VERSION: string = '1.11.1';
 
     /**
      * Returns the correspondent obj parameter, if not, it returns the given pattern.

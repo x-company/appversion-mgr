@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-21 00:32:40
+ * @Last Modified At: 2018-12-21 03:07:22
  * @Description: The CLI Application
  */
 
@@ -90,6 +90,26 @@ program
             const git = new GitCommand(directory);
             git.addGitTag();
         }
+    });
+
+program
+    .command('get-version')
+    .description('Gets a version number.')
+    .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
+    .option('-p, --pattern <pattern>', 'Formats the Version with a Pattern.')
+    .option('-v, --verbose', 'Shows Verbose Messages')
+    .action((options) => {
+
+        if (options.verbose) {
+            Helper.verboseEnabled = true;
+        }
+
+        const directory: string = options.directory || undefined;
+        const pattern: string = options.pattern || 'M.m.p';
+
+        const version = Info.composePatternSync(pattern, directory);
+        Helper.info('Use Pattern ' + pattern + ' to format the Version.');
+        Helper.info('Current Version is ' + version);
     });
 
 program
