@@ -1,14 +1,14 @@
 {
   "version": {
     "major": 0,
-    "minor": 6,
-    "patch": 2,
+    "minor": 7,
+    "patch": 0,
     "badge": "[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/${M.m.p})"
   },
   "build": {
-    "date": "2018-12-21T02:04:05.441Z",
-    "number": 1,
-    "total": 51,
+    "date": "2019-01-07T00:09:46.476Z",
+    "number": 2,
+    "total": 57,
     "badge": "[![AppVersionManager-build](https://img.shields.io/badge/Builds-${t}-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)"
   },
   "status": {
@@ -25,7 +25,7 @@
     ]
   },
   "git": {
-    "commit": "90daa6f",
+    "commit": "bc4fd6a",
     "tag": "vM.m.p"
   }
 }

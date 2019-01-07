@@ -4,6 +4,8 @@
     "licenser.author": "IT Solutions Roland Breitschaft <info@x-company.de>",
     "licenser.disableAutoHeaderInsertion": false,
     "licenser.useSingleLineStyle": false,
+    "codeheader.copyright": false,
+    "codeheader.autoInsert": true,
     "jasmineExplorer.nodeArgv": [
         "--require",
         "ts-node/register"
