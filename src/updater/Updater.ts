@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-21 01:41:04
+ * @Last Modified At: 2019-01-07 00:53:29
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -56,10 +56,12 @@ export class Updater {
         Helper.verbose('Check for Programm Updates');
 
         const checkInternet = (callback: (result: boolean) => void) => {
-            dns.lookupService('google.com', 53, (error, hostname, service) => {
+            dns.lookup('www.google.com', (error, hostname, service) => {
                 if (error && error.code === 'ENOTFOUND') {
+                    Helper.error('No Internet Connection available. Update Checks not possible.');
                     callback(false);
                 } else {
+                    Helper.verbose('We have an Internet Connection. Perform an Update Check.');
                     callback(true);
                 }
             });
@@ -94,8 +96,6 @@ export class Updater {
                             Helper.error(error);
                         }
                     });
-            } else {
-                Helper.verbose('No Internet Connection available.');
             }
         });
     }
