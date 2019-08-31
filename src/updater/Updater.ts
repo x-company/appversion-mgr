@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 11:30:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2019-01-07 00:53:29
+ * @Last Modified At: 2019-08-31 13:36:19
  * @Description: Helper Class to check for Schema Updates
  */
 
@@ -17,7 +17,7 @@ import chalk from 'chalk';
 import semver from 'semver';
 import dns from 'dns';
 import { IAppVersion } from '../types/IAppVersion';
-import { Info } from '../info';
+import { Info } from '../info/Info';
 import { Helper } from '../helpers/Helper';
 import nfetch from 'node-fetch';
 
@@ -58,7 +58,7 @@ export class Updater {
         const checkInternet = (callback: (result: boolean) => void) => {
             dns.lookup('www.google.com', (error, hostname, service) => {
                 if (error && error.code === 'ENOTFOUND') {
-                    Helper.error('No Internet Connection available. Update Checks not possible.');
+                    Helper.info('No Internet Connection available. Update Checks not possible.');
                     callback(false);
                 } else {
                     Helper.verbose('We have an Internet Connection. Perform an Update Check.');
@@ -76,11 +76,13 @@ export class Updater {
                         try {
                             response.json()
                                 .then((json) => {
-                                    const latest = json.version;
-                                    if (semver.gt(latest, currentVersion)) {
-                                        Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
-                                    } else {
-                                        Helper.verbose('No new appvmgr version available.');
+                                    if (json !== 'Not Found') {
+                                        const latest = json.version;
+                                        if (semver.gt(latest, currentVersion)) {
+                                            Helper.info(`New appvmgr version available, run ${chalk.bold('\'npm install appversion-mgr -g\'')} to update!`);
+                                        } else {
+                                            Helper.verbose('No new appvmgr version available.');
+                                        }
                                     }
                                 });
                         } catch (error) {

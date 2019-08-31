@@ -11,13 +11,13 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-21 03:07:22
+ * @Last Modified At: 2019-08-31 12:56:47
  * @Description: The CLI Application
  */
 
 import { Command } from 'commander';
 import { UpdateCommand, SetCommand, CreateCommand, GitCommand } from '../commands';
-import { Info } from '../info';
+import { Info } from '../info/Info';
 import { Helper } from '../helpers/Helper';
 import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { Updater } from '../updater/Updater';
@@ -35,6 +35,9 @@ program
     .description('Generates the appversion.json file.')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .option('-f, --force', 'Overwrites an existing appversion.json')
+    .option('-b, --badge', 'The Badge Base Url', 'https://img.shields.io/badge')
+    .option('-p, --project', 'The Projects Repository Url')
+    .option('-n, --name', 'The Project Name')
     .option('-v, --verbose', 'Shows Verbose Messages')
     .action((options) => {
 
@@ -43,7 +46,7 @@ program
         }
         const directory = options.directory || undefined;
 
-        const cmd = new CreateCommand(directory);
+        const cmd = new CreateCommand(directory, options.badge, options.project, options.name);
         if (options.force) {
             cmd.resetAppVersion();
         } else {

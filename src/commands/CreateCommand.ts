@@ -11,7 +11,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-20 20:36:23
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-20 23:59:46
+ * @Last Modified At: 2019-08-31 12:58:05
  * @Description: This is description.
  */
 
@@ -19,7 +19,6 @@ import path from 'path';
 import fs from 'fs';
 import semver from 'semver';
 import { Helper } from '../helpers/Helper';
-import { IAppVersion } from '../types/IAppVersion';
 import { IVersion } from '../types/IVersion';
 import { Info } from '../info/Info';
 
@@ -27,7 +26,7 @@ export class CreateCommand {
 
     private helper: Helper;
 
-    constructor(directory?: string) {
+    constructor(directory?: string, private badgeUrl?: string, private projectUrl?: string, private name?: string) {
         Helper.verbose('Init CreateCommand');
 
         this.helper = new Helper(directory, false);
@@ -40,19 +39,19 @@ export class CreateCommand {
      */
     public initAppVersion() {
         if (!fs.existsSync(this.helper.FILEPATH)) {
-            const emptyAppVersion = Info.getDataSchemaAsObject();
+            const emptyAppVersion = Info.getDataSchemaAsObject(this.badgeUrl, this.projectUrl, this.name);
 
-            const packageJsonVerison = this.getPackageJsonVersion();
-            if (packageJsonVerison) {
-                emptyAppVersion.version.major = packageJsonVerison.major;
-                emptyAppVersion.version.minor = packageJsonVerison.minor;
-                emptyAppVersion.version.patch = packageJsonVerison.patch;
+            const packageJsonVersion = this.getPackageJsonVersion();
+            if (packageJsonVersion) {
+                emptyAppVersion.version.major = packageJsonVersion.major;
+                emptyAppVersion.version.minor = packageJsonVersion.minor;
+                emptyAppVersion.version.patch = packageJsonVersion.patch;
             }
 
             this.helper.writeJson(emptyAppVersion);
-            Helper.info('appverison.json was created with default Values.');
+            Helper.info('appversion.json was created with default Values.');
         } else {
-            Helper.error('appversion.json already exists.');
+            Helper.verbose('appversion.json already exists.');
         }
     }
 

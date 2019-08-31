@@ -19,8 +19,7 @@ import chalk from 'chalk';
 import semver from 'semver';
 import { Helper } from '../helpers/Helper';
 import { BadgeGenerator } from '../helpers/BadgeGenerator';
-import { IAppVersion } from '../types';
-import { Info } from '../info';
+import { Info } from '../info/Info';
 
 export class SetCommand {
 
