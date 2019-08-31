@@ -56,9 +56,20 @@
         "node_modules/**/*"
     ],
     "cSpell.words": [
+        "Breitschaft",
+        "FILEPATH",
         "appversion",
+        "appvmgr",
+        "badgeurl",
         "brightgreen",
+        "dlvedor",
+        "oneline",
+        "projectname",
+        "projecturl",
         "readed",
-        "splitted"
+        "setted",
+        "splitted",
+        "subfolder",
+        "subfolders"
     ]
 }

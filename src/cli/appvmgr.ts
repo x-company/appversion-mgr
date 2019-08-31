@@ -4,11 +4,11 @@
  * Copyright (c) 2018 IT Solutions Roland Breitschaft <info@x-company.de>
  *
  * This software is released under the MIT License.
- * @Script: UpdateCommand.tscenses/MIT
+ * @Script: UpdateCommand.ts
  *
  * @Script: appvmgr.ts
  * @Author: Roland Breitschaft
- * @Last Modified By: Roland Breitschaftde
+ * @Last Modified By: Roland Breitschaft
  * @Last Modified At: 2019-08-31 15:11:17
  * @Last Modified By: Roland Breitschaft
  * @Last Modified At: 2019-08-31 15:07:39

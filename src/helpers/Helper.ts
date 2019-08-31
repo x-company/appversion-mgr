@@ -235,7 +235,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
             });
 
             walker.on('file', (root, fileStats, next) => {
-                // if the filename is inside the appversion's json array
+                // if the filename is inside the appversion json array
                 if (appVersion.config && appVersion.config.json.indexOf(fileStats.name) > -1) {
                     let fileObj;
                     try {

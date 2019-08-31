@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-18 01:20:07
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2019-08-31 15:08:00
+ * @Last Modified At: 2019-08-31 15:59:59
  * @Description: It's a Helper Class to work with AppVersion Elements
  */
 
@@ -225,7 +225,7 @@ export class Info {
     }
 
     /**
-     * Creates an emtpy AppVersion Object
+     * Creates an empty AppVersion Object
      *
      * @static
      * @returns {IAppVersion}
