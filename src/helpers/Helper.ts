@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-17 18:15:55
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2019-08-31 13:35:28
+ * @Last Modified At: 2019-08-31 15:07:49
  * @Description: Central Helper Class for all.
  */
 
@@ -181,7 +181,7 @@ Type ${chalk.bold('\'appvmgr init\'')} for generate the file and start use AppVe
 
             if (message) {
                 Helper.info(message);
-            } else {                
+            } else {
                 const versionAsString = Info.composePatternSync('M.m.p', appVersion);
                 Helper.info(`Version updated to ${versionAsString}`);
             }

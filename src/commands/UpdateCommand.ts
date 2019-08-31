@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-15 02:38:51
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2019-08-31 13:42:30
+ * @Last Modified At: 2019-08-31 15:07:35
  * @Description: Central Update Class to update the Versions
  */
 
@@ -18,7 +18,6 @@ import { Helper } from '../helpers/Helper';
 import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { exec } from 'child_process';
 import { Info } from '../info/Info';
-
 
 export class UpdateCommand {
 
@@ -55,6 +54,27 @@ export class UpdateCommand {
                     this.updateCommit(appVersion);
                 }
             }
+        }
+    }
+
+    public updateBadges(badgeBaseUrl: string | undefined, projectUrl: string | undefined, projectName: string | undefined) {
+        const appVersion = this.helper.readJson();
+        const emptyAppVersionObject = Info.getDataSchemaAsObject(badgeBaseUrl, projectUrl, projectName);
+        if (appVersion && emptyAppVersionObject) {
+
+            if (appVersion.build && emptyAppVersionObject.build) {
+                appVersion.build.badge = emptyAppVersionObject.build.badge;
+            }
+
+            if (appVersion.status && emptyAppVersionObject.status) {
+                appVersion.status.badge = emptyAppVersionObject.status.badge;
+            }
+
+            if (appVersion.version && emptyAppVersionObject.version) {
+                appVersion.version.badge = emptyAppVersionObject.version.badge;
+            }
+
+            this.helper.writeJson(appVersion);
         }
     }
 

@@ -4,14 +4,14 @@
  * Copyright (c) 2018 IT Solutions Roland Breitschaft <info@x-company.de>
  *
  * This software is released under the MIT License.
- * https://opensource.org/licenses/MIT
+ * @Script: UpdateCommand.tscenses/MIT
  *
  * @Script: appvmgr.ts
  * @Author: Roland Breitschaft
- * @Email: roland.breitschaft@x-company.de
- * @Create At: 2018-12-15 00:53:57
+ * @Last Modified By: Roland Breitschaftde
+ * @Last Modified At: 2019-08-31 15:11:17
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2019-08-31 12:56:47
+ * @Last Modified At: 2019-08-31 15:07:39
  * @Description: The CLI Application
  */
 
@@ -21,6 +21,7 @@ import { Info } from '../info/Info';
 import { Helper } from '../helpers/Helper';
 import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { Updater } from '../updater/Updater';
+import { IAppVersion } from '../types';
 
 Updater.checkUpdate();
 
@@ -153,6 +154,26 @@ program
 
         const command = new SetCommand(directory);
         command.setStatus(status);
+    });
+
+program
+    .command('update-badges')
+    .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should look for the appversion.json')
+    .option('-b, --badge', 'The Badge Base Url', 'https://img.shields.io/badge')
+    .option('-p, --project', 'The Projects Repository Url')
+    .option('-n, --name', 'The Project Name')
+    .option('-v, --verbose', 'Shows Verbose Messages')
+    .action((options) => {
+
+        if (options.verbose) {
+            Helper.verboseEnabled = true;
+        }
+
+        const directory: string = options.directory || undefined;
+        const command = new UpdateCommand(directory);
+        command.updateBadges(options.badge, options.project, options.name);
+
+        Helper.info('All Badges updated in your appversion.json.');
     });
 
 program

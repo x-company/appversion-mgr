@@ -1,14 +1,14 @@
 {
   "version": {
     "major": 0,
-    "minor": 7,
-    "patch": 2,
+    "minor": 8,
+    "patch": 0,
     "badge": "[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://www.npmjs.com/package/appversion-mgr/v/${M.m.p})"
   },
   "build": {
-    "date": "2019-08-31T11:46:37.751Z",
-    "number": 1,
-    "total": 61,
+    "date": "2019-08-31T13:08:21.435Z",
+    "number": 0,
+    "total": 63,
     "badge": "[![AppVersionManager-build](https://img.shields.io/badge/Builds-${t}-brightgreen.svg?style=flat)](https://github.com/x-company/appversion-mgr#status)"
   },
   "status": {
