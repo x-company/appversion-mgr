@@ -119,7 +119,6 @@ export class BadgeGenerator {
             const newContent = oldContent.replace(oldBadge, newBadge);
             if (oldContent !== newContent) {
                 fs.writeFileSync(markdownFilePath, newContent, { encoding: 'utf8' });
-
             }
         } else {
             Helper.verbose('Old and New Badge are equal. Nothing to do.');

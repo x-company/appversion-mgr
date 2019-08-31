@@ -9,7 +9,7 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-18 01:20:07
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2019-08-31 15:59:59
+ * @Last Modified At: 2019-08-31 16:26:30
  * @Description: It's a Helper Class to work with AppVersion Elements
  */
 
@@ -233,12 +233,14 @@ export class Info {
      */
     public static getDataSchemaAsObject(badgeUrl: string = 'https://img.shields.io/badge', projectUrl: string = '#define-a-url', name: string = 'AppVersionManager'): IAppVersion {
 
+        // TODO: Umstellen auf Regex
+        // \[!\[${name}-build\]\([\w|\d|\:|\/|\.|\-|\?|\=|\%|\#]*\)\]\([\w|\d|\:|\/|\.|\-|\?|\=|\%|\#]*\)
         return {
             version: {
                 major: 0,
                 minor: 1,
                 patch: 0,
-                badge: `[![${name}-version](${badgeUrl}/Version-\${M.m.p}-brightgreen.svg?style=flat)](${projectUrl})`,
+                badge: `[![${name}-version](${badgeUrl}/Version-\${M.m.p}-brightgreen.svg?style=flat)](${projectUrl})`
             },
             build: {
                 date: null,
