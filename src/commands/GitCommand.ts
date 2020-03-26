@@ -50,7 +50,7 @@ export class GitCommand {
                     if (error.message) {
                         Helper.error(error.message);
                     } else {
-                        Helper.error('An unknown Error occured while Git Tag will added.');
+                        Helper.error('An unknown Error occurred while Git Tag will added.');
                     }
                 } else {
                     Helper.info(`Added Git tag '${gittag}'`);

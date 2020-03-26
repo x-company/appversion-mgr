@@ -18,7 +18,7 @@ import path from 'path';
 import fs from 'fs';
 import { Helper } from './Helper';
 import { IAppVersion } from '../types/IAppVersion';
-import { Info } from '../info';
+import { Info } from '../info/Info';
 
 export class BadgeGenerator {
 
@@ -85,10 +85,12 @@ export class BadgeGenerator {
         if (prevAppVersion) {
             const pastReadmeCode = this.composeReadmeCode(prevAppVersion, template);
 
-            if (appVersion.config) {
-                appVersion.config.markdown.map((file) => {
-                    return this.appendBadgeToMD(file, readmeCode, pastReadmeCode);
-                });
+            if (appVersion.config && appVersion.config.markdown) {
+                if (Array.isArray(appVersion.config.markdown)) {
+                    appVersion.config.markdown.map((file) => {
+                        return this.appendBadgeToMD(file, readmeCode, pastReadmeCode);
+                    });
+                }
             }
         } else {
             this.printReadme(readmeCode, tag);
@@ -117,7 +119,6 @@ export class BadgeGenerator {
             const newContent = oldContent.replace(oldBadge, newBadge);
             if (oldContent !== newContent) {
                 fs.writeFileSync(markdownFilePath, newContent, { encoding: 'utf8' });
-
             }
         } else {
             Helper.verbose('Old and New Badge are equal. Nothing to do.');

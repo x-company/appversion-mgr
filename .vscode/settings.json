@@ -54,5 +54,16 @@
     },
     "todo-tree.excludeGlobs": [
         "node_modules/**/*"
+    ],
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {},
+        "FIXME": {}
+    },
+    "todo-tree.highlights.defaultHighlight": {
+        "foreground": "green",
+        "type": "none"
+    },
+    "todo-tree.filtering.excludeGlobs": [
+        "node_modules/**/*"
     ]
 }

@@ -4,23 +4,24 @@
  * Copyright (c) 2018 IT Solutions Roland Breitschaft <info@x-company.de>
  *
  * This software is released under the MIT License.
- * https://opensource.org/licenses/MIT
+ * @Script: UpdateCommand.ts
  *
  * @Script: appvmgr.ts
  * @Author: Roland Breitschaft
- * @Email: roland.breitschaft@x-company.de
- * @Create At: 2018-12-15 00:53:57
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-21 03:07:22
+ * @Last Modified At: 2019-08-31 15:11:17
+ * @Last Modified By: Roland Breitschaft
+ * @Last Modified At: 2019-08-31 15:07:39
  * @Description: The CLI Application
  */
 
 import { Command } from 'commander';
 import { UpdateCommand, SetCommand, CreateCommand, GitCommand } from '../commands';
-import { Info } from '../info';
+import { Info } from '../info/Info';
 import { Helper } from '../helpers/Helper';
 import { BadgeGenerator } from '../helpers/BadgeGenerator';
 import { Updater } from '../updater/Updater';
+import { IAppVersion } from '../types';
 
 Updater.checkUpdate();
 
@@ -35,6 +36,9 @@ program
     .description('Generates the appversion.json file.')
     .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should create the appversion.json')
     .option('-f, --force', 'Overwrites an existing appversion.json')
+    .option('-b, --badge <badge>', 'The Badge Base Url', 'https://img.shields.io/badge')
+    .option('-p, --project <project>', 'The Projects Repository Url')
+    .option('-n, --name <name>', 'The Project Name')
     .option('-v, --verbose', 'Shows Verbose Messages')
     .action((options) => {
 
@@ -43,7 +47,7 @@ program
         }
         const directory = options.directory || undefined;
 
-        const cmd = new CreateCommand(directory);
+        const cmd = new CreateCommand(directory, options.badge, options.project, options.name);
         if (options.force) {
             cmd.resetAppVersion();
         } else {
@@ -150,6 +154,26 @@ program
 
         const command = new SetCommand(directory);
         command.setStatus(status);
+    });
+
+program
+    .command('update-badges')
+    .option('-d, --directory <directory>', 'Specifies the directory where appvmgr should look for the appversion.json')
+    .option('-b, --badge', 'The Badge Base Url', 'https://img.shields.io/badge')
+    .option('-p, --project', 'The Projects Repository Url')
+    .option('-n, --name', 'The Project Name')
+    .option('-v, --verbose', 'Shows Verbose Messages')
+    .action((options) => {
+
+        if (options.verbose) {
+            Helper.verboseEnabled = true;
+        }
+
+        const directory: string = options.directory || undefined;
+        const command = new UpdateCommand(directory);
+        command.updateBadges(options.badge, options.project, options.name);
+
+        Helper.info('All Badges updated in your appversion.json.');
     });
 
 program

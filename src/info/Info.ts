@@ -9,13 +9,13 @@
  * @Email: roland.breitschaft@x-company.de
  * @Create At: 2018-12-18 01:20:07
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-21 00:39:05
+ * @Last Modified At: 2019-11-26 23:43:12
  * @Description: It's a Helper Class to work with AppVersion Elements
  */
 
 import path from 'path';
-import { IAppVersion, IVersion } from '../types';
 import { Helper } from '../helpers/Helper';
+import { IAppVersion } from '../types/IAppVersion';
 
 export class Info {
 
@@ -225,31 +225,33 @@ export class Info {
     }
 
     /**
-     * Creates an emtpy AppVersion Object
+     * Creates an empty AppVersion Object
      *
      * @static
      * @returns {IAppVersion}
      * @memberof CreateCommand
      */
-    public static getDataSchemaAsObject(): IAppVersion {
+    public static getDataSchemaAsObject(badgeUrl: string = 'https://img.shields.io/badge', projectUrl: string = '#define-a-url', name: string = 'AppVersionManager'): IAppVersion {
 
+        // TODO: Umstellen auf Regex
+        // \[!\[${name}-build\]\([\w|\d|\:|\/|\.|\-|\?|\=|\%|\#]*\)\]\([\w|\d|\:|\/|\.|\-|\?|\=|\%|\#]*\)
         return {
             version: {
                 major: 0,
                 minor: 1,
                 patch: 0,
-                badge: '[![AppVersionManager-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](#define-a-url)',
+                badge: `[![${name}-version](${badgeUrl}/Version-\${M.m.p}-brightgreen.svg?style=flat)](${projectUrl})`,
             },
             build: {
                 date: null,
                 number: 0,
                 total: 0,
-                badge: '[![AppVersionManager-build](https://img.shields.io/badge/Builds-${t}-brightgreen.svg?style=flat)](#define-a-url)',
+                badge: `[![${name}-build](${badgeUrl}/Builds-\${t}-brightgreen.svg?style=flat)](${projectUrl})`,
             },
             status: {
                 stage: null,
                 number: 0,
-                badge: '[![AppVersionManager-status](https://img.shields.io/badge/Status-${S%20s}-brightgreen.svg?style=flat)](#define-a-url)',
+                badge: `[![${name}-status](${badgeUrl}/Status-\${S%20s}-brightgreen.svg?style=flat)](${projectUrl})`,
             },
             git: {
                 commit: null,

@@ -6,20 +6,20 @@
  * @Script: UpdateCommand.spec.ts
  * @Author: Roland Breitschaft
  * @Email: roland.breitschaft@x-company.de
- * @Create At: 2018-12-15 00:34:02
+ * @Script: appvmgr.ts-15 00:34:02
  * @Last Modified By: Roland Breitschaft
- * @Last Modified At: 2018-12-21 01:23:52
+ * @Last Modified At: 2019-08-31 13:39:22
  * @Description: This is description.
+ * @Last Modified By: Roland Breitschaft
+ * @Last Modified At: 2019-08-31 13:42:34
  */
 
-
-import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { UpdateCommand } from '../lib/commands/UpdateCommand';
-import { IAppVersion } from '../lib/types/IAppVersion';
-import { Helper } from '../lib/helpers/Helper';
-import { Info } from '../lib/info/Info';
+import { UpdateCommand } from '../src/commands/UpdateCommand';
+import { IAppVersion } from '../src/types/IAppVersion';
+import { Helper } from '../src/helpers/Helper';
+import { Info } from '../src/info/Info';
 
 describe('Testing Update Command', () => {
 
